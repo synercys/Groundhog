@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cassert>
 #include <iostream>
+#include <memory>
 
 static std::unique_ptr<std::fstream> file;
 std::string SolutionDir = "../../";

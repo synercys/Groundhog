@@ -75,4 +75,9 @@ add_subdirectory(dEnc_tests)
 #############################################
 add_subdirectory(dEncFrontend)
 
+#############################################
+#              Build Frontend               #
+#############################################
+add_subdirectory(test)
+
 

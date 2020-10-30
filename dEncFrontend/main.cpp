@@ -136,8 +136,12 @@ void AmmrAsymSHClient_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     // set up the networking
     oc::IOService ios;
     std::vector<GroupChannel> eps(n);
-    for (u64 i = 0; i < n; ++i)
-        eps[i].connect(i, n, ios);
+    // for (u64 i = 0; i < n; ++i)
+    //     eps[i].connect(i, n, ios);
+    std::vector<std::string> ip(n);
+    ip[0]= "10.0.60.177";
+    ip[1]= "10.0.60.64";
+    eps[1].connect(1,2,ios,ip[1]);
 
     // allocate the DPRFs and the encryptors
     std::vector<AmmrClient<Npr03AsymDprf>> encs(n);
