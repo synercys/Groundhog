@@ -5,8 +5,8 @@
 using namespace osuCrypto;
 
 
-void senderGetLatency(osuCrypto::Channel& chl);
+void senderGetLatency(Channel& chl);
 
-void recverGetLatency(osuCrypto::Channel& chl);
+void recverGetLatency(Channel& chl);
 
 void getLatency(std::vector<std::string> ips, u64 n);

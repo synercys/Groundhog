@@ -1,7 +1,7 @@
 #include "util.h"
 
 using namespace osuCrypto;
-#include <test/tools/GroupChannel.h>
+#include <GroupChannel.h>
 #include <cryptoTools/Common/Log.h>
 #include <cryptoTools/Common/Timer.h>
 #include <cryptoTools/Network/IOService.h>
