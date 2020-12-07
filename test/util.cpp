@@ -1,7 +1,6 @@
 #include "util.h"
 
 using namespace osuCrypto;
-#include <test/GroupChannel.h>
 #include <cryptoTools/Common/Log.h>
 #include <cryptoTools/Common/Timer.h>
 #include <cryptoTools/Network/IOService.h>
@@ -10,42 +9,69 @@ using namespace osuCrypto;
 #define tryCount 2
 
 
+std::string exec(const char* cmd) 
+{
+    std::array<char, 128> buffer;
+    std::string result;
+    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
+    if (!pipe) {
+        throw std::runtime_error("popen() failed!");
+    }
+    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+        result += buffer.data();
+    }
+    return result;
+}
+
+std::string getIP()
+{
+    std::string result = exec("ifconfig");
+    std::istringstream iss(result);
+    std::vector<std::string> tokens{std::istream_iterator<std::string>{iss},
+                                    std::istream_iterator<std::string>{}};
+
+    std::string ip;
+    for(int i=0; i< tokens.size(); i++)
+    {
+        if(tokens[i].compare("inet") == 0)
+        {
+            ip = tokens[i+1];
+            break;
+        } 
+    }
+
+    return ip;
+}
 
 void getLatency(std::vector<std::string> ips, u64 n)
 {
-	GroupChannel gc;
-    gc.connect(ips, n);
+    IOService ios(n);
+    ios.showErrorMessages(true);
 
-    if (gc.current_node != 0) {
+    std::string ip = getIP();
+    u64 current_node; // index of current node's ip in vector of ips
+    for(int i = 0; i < n ; i++) {
+        if(ips[i].compare(ip) == 0) {
+            current_node = i;    
+        }
+    }
+    
+    if (current_node != 0) {
+        Channel clientChl = Session(ios, ips[0], SessionMode::Client).addChannel();
         std::string msg;
-        gc.nSessions[0].addChannel().recv(msg);
+        clientChl.recv(msg);
         std::cout << "Received " << msg << std::endl;
-        // recverGetLatency(gc.nChls[0]);
+        recverGetLatency(clientChl);
         return;
     }
 
     for (int i = 1; i < n ; i++) {
-        Channel chnl = gc.nSessions[i].addChannel();
-        chnl.waitForConnection();
-        chnl.send(getIP());
-        // senderGetLatency(gc.nChls[i]);
+        Channel serverChl = Session(ios, ip, SessionMode::Server).addChannel();
+        std::chrono::milliseconds timeout(1000000000000);
+        serverChl.waitForConnection();
+        serverChl.send(getIP());
+        senderGetLatency(serverChl);
     }
-
-    // for (int i = 0; i < n ; i++) 
-    // {
-    //     if(i < gc.current_node) 
-    //     {
-    //         recverGetLatency(gc.nChls[i]);
-    //     }
-    //     else if(i == gc.current_node) {
-    //         continue;
-    //     }
-    //     else
-    //     {
-    //         std::cout << "" << std::endl;
-    //         senderGetLatency(gc.nChls[i]);
-    //     }
-    // }
 }
 
 void senderGetLatency(Channel& chl)
