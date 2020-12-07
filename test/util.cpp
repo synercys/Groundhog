@@ -127,7 +127,7 @@ void recverGetLatency(Channel& chl)
     auto recvEnd = mid;
 
     auto rrt = mid - start;
-    std::cout << "latency:   " << std::chrono::duration_cast<std::chrono::milliseconds>(rrt).count() << " ms" << std::endl;
+    std::cout << "latency:   " << std::chrono::duration_cast<std::chrono::microseconds>(rrt).count() << " microseconds" << std::endl;
 
     std::vector<u8> oneMbit((1 << 20) / 8);
     for (u64 i = 0; i < tryCount; ++i)
