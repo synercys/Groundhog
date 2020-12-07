@@ -55,22 +55,32 @@ void getLatency(std::vector<std::string> ips, u64 n)
             current_node = i;    
         }
     }
-    
-    if (current_node != 0) {
-        Channel clientChl = Session(ios, ips[0], SessionMode::Client).addChannel();
-        std::string msg;
-        clientChl.recv(msg);
-        std::cout << "Received " << msg << std::endl;
-        recverGetLatency(clientChl);
-        return;
-    }
 
-    for (int i = 1; i < n ; i++) {
-        Channel serverChl = Session(ios, ip, SessionMode::Server).addChannel();
-        std::chrono::milliseconds timeout(1000000000000);
-        serverChl.waitForConnection();
-        serverChl.send(getIP());
-        senderGetLatency(serverChl);
+    for (int i = 0; i < n ; i++) {
+        if(i < current_node)
+        {
+            Channel clientChl = Session(ios, ips[i], SessionMode::Client).addChannel();
+            clientChl.send(getIP());
+            std::string msg;
+            clientChl.recv(msg);
+            std::cout << "Received " << msg << std::endl;
+            recverGetLatency(clientChl);    
+        }
+        else if(i == current_node)
+        {
+            continue;
+        }
+        else
+        {
+            Channel serverChl = Session(ios, ip, SessionMode::Server).addChannel();
+            std::chrono::milliseconds timeout(1000000000000);
+            serverChl.waitForConnection();
+            serverChl.send(getIP());
+            std::string msg;
+            serverChl.recv(msg);
+            std::cout << "Received " << msg << std::endl;
+            senderGetLatency(serverChl);
+        }
     }
 }
 
