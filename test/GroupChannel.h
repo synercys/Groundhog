@@ -54,9 +54,6 @@ namespace osuCrypto
         std::vector<Channel> nChls; // to send and receive msgs
         u64 current_node; // index of current node's ip in vector of ips
 
-
-        
-
         void connect(std::vector<std::string> ips, u64 n) {
             nChls.resize(n);
 

@@ -1,7 +1,7 @@
 #include "util.h"
 
 using namespace osuCrypto;
-#include <GroupChannel.h>
+#include <test/GroupChannel.h>
 #include <cryptoTools/Common/Log.h>
 #include <cryptoTools/Common/Timer.h>
 #include <cryptoTools/Network/IOService.h>
@@ -15,15 +15,20 @@ void getLatency(std::vector<std::string> ips, u64 n)
 {
 	GroupChannel gc;
     gc.connect(ips, n);
-
+    
     for (int i = 0; i < n ; i++) 
     {
-        if(i == gc.current_node)
+        if(i < gc.current_node) 
+        {
+            recverGetLatency(gc.nChls[i]);
+        }
+        else if(i == gc.current_node) {
             continue;
-
-        std::cout << "ip: " << ips[i] << std::endl;
-        senderGetLatency(gc.nChls[i]);
-        recverGetLatency(gc.nChls[i]);
+        }
+        else
+        {
+            senderGetLatency(gc.nChls[i]);
+        }
     }
 }
 
