@@ -15,21 +15,31 @@ void getLatency(std::vector<std::string> ips, u64 n)
 {
 	GroupChannel gc;
     gc.connect(ips, n);
-    
-    for (int i = 0; i < n ; i++) 
-    {
-        if(i < gc.current_node) 
-        {
-            recverGetLatency(gc.nChls[i]);
-        }
-        else if(i == gc.current_node) {
-            continue;
-        }
-        else
-        {
-            senderGetLatency(gc.nChls[i]);
-        }
+
+    if (gc.current_node != 0) {
+        recverGetLatency(gc.nChls[0]);
+        return;
     }
+
+    for (int i = 1; i < n ; i++) {
+        senderGetLatency(gc.nChls[i]);
+    }
+
+    // for (int i = 0; i < n ; i++) 
+    // {
+    //     if(i < gc.current_node) 
+    //     {
+    //         recverGetLatency(gc.nChls[i]);
+    //     }
+    //     else if(i == gc.current_node) {
+    //         continue;
+    //     }
+    //     else
+    //     {
+    //         std::cout << "" << std::endl;
+    //         senderGetLatency(gc.nChls[i]);
+    //     }
+    // }
 }
 
 void senderGetLatency(Channel& chl)
