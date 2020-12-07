@@ -18,7 +18,7 @@ void getLatency(std::vector<std::string> ips, u64 n)
 
     if (gc.current_node != 0) {
         u8 dummy[1];
-        gc.nChls[0].asyncRecv(dummy, 1);
+        gc.nChls[0].recv(dummy);
         std::cout << "Received " << dummy[0] << std::endl;
         // recverGetLatency(gc.nChls[0]);
         return;
@@ -27,7 +27,7 @@ void getLatency(std::vector<std::string> ips, u64 n)
     for (int i = 1; i < n ; i++) {
         u8 dummy[1];
         dummy[0] = 0;
-        gc.nChls[i].asyncSend(dummy, 1);
+        gc.nChls[i].send(dummy);
         // senderGetLatency(gc.nChls[i]);
     }
 
