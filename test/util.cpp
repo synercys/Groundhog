@@ -17,12 +17,18 @@ void getLatency(std::vector<std::string> ips, u64 n)
     gc.connect(ips, n);
 
     if (gc.current_node != 0) {
-        recverGetLatency(gc.nChls[0]);
+        u8 dummy[1];
+        gc.nChls[0].asyncRecv(dummy, 1);
+        std::cout << "Received " << dummy[0] << std::endl;
+        // recverGetLatency(gc.nChls[0]);
         return;
     }
 
     for (int i = 1; i < n ; i++) {
-        senderGetLatency(gc.nChls[i]);
+        u8 dummy[1];
+        dummy[0] = 0;
+        gc.nChls[i].asyncSend(dummy, 1);
+        // senderGetLatency(gc.nChls[i]);
     }
 
     // for (int i = 0; i < n ; i++) 
