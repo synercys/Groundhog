@@ -18,14 +18,16 @@ void getLatency(std::vector<std::string> ips, u64 n)
 
     if (gc.current_node != 0) {
         std::string msg;
-        gc.nChls[0].recv(msg);
+        gc.nSessions[0].addChannel().recv(msg);
         std::cout << "Received " << msg << std::endl;
         // recverGetLatency(gc.nChls[0]);
         return;
     }
 
     for (int i = 1; i < n ; i++) {
-        gc.nChls[i].send(getIP());
+        Channel chnl = gc.nSessions[i].addChannel();
+        chnl.waitForConnection();
+        chnl.send(getIP());
         // senderGetLatency(gc.nChls[i]);
     }
 

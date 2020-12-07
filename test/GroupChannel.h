@@ -51,11 +51,12 @@ namespace osuCrypto
 {
     struct GroupChannel
     {
-        std::vector<Channel> nChls; // to send and receive msgs
+        //std::vector<Channel> nChls; // to send and receive msgs
+        std::vector<Session> nSessions;
         u64 current_node; // index of current node's ip in vector of ips
 
         void connect(std::vector<std::string> ips, u64 n) {
-            nChls.resize(n);
+            nSessions.resize(n);
 
             IOService ios(n);
             ios.showErrorMessages(true);
@@ -73,8 +74,8 @@ namespace osuCrypto
                 if(i < current_node) 
                 {
                     //connect as a client  
-                    Channel clientChl = Session(ios, ips[i], SessionMode::Client).addChannel();
-                    nChls[i] = clientChl;
+                    //Channel clientChl = Session(ios, ips[i], SessionMode::Client).addChannel();
+                    nSessions[i].start(ios, ips[i], SessionMode::Client);
 
                 } 
                 else if (i == current_node) 
@@ -83,11 +84,10 @@ namespace osuCrypto
                 } 
                 else 
                 {  //connect as a server
-                    Session perPartySession(ios, ip, SessionMode::Server);
-                    Channel serverChl = perPartySession.addChannel();
-                    std::chrono::milliseconds timeout(1000000000000);
-                    serverChl.waitForConnection();
-                    nChls[i] = serverChl;
+                    nSessions[i].start(ios, ip, SessionMode::Server);
+                    // Channel serverChl = perPartySession.addChannel();
+                    // std::chrono::milliseconds timeout(1000000000000);
+                    // serverChl.waitForConnection();
                 }
                 
             }
