@@ -39,7 +39,7 @@ std::string getIP() {
 
 void getLatency(std::vector<std::string> ips, u64 n)
 {
-    IOService ios(n);
+    IOService ios;
     ios.showErrorMessages(true);
 
     GroupChannel gc;
@@ -49,12 +49,11 @@ void getLatency(std::vector<std::string> ips, u64 n)
     {
         if (i < gc.current_node) 
         {
-            Channel clientChl = gc.nSessions[i].addChannel();
-            clientChl.send(getIP());
+            gc.nChannels[i].send(getIP());
             std::string msg;
-            clientChl.recv(msg);
+            gc.nChannels[i].recv(msg);
             std::cout << "Received " << msg << std::endl;
-            recverGetLatency(clientChl);    
+            recverGetLatency(gc.nChannels[i]);    
         } 
         else if (i == gc.current_node) 
         {
@@ -62,14 +61,11 @@ void getLatency(std::vector<std::string> ips, u64 n)
         } 
         else 
         {
-            Channel serverChl = gc.nSessions[i].addChannel();
-            std::chrono::milliseconds timeout(1000000000000);
-            serverChl.waitForConnection();
-            serverChl.send(getIP());
+            gc.nChannels[i].send(getIP());
             std::string msg;
-            serverChl.recv(msg);
+            gc.nChannels[i].recv(msg);
             std::cout << "Received " << msg << std::endl;
-            senderGetLatency(serverChl);
+            senderGetLatency(gc.nChannels[i]);
         }
     }
 }
