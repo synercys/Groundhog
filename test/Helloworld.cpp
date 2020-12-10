@@ -15,8 +15,6 @@ static const std::vector<std::string> ips {"10.0.60.177", "10.0.60.64", "10.0.60
 template<typename DPRF>
 void eval(std::vector<dEnc::AmmrClient<DPRF>>& encs, u64 n, u64 m, u64 blockCount, u64 batch, u64 trials, u64 numAsync, bool lat, std::string tag)
 {
-    std::cout << "Inside eval()" << std::endl;
-
     Timer t;
     auto s = t.setTimePoint("start");
 
@@ -29,46 +27,10 @@ void eval(std::vector<dEnc::AmmrClient<DPRF>>& encs, u64 n, u64 m, u64 blockCoun
     std::vector<std::vector<block>> data(batch), ciphertext(batch), data2(batch);
     for (auto& d : data) d.resize(blockCount);
 
-    if (lat)
-    {
-        // we are interested in latency and therefore we 
-        // will only have one encryption in flight at a time.
-        for (u64 t = 0; t < trials; ++t)
-            initiator.encrypt(data[0], ciphertext[0]);
-    }
-    else
-    {
-        // We are going to initiate "batch" encryptions at once.
-        // In addition, we will send out "numAsync" batches before we 
-        // complete the first batch. This allows higher throughput.
-
-        // A place to store "inflight" encryption operations
-        std::deque<dEnc::AsyncEncrypt> asyncs;
-        
-        auto loops = (trials + batch - 1) / batch;
-        trials = loops * batch;
-        for (u64 t = 0; t < loops; ++t)
-        {
-            // check if we have reached the maximum number of 
-            // async encryptions. If so, then complete the oldest 
-            // one by calling AsyncEncrypt::get();
-            if (asyncs.size() == numAsync)
-            {
-                asyncs.front().get();
-                asyncs.pop_front();
-            }
-
-            // initiate another encryption. This will not complete immidiately.
-            asyncs.emplace_back(initiator.asyncEncrypt(data, ciphertext));
-        }
-
-        // Complete all pending encryptions
-        while (asyncs.size())
-        {
-            asyncs.front().get();
-            asyncs.pop_front();
-        }
-    }
+    // we are interested in latency and therefore we 
+    // will only have one encryption in flight at a time.
+    for (u64 t = 0; t < trials; ++t) 
+        initiator.encrypt(data[0], ciphertext[0]);
 
     auto e = t.setTimePoint("end");
 
@@ -87,43 +49,43 @@ void eval(std::vector<dEnc::AmmrClient<DPRF>>& encs, u64 n, u64 m, u64 blockCoun
 
 void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 numAsync, u64 batch, bool lat)
 {
-    std::cout << "Inside AmmrSymClient_tp_Perf_test()" << std::endl;
-
     // set up the networking
     IOService ios;
-    GroupChannel eps;
-    std::cout << "Connecting to GroupChannel" << std::endl;
-    eps.connect(ips, n, ios);
-    std::cout << "Connected successfully!" << std::endl;
+    GroupChannel gc;
+    gc.connect(ips, n, ios);
 
-    if(eps.current_node == 0)
+    oc::block seed;
+    if(gc.current_node == 0)
     {
-        // allocate the DPRFs and the encryptors
-        std::vector<dEnc::AmmrClient<dEnc::Npr03SymDprf>> encs(n);
-        std::vector<dEnc::Npr03SymDprf> dprfs(n);
-
         // Initialize the parties using a random seed from the OS.
-        PRNG prng(sysRandomSeed());
-
-        // Generate the master key for this DPRF.
-        dEnc::Npr03SymDprf::MasterKey mk;
-        mk.KeyGen(n, m, prng);
-        std::cout << "Keygen done!" << std::endl;
-
-        for(int i = 0; i<n; i++)
+        seed = sysRandomSeed();
+        for (int i = 1; i < n; i++)
         {
-            std::cout << "i: " << i << std::endl;
-            // initialize the DPRF and the encrypters
-            dprfs[i].init(eps.current_node, m, eps.nChannels, eps.nChannels, prng.get<block>(), mk.keyStructure, mk.getSubkey(i));
-            encs[i].init(eps.current_node, prng.get<block>(), &dprfs[i]);
+            gc.nChannels[i-1].send(seed);
         }
-
+    } else 
+    {
+        gc.nChannels[0].recv(seed);
     }
 
+    // allocate the DPRFs and the encryptors
+    std::vector<dEnc::AmmrClient<dEnc::Npr03SymDprf>> encs(n);
+    std::vector<dEnc::Npr03SymDprf> dprfs(n);
+
+    PRNG prng(seed);
+    // Generate the master key for this DPRF.
+    dEnc::Npr03SymDprf::MasterKey mk;
+    mk.KeyGen(n, m, prng);
+
+    for(int i = 0; i<n; i++)
+    {
+        // initialize the DPRF and the encrypters
+        dprfs[i].init(i, m, gc.nChannels, gc.nChannels, prng.get<block>(), mk.keyStructure, mk.getSubkey(i));
+        encs[i].init(i, prng.get<block>(), &dprfs[i]);
+    }
+    
     // Perform the benchmark.                                          
-    // eval(encs, n, m, blockCount, batch, trials, numAsync, lat, "Sym      ");
-
-
+    eval(encs, n, m, blockCount, batch, trials, numAsync, lat, "Sym      ");
 }
 
 
@@ -168,6 +130,5 @@ int main(int argc, char** argv) {
     }
 
     AmmrSymClient_tp_Perf_test(n, m, size, t, a, b, l);
-
     return 0;
 }
