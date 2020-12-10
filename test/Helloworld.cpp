@@ -92,7 +92,9 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     // set up the networking
     IOService ios;
     GroupChannel eps;
+    std::cout << "Connecting to GroupChannel" << std::endl;
     eps.connect(ips, n, ios);
+    std::cout << "Connected successfully!" << std::endl;
 
     if(eps.current_node == 0)
     {
@@ -106,9 +108,11 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
         // Generate the master key for this DPRF.
         dEnc::Npr03SymDprf::MasterKey mk;
         mk.KeyGen(n, m, prng);
+        std::cout << "Keygen done!" << std::endl;
 
         for(int i = 0; i<n; i++)
         {
+            std::cout << "i: " << i << std::endl;
             // initialize the DPRF and the encrypters
             dprfs[i].init(eps.current_node, m, eps.nChannels, eps.nChannels, prng.get<block>(), mk.keyStructure, mk.getSubkey(i));
             encs[i].init(eps.current_node, prng.get<block>(), &dprfs[i]);

@@ -36,8 +36,8 @@ namespace osuCrypto
                     Channel clientChl = nSessions[i].addChannel();
                     nChannels.push_back(clientChl);
                 } else if (i == current_node) {
-                    Channel dummyChl;
-                    nChannels.push_back(dummyChl);
+                    // Channel dummyChl;
+                    // nChannels.push_back(dummyChl);
                     continue;
                 } else {   
                     //connect as a server
