@@ -13,7 +13,7 @@ static const std::vector<std::string> ips {"10.0.60.177", "10.0.60.64", "10.0.60
 
 
 template<typename DPRF>
-void eval(std::vector<dEnc::AmmrClient<DPRF>>& encs, u64 n, u64 m, u64 blockCount, u64 batch, u64 trials, u64 numAsync, bool lat, std::string tag)
+void eval(dEnc::AmmrClient<DPRF>& enc, u64 n, u64 m, u64 blockCount, u64 batch, u64 trials, u64 numAsync, bool lat, std::string tag)
 {
     Timer t;
     auto s = t.setTimePoint("start");
@@ -21,10 +21,10 @@ void eval(std::vector<dEnc::AmmrClient<DPRF>>& encs, u64 n, u64 m, u64 blockCoun
     // The party that will initiate the encryption.
     // The other parties will respond to requests on the background.
     // This happens using the threads created by IOService
-    auto& initiator = encs[0];
+    auto& initiator = enc;
 
     // the buffers to hold the data.
-    std::vector<std::vector<block>> data(batch), ciphertext(batch), data2(batch);
+    std::vector<std::vector<block>> data(batch), ciphertext(batch);
     for (auto& d : data) d.resize(blockCount);
 
     // we are interested in latency and therefore we 
@@ -34,9 +34,7 @@ void eval(std::vector<dEnc::AmmrClient<DPRF>>& encs, u64 n, u64 m, u64 blockCoun
 
     auto e = t.setTimePoint("end");
 
-    // close all of the instances.
-    for (u64 i = 0; i < n; ++i)
-        encs[i].close();
+    enc.close();
 
     auto online = (double)std::chrono::duration_cast<std::chrono::milliseconds>(e - s).count();
 
@@ -69,23 +67,20 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     }
 
     // allocate the DPRFs and the encryptors
-    std::vector<dEnc::AmmrClient<dEnc::Npr03SymDprf>> encs(n);
-    std::vector<dEnc::Npr03SymDprf> dprfs(n);
+    dEnc::AmmrClient<dEnc::Npr03SymDprf> enc;
+    dEnc::Npr03SymDprf dprf;
 
     PRNG prng(seed);
     // Generate the master key for this DPRF.
     dEnc::Npr03SymDprf::MasterKey mk;
     mk.KeyGen(n, m, prng);
 
-    for(int i = 0; i<n; i++)
-    {
-        // initialize the DPRF and the encrypters
-        dprfs[i].init(i, m, gc.nChannels, gc.nChannels, prng.get<block>(), mk.keyStructure, mk.getSubkey(i));
-        encs[i].init(i, prng.get<block>(), &dprfs[i]);
-    }
+    // initialize the DPRF and the encrypters
+    dprf.init(gc.current_node, m, gc.nChannels, gc.nChannels, prng.get<block>(), mk.keyStructure, mk.getSubkey(gc.current_node));
+    enc.init(gc.current_node, prng.get<block>(), &dprf);
     
     // Perform the benchmark.                                          
-    eval(encs, n, m, blockCount, batch, trials, numAsync, lat, "Sym      ");
+    eval(enc, n, m, blockCount, batch, trials, numAsync, lat, "Sym      ");
 }
 
 
