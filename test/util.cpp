@@ -61,11 +61,11 @@ void getLatency(std::vector<std::string> ips, u64 n)
         } 
         else 
         {
-            gc.nChannels[i].send(getIP());
+            gc.nChannels[i-1].send(getIP());
             std::string msg;
-            gc.nChannels[i].recv(msg);
+            gc.nChannels[i-1].recv(msg);
             std::cout << "Received " << msg << std::endl;
-            senderGetLatency(gc.nChannels[i]);
+            senderGetLatency(gc.nChannels[i-1]);
         }
     }
 }
