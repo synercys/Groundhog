@@ -4,6 +4,7 @@
 #include <dEnc/distEnc/AmmrClient.h>
 #include <dEnc/dprf/Npr03SymDprf.h>
 #include "GroupChannel.h"
+#include "RandomNodePicker.cpp"
 #include "util.h"
 
 
@@ -88,42 +89,51 @@ int main(int argc, char** argv) {
     CLP cmd;
     cmd.parse(argc, argv);
 
-    u64 n = ips.size();
-    // getLatency(ips, n);
+    u64 n = cmd.get<u64>("n");
+    RandomNodePicker nodePicker(n);
+    std::cout << "Generators for n=" << n << " are ";
+    for(int i: nodePicker.generators)
+        std::cout << i << " ";
+    std::cout << std::endl;
 
-    u64 t = 4096;
-    u64 b = 128;
-    u64 a = 1024 / b;
-    cmd.setDefault("t", t);
-    cmd.setDefault("b", b);
-    cmd.setDefault("a", a);
-    cmd.setDefault("size", 20);
-    t = cmd.get<u64>("t");
-    b = cmd.get<u64>("b");
-    a = cmd.get<u64>("a");
-    auto size = cmd.get<u64>("size");
-    bool l = cmd.isSet("l");
+    std::cout << "Picked Node: " << nodePicker.nextNode() << std::endl;
 
-    cmd.setDefault("mf", "0.5");
-    auto mFrac = cmd.get<double>("mf");
-    if (mFrac <= 0 || mFrac > 1)
-    {
-        std::cout << ("bad mf") << std::endl;
-        return 0;
-    }
+    // u64 n = ips.size();
+    // // getLatency(ips, n);
 
-    cmd.setDefault("mc", -1);
-    auto mc = cmd.get<i64>("mc");
+    // u64 t = 4096;
+    // u64 b = 128;
+    // u64 a = 1024 / b;
+    // cmd.setDefault("t", t);
+    // cmd.setDefault("b", b);
+    // cmd.setDefault("a", a);
+    // cmd.setDefault("size", 20);
+    // t = cmd.get<u64>("t");
+    // b = cmd.get<u64>("b");
+    // a = cmd.get<u64>("a");
+    // auto size = cmd.get<u64>("size");
+    // bool l = cmd.isSet("l");
 
-    auto m = std::max<u64>(2, (mc == -1) ? n * mFrac : mc);
-    m = 3;
+    // cmd.setDefault("mf", "0.5");
+    // auto mFrac = cmd.get<double>("mf");
+    // if (mFrac <= 0 || mFrac > 1)
+    // {
+    //     std::cout << ("bad mf") << std::endl;
+    //     return 0;
+    // }
 
-    if (m > n)
-    {
-        std::cout << "can not have a threshold larger than the number of parties. theshold=" << m << ", #parties=" << n << std::endl;
-        return -1;
-    }
+    // cmd.setDefault("mc", -1);
+    // auto mc = cmd.get<i64>("mc");
 
-    AmmrSymClient_tp_Perf_test(n, m, size, t, a, b, l);
+    // auto m = std::max<u64>(2, (mc == -1) ? n * mFrac : mc);
+    // m = 3;
+
+    // if (m > n)
+    // {
+    //     std::cout << "can not have a threshold larger than the number of parties. theshold=" << m << ", #parties=" << n << std::endl;
+    //     return -1;
+    // }
+
+    // AmmrSymClient_tp_Perf_test(n, m, size, t, a, b, l);
     return 0;
 }
