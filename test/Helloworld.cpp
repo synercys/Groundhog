@@ -50,8 +50,7 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
 {
     // set up the networking
     IOService ios;
-    GroupChannel gc;
-    gc.connect(ips, n, ios);
+    GroupChannel gc(ips, n, ios);
 
     oc::block seed;
     if(gc.current_node == 0)

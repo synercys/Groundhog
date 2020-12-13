@@ -37,13 +37,23 @@ std::string getIP() {
     return ip;
 }
 
+u64 getCurrNodeIdx(std::vector<std::string> ips, std::string ip) {
+    u64 current_node = -1;
+    for (int i = 0; i < ips.size(); i++) {
+        if (ips[i].compare(ip) == 0) {
+            current_node = i;
+            break;  
+        }
+    }
+    return current_node;
+}
+
 void getLatency(std::vector<std::string> ips, u64 n)
 {
     IOService ios;
     ios.showErrorMessages(true);
 
-    GroupChannel gc;
-    gc.connect(ips, n, ios);
+    GroupChannel gc(ips, n, ios);
 
     for (int i = 0; i < n ; i++) 
     {

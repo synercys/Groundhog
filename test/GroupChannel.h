@@ -8,25 +8,21 @@
 #include "util.h"
 
 
-namespace osuCrypto
-{
-    struct GroupChannel
-    {
+using namespace osuCrypto;
+
+class GroupChannel {
+    public:
         std::vector<Session> nSessions;
         std::vector<Channel> nChannels;
         u64 current_node; // index of current node's ip in vector of ips
 
-        void connect(std::vector<std::string> ips, u64 n, IOService& ios) {
+        GroupChannel(std::vector<std::string> ips, u64 n, IOService& ios) {
             if (nSessions.size())
                 throw std::runtime_error("GroupChannel's connect can be called once " LOCATION);
             nSessions.resize(n);
             
             std::string ip = getIP();
-            for (int i = 0; i < n ; i++) {
-                if (ips[i].compare(ip) == 0) {
-                    current_node = i;    
-                }
-            }
+            current_node = getCurrNodeIdx(ips, ip);
             
             for(int i = 0; i < n ; i++) {
                 if (i < current_node) {
@@ -50,5 +46,4 @@ namespace osuCrypto
                 }
             }
         }
-    };
-}
+};

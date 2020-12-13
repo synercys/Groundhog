@@ -14,3 +14,5 @@ void getLatency(std::vector<std::string> ips, u64 n);
 std::string exec(const char* cmd);
 
 std::string getIP();
+
+u64 getCurrNodeIdx(std::vector<std::string> ips, std::string ip);
