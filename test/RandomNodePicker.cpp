@@ -45,12 +45,6 @@ void findGeneratedNums(u64 i, u64 n, u64 prime, std::vector<u64>& generatedNums)
         }
         powersOfiModPrime = (powersOfiModPrime * i) % prime; // ab mod p = [(a mod p) (b mod p)] mod p
     }
-
-    for (u64 x = 1; x <= n; x++)
-        if (generatedNumsSet.find(x) == generatedNumsSet.end()) { // element not found in set
-            generatedNums.clear();
-            break;
-        }
 }
 
 u64 rangeRand(u64 range_from, u64 range_to) {
