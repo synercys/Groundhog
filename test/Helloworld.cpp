@@ -58,7 +58,7 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     {
         // Initialize the parties using a random seed from the OS.
         seed = sysRandomSeed();
-        for (int i = 1; i < n; i++)
+        for (u64 i = 1; i < n; i++)
         {
             gc.nChannels[i-1].send(seed);
         }
@@ -91,15 +91,19 @@ int main(int argc, char** argv) {
 
     u64 n = cmd.get<u64>("n");
     RandomNodePicker nodePicker(n);
-    std::cout << "Generators for n=" << n << " are ";
-    for(int i: nodePicker.generators)
-        std::cout << i << " ";
-    std::cout << std::endl;
-
-    std::cout << "Picked Node: " << nodePicker.nextNode() << std::endl;
+    std::cout << "Generators for n=" << n << " are " << std::endl;
+    for(u64 i = 0; i < nodePicker.generators.size(); i++) {
+        std::cout << nodePicker.generators[i].first << ": ";
+        for (u64 x: nodePicker.generators[i].second)
+            std::cout << x << " ";
+        std::cout << std::endl;
+    }
+    
+    for (int i = 0; i < nodePicker.generators.size() * n; i++)
+        std::cout << nodePicker.nextNode() << std::endl;
 
     // u64 n = ips.size();
-    // // getLatency(ips, n);
+    // getLatency(ips, n);
 
     // u64 t = 4096;
     // u64 b = 128;

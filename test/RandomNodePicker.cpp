@@ -30,39 +30,27 @@ u64 findNextPrime(u64 n) {
     return prime; 
 }
 
-u64 powerModP(u64 x, u64 y, u64 p) {
-    // return x^y mod p
+void findGeneratedNums(u64 i, u64 n, u64 prime, std::vector<u64>& generatedNums) {
+    /* set generatedNums vector of size n of generated nums if i^x % prime generates all numbers from 1 to n 
+       for different x values else clear the vector */
 
-    u64 res = 1; // Initialize result  
-    x = x % p; // Update x if it is >= p 
-    if (x == 0) return 0; // In case x is divisible by p; 
-  
-    while (y > 0) {
-        // If y is odd, multiply x with result
-        if (y & 1)
-            res = (res*x) % p;
-        
-        // y must be even now
-        y = y>>1; // y = y/2
-        x = (x*x) % p;
-    }
-    return res;
-}  
-
-bool isGenerator(u64 i, u64 n, u64 prime) {
-    // return true if i^x % prime generates all numbers from 0 to n-1 for different x values
-
-    std::set<u64> generatedNums;
+    std::set<u64> generatedNumsSet;
     u64 powersOfiModPrime = 1;
     for (u64 x = 0; x < prime; x++) {
-        generatedNums.insert(powersOfiModPrime);
+        if (generatedNumsSet.find(powersOfiModPrime) == generatedNumsSet.end()) { // element not found in set
+            generatedNumsSet.insert(powersOfiModPrime);
+            if (powersOfiModPrime >= 1 && powersOfiModPrime <= n) {
+                generatedNums.push_back(powersOfiModPrime);
+            }
+        }
         powersOfiModPrime = (powersOfiModPrime * i) % prime; // ab mod p = [(a mod p) (b mod p)] mod p
     }
 
     for (u64 x = 1; x <= n; x++)
-        if (generatedNums.find(x) == generatedNums.end()) // element not found in set
-            return false;
-    return true;
+        if (generatedNumsSet.find(x) == generatedNumsSet.end()) { // element not found in set
+            generatedNums.clear();
+            break;
+        }
 }
 
 u64 rangeRand(u64 range_from, u64 range_to) {
@@ -75,21 +63,34 @@ u64 rangeRand(u64 range_from, u64 range_to) {
 
 class RandomNodePicker {
     public:
-        u64 n, prime;
-        std::vector<u64> generators;
+        u64 n, prime, currGeneratorIdx, nextGeneratedNumIdx;
+        std::vector<std::pair<u64, std::vector<u64>>> generators;
 
         RandomNodePicker(u64 n) {
             this->n = n;
             prime = findNextPrime(n);
-            for (u64 i = 1; i <= n; i++)
-                if (isGenerator(i, n, prime))
-                    generators.push_back(i);
+            for (u64 i = 1; i <= n; i++) {
+                std::vector<u64> generatedNums;
+                findGeneratedNums(i, n, prime, generatedNums);
+                if (generatedNums.size() == n)
+                    generators.push_back(std::make_pair(i, generatedNums));
+            }
+
+            // randomize order of generators used
+            srand(time(NULL));
+            std::random_shuffle(generators.begin(), generators.end());
+
+            currGeneratorIdx = 0;
+            nextGeneratedNumIdx = 0;
         }
 
         u64 nextNode() {
-            // randomly pick one of the generator numbers to generate a number which will be between 1 and n
-            u64 generatorNum = generators[rangeRand(0, generators.size()-1)];
-            u64 pickedNode = powerModP(generatorNum, rangeRand(0, n-1), prime);
-            return pickedNode >= 1 && pickedNode <= n ? pickedNode : nextNode();
+            // pick a node from 1 to n to be rebooted next
+            u64 nodeNum = generators[currGeneratorIdx].second[nextGeneratedNumIdx++];
+            if (nextGeneratedNumIdx == n) {
+                nextGeneratedNumIdx = 0;
+                currGeneratorIdx = (currGeneratorIdx + 1) % generators.size();
+            }
+            return nodeNum;
         }
 };
