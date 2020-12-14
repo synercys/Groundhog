@@ -3,8 +3,9 @@
 #include <cryptoTools/Network/IOService.h>
 #include <dEnc/distEnc/AmmrClient.h>
 #include <dEnc/dprf/Npr03SymDprf.h>
+#include "Algorithm.h"
 #include "GroupChannel.h"
-#include "RandomNodePicker.cpp"
+#include "RandomNodePicker.h"
 #include "util.h"
 
 
@@ -97,9 +98,22 @@ int main(int argc, char** argv) {
             std::cout << x << " ";
         std::cout << std::endl;
     }
+
+    std::remove("reboot_state"); // remove file if exists
+
+    u64 attackTime = 300, rebootTime = 100, t = 5;
+    std::cout << "attackTime: " << attackTime << "ms" << std::endl;
+    std::cout << "rebootTime: " << rebootTime << "ms" << std::endl;
+    std::cout << "t+1: " << t+1 << std::endl;
+
+    for (int i = 0; i < 5; i++) {
+        std::cout << "------------------" << std::endl;
+        RandomNodePicker _nodePicker(n);
+        algorithm(ips, n, attackTime, rebootTime, t, _nodePicker);
+    }
     
-    for (int i = 0; i < nodePicker.generators.size() * n; i++)
-        std::cout << nodePicker.nextNode() << std::endl;
+    // for (int i = 0; i < nodePicker.generators.size() * n; i++)
+    //     std::cout << nodePicker.nextNode() << std::endl;
 
     // u64 n = ips.size();
     // getLatency(ips, n);
