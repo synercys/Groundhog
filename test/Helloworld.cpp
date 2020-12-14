@@ -99,21 +99,20 @@ int main(int argc, char** argv) {
         std::cout << std::endl;
     }
 
-    std::remove("reboot_state"); // remove file if exists
-
     u64 attackTime = 300, rebootTime = 100, t = 5;
+    std::string stateFileName = "reboot_state";
+
     std::cout << "attackTime: " << attackTime << "ms" << std::endl;
     std::cout << "rebootTime: " << rebootTime << "ms" << std::endl;
     std::cout << "t+1: " << t+1 << std::endl;
-
     for (int i = 0; i < 5; i++) {
         std::cout << "------------------" << std::endl;
         RandomNodePicker _nodePicker(n);
-        algorithm(ips, n, attackTime, rebootTime, t, _nodePicker);
+        Algorithm algorithm(ips, n, attackTime, rebootTime, t, _nodePicker, stateFileName);
+        algorithm.run();
     }
     
-    // for (int i = 0; i < nodePicker.generators.size() * n; i++)
-    //     std::cout << nodePicker.nextNode() << std::endl;
+    std::remove(stateFileName.c_str()); // remove file if exists
 
     // u64 n = ips.size();
     // getLatency(ips, n);
