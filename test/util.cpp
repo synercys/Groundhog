@@ -58,25 +58,22 @@ void getLatency(std::vector<std::string> ips, u64 n)
 
     for (int i = 0; i < n ; i++) 
     {
-        if (i < gc.current_node) 
-        {
-            gc.nChannels[i].send(getIP());
-            std::string msg;
-            gc.nChannels[i].recv(msg);
-            std::cout << "Received " << msg << std::endl;
-            recverGetLatency(gc.nChannels[i]);    
-        } 
-        else if (i == gc.current_node) 
+        if (i == gc.current_node) 
         {
             continue;
+        }
+
+        gc.getChannel(i).send(getIP());
+        std::string msg;
+        gc.getChannel(i).recv(msg);
+        std::cout << "Received " << msg << std::endl;
+        if (i < gc.current_node) 
+        {
+            recverGetLatency(gc.getChannel(i));    
         } 
         else 
         {
-            gc.nChannels[i-1].send(getIP());
-            std::string msg;
-            gc.nChannels[i-1].recv(msg);
-            std::cout << "Received " << msg << std::endl;
-            senderGetLatency(gc.nChannels[i-1]);
+            senderGetLatency(gc.getChannel(i));
         }
     }
 }

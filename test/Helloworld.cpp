@@ -11,7 +11,7 @@
 
 using namespace osuCrypto;
 
-static const std::vector<std::string> ips {"10.0.60.177", "10.0.60.64", "10.0.60.185"};
+static const std::vector<std::string> ips {"10.0.60.177", "10.0.60.64"};
 
 
 template<typename DPRF>
@@ -60,11 +60,11 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
         seed = sysRandomSeed();
         for (u64 i = 1; i < n; i++)
         {
-            gc.nChannels[i-1].send(seed);
+            gc.getChannel(i).send(seed);
         }
     } else 
     {
-        gc.nChannels[0].recv(seed);
+        gc.getChannel(0).recv(seed);
     }
 
     // allocate the DPRFs and the encryptors

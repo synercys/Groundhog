@@ -17,8 +17,6 @@ class GroupChannel {
         u64 current_node; // index of current node's ip in vector of ips
 
         GroupChannel(std::vector<std::string> ips, u64 n, IOService& ios) {
-            if (nSessions.size())
-                throw std::runtime_error("GroupChannel's connect can be called once " LOCATION);
             nSessions.resize(n);
             
             std::string ip = getIP();
@@ -30,6 +28,8 @@ class GroupChannel {
                     nSessions[i].start(ios, ips[i], SessionMode::Client);
                     
                     Channel clientChl = nSessions[i].addChannel();
+                    std::chrono::milliseconds timeout(1000000000000);
+                    clientChl.waitForConnection(timeout);
                     nChannels.push_back(clientChl);
                 } else if (i == current_node) {
                     // Channel dummyChl;
@@ -41,9 +41,23 @@ class GroupChannel {
                     
                     Channel serverChl = nSessions[i].addChannel();
                     std::chrono::milliseconds timeout(1000000000000);
-                    serverChl.waitForConnection();
+                    serverChl.waitForConnection(timeout);
                     nChannels.push_back(serverChl);
                 }
             }
+        }
+
+        Channel& getChannel(u64 nodeIdx) {
+            if (nodeIdx == current_node)
+                throw std::runtime_error("No Channel for current_node");
+            
+            if (nodeIdx < current_node)
+                return nChannels[nodeIdx];
+            else
+                return nChannels[nodeIdx-1];
+        }
+
+        Session& getSession(u64 nodeIdx) {
+            return nSessions[nodeIdx];
         }
 };
