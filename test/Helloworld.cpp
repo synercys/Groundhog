@@ -11,7 +11,7 @@
 
 using namespace osuCrypto;
 
-static const std::vector<std::string> ips {"10.0.60.177", "10.0.60.64"};
+static const std::vector<std::string> ips {"10.0.60.177", "10.0.62.12", "10.0.60.64", "10.0.62.13", "10.0.62.14", "10.0.62.15"};
 
 
 template<typename DPRF>
@@ -89,67 +89,67 @@ int main(int argc, char** argv) {
     CLP cmd;
     cmd.parse(argc, argv);
 
-    u64 n = cmd.get<u64>("n");
-    RandomNodePicker nodePicker(n);
-    std::cout << "Generators for n=" << n << " are " << std::endl;
-    for(u64 i = 0; i < nodePicker.generators.size(); i++) {
-        std::cout << nodePicker.generators[i].first << ": ";
-        for (u64 x: nodePicker.generators[i].second)
-            std::cout << x << " ";
-        std::cout << std::endl;
-    }
+    // u64 n = cmd.get<u64>("n");
+    // RandomNodePicker nodePicker(n);
+    // std::cout << "Generators for n=" << n << " are " << std::endl;
+    // for(u64 i = 0; i < nodePicker.generators.size(); i++) {
+    //     std::cout << nodePicker.generators[i].first << ": ";
+    //     for (u64 x: nodePicker.generators[i].second)
+    //         std::cout << x << " ";
+    //     std::cout << std::endl;
+    // }
 
-    u64 attackTime = 300, rebootTime = 100, t = 5;
-    std::string stateFileName = "reboot_state";
+    // u64 attackTime = 300, rebootTime = 100, t = 5;
+    // std::string stateFileName = "reboot_state";
 
-    std::cout << "attackTime: " << attackTime << "ms" << std::endl;
-    std::cout << "rebootTime: " << rebootTime << "ms" << std::endl;
-    std::cout << "t+1: " << t+1 << std::endl;
-    for (int i = 0; i < 5; i++) {
-        std::cout << "------------------" << std::endl;
-        RandomNodePicker _nodePicker(n);
-        Algorithm algorithm(ips, n, attackTime, rebootTime, t, _nodePicker, stateFileName);
-        algorithm.run();
-    }
+    // std::cout << "attackTime: " << attackTime << "ms" << std::endl;
+    // std::cout << "rebootTime: " << rebootTime << "ms" << std::endl;
+    // std::cout << "t+1: " << t+1 << std::endl;
+    // for (int i = 0; i < 5; i++) {
+    //     std::cout << "------------------" << std::endl;
+    //     RandomNodePicker _nodePicker(n);
+    //     Algorithm algorithm(ips, n, attackTime, rebootTime, t, _nodePicker, stateFileName);
+    //     algorithm.run();
+    // }
     
-    std::remove(stateFileName.c_str()); // remove file if exists
+    // std::remove(stateFileName.c_str()); // remove file if exists
 
-    // u64 n = ips.size();
-    // getLatency(ips, n);
+    u64 n = ips.size();
+    getLatency(ips, n);
 
-    // u64 t = 4096;
-    // u64 b = 128;
-    // u64 a = 1024 / b;
-    // cmd.setDefault("t", t);
-    // cmd.setDefault("b", b);
-    // cmd.setDefault("a", a);
-    // cmd.setDefault("size", 20);
-    // t = cmd.get<u64>("t");
-    // b = cmd.get<u64>("b");
-    // a = cmd.get<u64>("a");
-    // auto size = cmd.get<u64>("size");
-    // bool l = cmd.isSet("l");
+    u64 t = 4096;
+    u64 b = 128;
+    u64 a = 1024 / b;
+    cmd.setDefault("t", t);
+    cmd.setDefault("b", b);
+    cmd.setDefault("a", a);
+    cmd.setDefault("size", 20);
+    t = cmd.get<u64>("t");
+    b = cmd.get<u64>("b");
+    a = cmd.get<u64>("a");
+    auto size = cmd.get<u64>("size");
+    bool l = cmd.isSet("l");
 
-    // cmd.setDefault("mf", "0.5");
-    // auto mFrac = cmd.get<double>("mf");
-    // if (mFrac <= 0 || mFrac > 1)
-    // {
-    //     std::cout << ("bad mf") << std::endl;
-    //     return 0;
-    // }
+    cmd.setDefault("mf", "0.5");
+    auto mFrac = cmd.get<double>("mf");
+    if (mFrac <= 0 || mFrac > 1)
+    {
+        std::cout << ("bad mf") << std::endl;
+        return 0;
+    }
 
-    // cmd.setDefault("mc", -1);
-    // auto mc = cmd.get<i64>("mc");
+    cmd.setDefault("mc", -1);
+    auto mc = cmd.get<i64>("mc");
 
-    // auto m = std::max<u64>(2, (mc == -1) ? n * mFrac : mc);
-    // m = 3;
+    auto m = std::max<u64>(2, (mc == -1) ? n * mFrac : mc);
+    m = 3;
 
-    // if (m > n)
-    // {
-    //     std::cout << "can not have a threshold larger than the number of parties. theshold=" << m << ", #parties=" << n << std::endl;
-    //     return -1;
-    // }
+    if (m > n)
+    {
+        std::cout << "can not have a threshold larger than the number of parties. theshold=" << m << ", #parties=" << n << std::endl;
+        return -1;
+    }
 
-    // AmmrSymClient_tp_Perf_test(n, m, size, t, a, b, l);
+    AmmrSymClient_tp_Perf_test(n, m, size, t, a, b, l);
     return 0;
 }
