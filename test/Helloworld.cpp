@@ -81,7 +81,9 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     enc.init(gc.current_node, prng.get<block>(), &dprf);
     
     // Perform the benchmark.                                          
-    eval(enc, n, m, blockCount, batch, trials, numAsync, lat, "Sym      ");
+    if (gc.current_node == 0) {
+        eval(enc, n, m, blockCount, batch, trials, numAsync, lat, "Sym      ");
+    }
 }
 
 
