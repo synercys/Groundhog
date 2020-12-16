@@ -6,7 +6,7 @@ tar -xf cmake-3.18.5.tar.gz
 cd cmake-3.18.5
 ./bootstrap
 make 
-make install 
+sudo make install 
 cd ..
 mkdir Redise 
 cd Redise
