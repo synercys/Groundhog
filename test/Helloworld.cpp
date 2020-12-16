@@ -115,7 +115,7 @@ int main(int argc, char** argv) {
     // std::remove(stateFileName.c_str()); // remove file if exists
 
     u64 n = ips.size();
-    getLatency(ips, n);
+    // getLatency(ips, n);
 
     u64 t = 4096;
     u64 b = 128;
