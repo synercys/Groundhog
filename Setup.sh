@@ -26,3 +26,4 @@ cd ../dise
 cmake .
 make -j
 ./bin/dEncFrontent -u
+https://howchoo.com/g/ndy1zte2yjn/how-to-set-up-wifi-on-your-raspberry-pi-without-ethernet#navigate-to-the-boot-directory
