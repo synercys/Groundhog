@@ -11,7 +11,7 @@
 
 using namespace osuCrypto;
 
-static const std::vector<std::string> ips {"10.0.60.177", "10.0.62.12", "10.0.60.64", "10.0.62.13", "10.0.62.14", "10.0.62.15"};
+static const std::vector<std::string> ips {"10.0.60.177", "10.0.60.64"};
 
 
 template<typename DPRF>
@@ -87,6 +87,31 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
 }
 
 
+void try_connect(u64 n)
+{
+    // set up the networking
+    IOService ios;
+    GroupChannel gc(ips, n, ios);
+     
+
+    while(true)
+    {
+        Channel chl0 = gc.getChannel(0);
+        try
+        {
+            chl0.send(getIP());
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+            gc.reconnectChannel(0,chl0,ios,ips[0]);
+        }  
+                
+    }
+
+}
+
+
 int main(int argc, char** argv) {
     CLP cmd;
     cmd.parse(argc, argv);
@@ -119,7 +144,7 @@ int main(int argc, char** argv) {
     u64 n = ips.size();
     // getLatency(ips, n);
 
-    u64 t = 4096;
+    /**u64 t = 4096;
     u64 b = 128;
     u64 a = 1024 / b;
     cmd.setDefault("t", t);
@@ -153,5 +178,12 @@ int main(int argc, char** argv) {
     }
 
     AmmrSymClient_tp_Perf_test(n, m, size, t, a, b, l);
-    return 0;
+    return 0;**/
+    try_connect(n);
+    
+
+    
+
+
+
 }

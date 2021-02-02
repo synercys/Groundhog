@@ -6,6 +6,7 @@
 #include <cryptoTools/Network/IOService.h>
 #include <dEnc/Defines.h>
 #include "util.h"
+#include <algorithm>
 
 
 using namespace osuCrypto;
@@ -26,11 +27,12 @@ class GroupChannel {
                 if (i < current_node) {
                     //connect as a client  
                     nSessions[i].start(ios, ips[i], SessionMode::Client);
-                    
                     Channel clientChl = nSessions[i].addChannel();
-                    std::chrono::milliseconds timeout(1000000000000);
+                    std::chrono::milliseconds timeout(10000000);
                     clientChl.waitForConnection(timeout);
                     nChannels.push_back(clientChl);
+           
+
                 } else if (i == current_node) {
                     // Channel dummyChl;
                     // nChannels.push_back(dummyChl);
@@ -43,6 +45,7 @@ class GroupChannel {
                     std::chrono::milliseconds timeout(1000000000000);
                     serverChl.waitForConnection(timeout);
                     nChannels.push_back(serverChl);
+
                 }
             }
         }
@@ -59,5 +62,17 @@ class GroupChannel {
 
         Session& getSession(u64 nodeIdx) {
             return nSessions[nodeIdx];
+        }
+
+        Channel& reconnectChannel(u64 nodeIdx, Channel old, IOService& ios,std::string ip)
+        {
+            
+            Session client(ios, ip, SessionMode::Client);
+            Channel clientChl = client.addChannel();
+            std::chrono::milliseconds timeout(10000000);
+            clientChl.waitForConnection(timeout);
+            std::replace(nChannels.begin(), nChannels.end(),old, clientChl);
+            return clientChl;
+
         }
 };
