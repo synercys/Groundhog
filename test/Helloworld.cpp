@@ -11,7 +11,7 @@
 
 using namespace osuCrypto;
 
-static const std::vector<std::string> ips {"10.0.60.177", "10.0.60.64"};
+static const std::vector<std::string> ips {"10.0.60.64", "10.0.60.177", "10.0.62.10", "10.0.62.13" ,"10.0.62.14","10.0.62.15"};
 
 
 template<typename DPRF>
@@ -142,9 +142,9 @@ int main(int argc, char** argv) {
     // std::remove(stateFileName.c_str()); // remove file if exists
 
     u64 n = ips.size();
-    // getLatency(ips, n);
+    //getLatency(ips, n);
 
-    /**u64 t = 4096;
+    u64 t = 4096;
     u64 b = 128;
     u64 a = 1024 / b;
     cmd.setDefault("t", t);
@@ -178,8 +178,8 @@ int main(int argc, char** argv) {
     }
 
     AmmrSymClient_tp_Perf_test(n, m, size, t, a, b, l);
-    return 0;**/
-    try_connect(n);
+    return 0;
+    //try_connect(n);
     
 
     
