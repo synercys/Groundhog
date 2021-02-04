@@ -124,131 +124,134 @@ void try_connect(u64 n)
 
 
 int main(int argc, char** argv) {
-    CLP cmd;
-    cmd.parse(argc, argv);
-    //std::vector<std::string> ips {"10.0.60.177", "10.0.60.64"};
 
-    u64 n = ips.size();;
-    //u64 n = cmd.get<u64>("n");
-    RandomNodePicker nodePicker(n);
-    std::cout << "Generators for n=" << n << " are " << std::endl;
-    for(u64 i = 0; i < nodePicker.generators.size(); i++) {
-        std::cout << nodePicker.generators[i].first << ": ";
-        for (u64 x: nodePicker.generators[i].second)
-            std::cout << x << " ";
-        std::cout << std::endl;
-    }
-
-    //ips.size();
-    //u64 attackTime = 300, rebootTime = 100, t = 2;
-    u64 attackTime = 300, rebootTime = 100, m=2;
-    std::string stateFileName = "reboot_state";
-
-    std::cout << "attackTime: " << attackTime << "ms" << std::endl;
-    std::cout << "rebootTime: " << rebootTime << "ms" << std::endl;
-    std::cout << "t+1: " << m+1 << std::endl;
-    u64 mIntervals = std::max((u64)1, (u64)std::floor(attackTime/rebootTime));
-    u64 subsetSize = (m+1)/mIntervals;
-    std::cout << "m: " << mIntervals  << std::endl;
-    std::cout << "no of nodes in a interval: " << subsetSize << std::endl;
-    std::string removed_ip;
-    for(u64 i = 0; i < nodePicker.generators.size(); i++) {
-        std::cout << nodePicker.generators[i].first << ": ";
-        for (u64 x: nodePicker.generators[i].second)
-            if(x != 0)
-            {
-                removed_ip = ips[x];
-                //vec.erase(vec.begin() + index);
-                ips.erase(ips.begin() + x);
-                u64 t = 4096;
-                u64 b = 128;
-                u64 a = 1024 / b;
-                cmd.setDefault("t", t);
-                cmd.setDefault("b", b);
-                cmd.setDefault("a", a);
-                cmd.setDefault("size", 20);
-                t = cmd.get<u64>("t");
-                b = cmd.get<u64>("b");
-                a = cmd.get<u64>("a");
-                auto size = cmd.get<u64>("size");
-                bool l = cmd.isSet("l");
-
-                cmd.setDefault("mf", "0.5");
-                auto mFrac = cmd.get<double>("mf");
-                if (mFrac <= 0 || mFrac > 1)
-                {
-                    std::cout << ("bad mf") << std::endl;
-                    return 0;
-                }
-
-                cmd.setDefault("mc", -1);
-                auto mc = cmd.get<i64>("mc");
-
-                m = std::max<u64>(2, (mc == -1) ? n * mFrac : mc);
-                m = 2;
-
-                if (m > n)
-                {
-                    std::cout << "can not have a threshold larger than the number of parties. theshold=" << m << ", #parties=" << n << std::endl;
-                    return -1;
-                }
-
-                AmmrSymClient_tp_Perf_test(n, m, size, t, a, b, l);
-                ips.insert(ips.begin() + x, removed_ip);
-
-            }
-    }
-
-
-    // for (int i = 0; i < 5; i++) {
-    //     std::cout << "------------------" << std::endl;
-    //     RandomNodePicker _nodePicker(n);
-    //     Algorithm algorithm(ips, n, attackTime, rebootTime, t, _nodePicker, stateFileName);
-    //     algorithm.run();
-    // }
-    
-    // std::remove(stateFileName.c_str()); // remove file if exists
-
-    /**u64 n = ips.size();
-    getLatency(ips, n);
-
-    u64 t = 4096;
-    u64 b = 128;
-    u64 a = 1024 / b;
-    cmd.setDefault("t", t);
-    cmd.setDefault("b", b);
-    cmd.setDefault("a", a);
-    cmd.setDefault("size", 20);
-    t = cmd.get<u64>("t");
-    b = cmd.get<u64>("b");
-    a = cmd.get<u64>("a");
-    auto size = cmd.get<u64>("size");
-    bool l = cmd.isSet("l");
-
-    cmd.setDefault("mf", "0.5");
-    auto mFrac = cmd.get<double>("mf");
-    if (mFrac <= 0 || mFrac > 1)
+    for(u64 ii = 0; ii < 50; ii++)
     {
-        std::cout << ("bad mf") << std::endl;
-        return 0;
+        CLP cmd;
+        cmd.parse(argc, argv);
+        //std::vector<std::string> ips {"10.0.60.177", "10.0.60.64"};
+
+        u64 n = ips.size();;
+        //u64 n = cmd.get<u64>("n");
+        RandomNodePicker nodePicker(n);
+        std::cout << "Generators for n=" << n << " are " << std::endl;
+        for(u64 i = 0; i < nodePicker.generators.size(); i++) {
+            std::cout << nodePicker.generators[i].first << ": ";
+            for (u64 x: nodePicker.generators[i].second)
+                std::cout << x << " ";
+            std::cout << std::endl;
+        }
+
+        //ips.size();
+        //u64 attackTime = 300, rebootTime = 100, t = 2;
+        u64 attackTime = 300, rebootTime = 100, m=2;
+        std::string stateFileName = "reboot_state";
+
+        std::cout << "attackTime: " << attackTime << "ms" << std::endl;
+        std::cout << "rebootTime: " << rebootTime << "ms" << std::endl;
+        std::cout << "t+1: " << m+1 << std::endl;
+        u64 mIntervals = std::max((u64)1, (u64)std::floor(attackTime/rebootTime));
+        u64 subsetSize = (m+1)/mIntervals;
+        std::cout << "m: " << mIntervals  << std::endl;
+        std::cout << "no of nodes in a interval: " << subsetSize << std::endl;
+        std::string removed_ip;
+        for(u64 i = 0; i < nodePicker.generators.size(); i++) {
+            std::cout << nodePicker.generators[i].first << ": ";
+            for (u64 x: nodePicker.generators[i].second)
+                if(x != 0)
+                {
+                    removed_ip = ips[x];
+                    //vec.erase(vec.begin() + index);
+                    ips.erase(ips.begin() + x);
+                    u64 t = 4096;
+                    u64 b = 128;
+                    u64 a = 1024 / b;
+                    cmd.setDefault("t", t);
+                    cmd.setDefault("b", b);
+                    cmd.setDefault("a", a);
+                    cmd.setDefault("size", 20);
+                    t = cmd.get<u64>("t");
+                    b = cmd.get<u64>("b");
+                    a = cmd.get<u64>("a");
+                    auto size = cmd.get<u64>("size");
+                    bool l = cmd.isSet("l");
+
+                    cmd.setDefault("mf", "0.5");
+                    auto mFrac = cmd.get<double>("mf");
+                    if (mFrac <= 0 || mFrac > 1)
+                    {
+                        std::cout << ("bad mf") << std::endl;
+                        return 0;
+                    }
+
+                    cmd.setDefault("mc", -1);
+                    auto mc = cmd.get<i64>("mc");
+
+                    m = std::max<u64>(2, (mc == -1) ? n * mFrac : mc);
+                    m = 2;
+
+                    if (m > n)
+                    {
+                        std::cout << "can not have a threshold larger than the number of parties. theshold=" << m << ", #parties=" << n << std::endl;
+                        return -1;
+                    }
+
+                    AmmrSymClient_tp_Perf_test(n, m, size, t, a, b, l);
+                    ips.insert(ips.begin() + x, removed_ip);
+
+                }
+        }
+
+
+        // for (int i = 0; i < 5; i++) {
+        //     std::cout << "------------------" << std::endl;
+        //     RandomNodePicker _nodePicker(n);
+        //     Algorithm algorithm(ips, n, attackTime, rebootTime, t, _nodePicker, stateFileName);
+        //     algorithm.run();
+        // }
+        
+        // std::remove(stateFileName.c_str()); // remove file if exists
+
+        /**u64 n = ips.size();
+        getLatency(ips, n);
+
+        u64 t = 4096;
+        u64 b = 128;
+        u64 a = 1024 / b;
+        cmd.setDefault("t", t);
+        cmd.setDefault("b", b);
+        cmd.setDefault("a", a);
+        cmd.setDefault("size", 20);
+        t = cmd.get<u64>("t");
+        b = cmd.get<u64>("b");
+        a = cmd.get<u64>("a");
+        auto size = cmd.get<u64>("size");
+        bool l = cmd.isSet("l");
+
+        cmd.setDefault("mf", "0.5");
+        auto mFrac = cmd.get<double>("mf");
+        if (mFrac <= 0 || mFrac > 1)
+        {
+            std::cout << ("bad mf") << std::endl;
+            return 0;
+        }
+
+        cmd.setDefault("mc", -1);
+        auto mc = cmd.get<i64>("mc");
+
+        auto m = std::max<u64>(2, (mc == -1) ? n * mFrac : mc);
+        m = 3;
+
+        if (m > n)
+        {
+            std::cout << "can not have a threshold larger than the number of parties. theshold=" << m << ", #parties=" << n << std::endl;
+            return -1;
+        }
+
+        AmmrSymClient_tp_Perf_test(n, m, size, t, a, b, l);
+        return 0;**/
+        //try_connect(n);
     }
-
-    cmd.setDefault("mc", -1);
-    auto mc = cmd.get<i64>("mc");
-
-    auto m = std::max<u64>(2, (mc == -1) ? n * mFrac : mc);
-    m = 3;
-
-    if (m > n)
-    {
-        std::cout << "can not have a threshold larger than the number of parties. theshold=" << m << ", #parties=" << n << std::endl;
-        return -1;
-    }
-
-    AmmrSymClient_tp_Perf_test(n, m, size, t, a, b, l);
-    return 0;**/
-    //try_connect(n);
-    
 
     
 
