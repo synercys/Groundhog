@@ -39,3 +39,6 @@ option(ENABLE_SSE       "compile with SSE instrctions" OFF)
 target_compile_options(cryptoTools PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-std=c++14> -pthread -latomic)
 target_link_options(cryptoTools PUBLIC -pthread -latomic)
 
+dise 
+/home/ubuntu/redise/dise/CMakeLists.txt
+remove -maes -msse2 -msse4.1 -mpclmul flags
