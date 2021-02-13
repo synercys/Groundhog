@@ -13,7 +13,7 @@ cd Redise
 git clone https://github.com/disha-agarwal/dise.git
 git clone https://github.com/relic-toolkit/relic.git
 git clone https://github.com/ladnir/cryptoTools
-cd relic (arm - use presets)
+cd relic 
 cmake . -D MULTI=PTHREAD
 make -j
 sudo make install
@@ -27,3 +27,7 @@ cmake .
 make -j
 ./bin/dEncFrontent -u
 https://howchoo.com/g/ndy1zte2yjn/how-to-set-up-wifi-on-your-raspberry-pi-without-ethernet#navigate-to-the-boot-directory
+
+ARM
+relic build using presets
+cmake -DARCH=ARM -DWSIZE=32 -DMULTI=PTHREAD
