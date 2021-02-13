@@ -5,7 +5,7 @@ wget https://github.com/Kitware/CMake/releases/download/v3.18.5/cmake-3.18.5.tar
 tar -xf cmake-3.18.5.tar.gz
 cd cmake-3.18.5
 ./bootstrap
-make 
+make -j 4
 sudo make install 
 cd ..
 mkdir Redise 
