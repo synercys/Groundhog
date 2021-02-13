@@ -13,7 +13,7 @@ cd Redise
 git clone https://github.com/disha-agarwal/dise.git
 git clone https://github.com/relic-toolkit/relic.git
 git clone https://github.com/ladnir/cryptoTools
-cd relic
+cd relic (arm - use presets)
 cmake . -D MULTI=PTHREAD
 make -j
 sudo make install
