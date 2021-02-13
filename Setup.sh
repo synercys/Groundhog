@@ -31,3 +31,11 @@ https://howchoo.com/g/ndy1zte2yjn/how-to-set-up-wifi-on-your-raspberry-pi-withou
 ARM
 relic build using presets
 cmake -DARCH=ARM -DWSIZE=32 -DMULTI=PTHREAD
+
+cryptotools(redise/cryptoTools/CMakeLists.txt)
+option(ENABLE_SSE       "compile with SSE instrctions" OFF)
+
+/home/ubuntu/redise/cryptoTools/cryptoTools/CMakeLists.txt
+target_compile_options(cryptoTools PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-std=c++14> -pthread -latomic)
+target_link_options(cryptoTools PUBLIC -pthread -latomic)
+
