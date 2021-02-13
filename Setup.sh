@@ -42,3 +42,4 @@ target_link_options(cryptoTools PUBLIC -pthread -latomic)
 dise 
 /home/ubuntu/redise/dise/CMakeLists.txt
 remove -maes -msse2 -msse4.1 -mpclmul flags
+set(CRYPTOTOOLS_DIR "${CMAKE_SOURCE_DIR}/../cryptoTools" CACHE STRING "location of cryptoTools root")
