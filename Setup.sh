@@ -13,6 +13,7 @@ cd Redise
 git clone https://github.com/disha-agarwal/dise.git
 git clone https://github.com/relic-toolkit/relic.git
 git clone https://github.com/ladnir/cryptoTools
+git checkout 851e388f8301a7e20aaa6ca5f5a57d609c2b8158
 cd relic 
 cmake . -D MULTI=PTHREAD
 make -j
