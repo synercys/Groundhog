@@ -13,7 +13,8 @@ cd Redise
 git clone https://github.com/disha-agarwal/dise.git
 git clone https://github.com/relic-toolkit/relic.git
 git clone https://github.com/ladnir/cryptoTools
-cd relic (arm - use presets)
+git checkout 851e388f8301a7e20aaa6ca5f5a57d609c2b8158
+cd relic 
 cmake . -D MULTI=PTHREAD
 make -j
 sudo make install
@@ -27,3 +28,19 @@ cmake .
 make -j
 ./bin/dEncFrontent -u
 https://howchoo.com/g/ndy1zte2yjn/how-to-set-up-wifi-on-your-raspberry-pi-without-ethernet#navigate-to-the-boot-directory
+
+ARM
+relic build using presets
+cmake -DARCH=ARM -DWSIZE=32 -DMULTI=PTHREAD
+
+cryptotools(redise/cryptoTools/CMakeLists.txt)
+option(ENABLE_SSE       "compile with SSE instrctions" OFF)
+
+/home/ubuntu/redise/cryptoTools/cryptoTools/CMakeLists.txt
+target_compile_options(cryptoTools PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-std=c++14> -pthread -latomic)
+target_link_options(cryptoTools PUBLIC -pthread -latomic)
+
+dise 
+/home/ubuntu/redise/dise/CMakeLists.txt
+remove -maes -msse2 -msse4.1 -mpclmul flags
+set(CRYPTOTOOLS_DIR "${CMAKE_SOURCE_DIR}/../cryptoTools" CACHE STRING "location of cryptoTools root")
