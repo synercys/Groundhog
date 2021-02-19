@@ -92,25 +92,35 @@ void try_connect(u64 n)
     // set up the networking
     IOService ios;
     GroupChannel gc(ips, n, ios);
-     
+    std::string msg;
+    std::string ip = getIP();
+    
 
     while(true)
     {
-        Channel chl0 = gc.getChannel(0);
-        try
+        for (u64 i = 0; i < n; i++)
         {
-            chl0.send(getIP());
-        }
-        catch(const std::exception& e)
-        {
-            std::cerr << e.what() << '\n';
-            gc.reconnectChannel(0,chl0,ios,ips[0]);
-        }  
-                
+            
+            if(i != gc.current_node)
+            {
+                Channel chl0 = gc.getChannel(i);
+                try
+                {
+                    chl0.send(ip);
+                    chl0.recv(msg);
+                    std::cout << msg << std::endl;
+                }
+                catch(const std::exception& e)
+                {
+                    //std::cerr << e.what() << '\n';
+                    gc.reconnectChannel(i,ios,ips[i]);
+                }
+
+            }
+        }            
     }
 
 }
-
 
 int main(int argc, char** argv) {
 
