@@ -147,7 +147,7 @@ int main(int argc, char** argv) {
         u64 n = ips.size();
         //getLatency(ips, n);
 
-        u64 t = 4096;
+        /**u64 t = 4096;
         u64 b = 128;
         u64 a = 1024 / b;
         cmd.setDefault("t", t);
@@ -183,8 +183,8 @@ int main(int argc, char** argv) {
         AmmrSymClient_tp_Perf_test(n, m, size, t, a, b, l);
     }
 
-    return 0;
-        //try_connect(n);
+    return 0;**/
+    try_connect(n);
         
 
     
