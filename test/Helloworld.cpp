@@ -11,7 +11,7 @@
 
 using namespace osuCrypto;
 
-std::vector<std::string> ips {"10.0.60.64", "10.0.60.177", "10.0.62.10", "10.0.62.13" ,"10.0.62.14","10.0.62.15" , "172.31.8.98"};
+std::vector<std::string> ips {"172.31.45.217", "172.31.41.196", "172.31.37.196", "172.31.36.162", "172.31.35.132", "172.31.8.98"};
 
 
 template<typename DPRF>
@@ -144,7 +144,7 @@ int main(int argc, char** argv) {
         }
 
         //u64 attackTime = 600, rebootTime = 100, t = 2;
-        u64 attackTime = 600, rebootTime = 100, m=2;
+        u64 attackTime = 600, rebootTime = 32, m=2;
         std::string stateFileName = "reboot_state";
 
         std::cout << "attackTime: " << attackTime << "ms" << std::endl;
@@ -158,7 +158,6 @@ int main(int argc, char** argv) {
                 if(x != 0)
                 {
                     removed_ip = ips[x];
-                    //vec.erase(vec.begin() + index);
                     ips.erase(ips.begin() + x);
                     initialTime = clock(); 
                     for (...;...;...;) 
