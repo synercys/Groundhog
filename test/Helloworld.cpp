@@ -11,7 +11,7 @@
 
 using namespace osuCrypto;
 
-static const std::vector<std::string> ips {"172.31.8.98", "172.31.45.217", "172.31.41.196", "172.31.37.196", "172.31.36.162", "172.31.35.132"};
+static const std::vector<std::string> ips {"172.31.8.98", "172.31.37.196"};
 
 
 template<typename DPRF>
@@ -53,6 +53,8 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     IOService ios;
     GroupChannel gc(ips, n, ios);
 
+    
+    std::cout << "asymclient" << std::endl;
     oc::block seed;
     if(gc.current_node == 0)
     {
@@ -64,7 +66,17 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
         }
     } else 
     {
-        gc.getChannel(0).recv(seed);
+        try
+        {
+            gc.getChannel(0).recv(seed);
+            std::cout << "seed=" << seed << std::endl;
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+            //gc.reconnectChannel(i,ios,ips[i]);
+        }
+        
     }
 
     // allocate the DPRFs and the encryptors
@@ -114,8 +126,6 @@ void try_connect(u64 n)
 
 int main(int argc, char** argv) {
 
-    for(u64 ii = 0; ii < 50; ii++) 
-    {
         CLP cmd;
         cmd.parse(argc, argv);
 
@@ -147,7 +157,7 @@ int main(int argc, char** argv) {
         u64 n = ips.size();
         //getLatency(ips, n);
 
-        /**u64 t = 4096;
+        u64 t = 4096;
         u64 b = 128;
         u64 a = 1024 / b;
         cmd.setDefault("t", t);
@@ -181,15 +191,10 @@ int main(int argc, char** argv) {
         }
 
         AmmrSymClient_tp_Perf_test(n, m, size, t, a, b, l);
-    }
+    
 
-    return 0;**/
-    try_connect(n);
+    return 0;
+    //try_connect(n);
     }
         
 
-    
-
-
-
-}
