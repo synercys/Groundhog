@@ -25,8 +25,9 @@ class GroupChannel {
             
             for(int i = 0; i < n ; i++) {
                 if (i < current_node) {
-                    //connect as a client  
-                    nSessions[i].start(ios, ips[i], SessionMode::Client);
+                    //connect as a client
+                    std::string sessionHint = std::to_string(i)+"_"+std::to_string(current_node); 
+                    nSessions[i].start(ios, ips[i], SessionMode::Client,sessionHint);
                     Channel clientChl = nSessions[i].addChannel();
                     std::chrono::milliseconds timeout(10000000);
                     clientChl.waitForConnection(timeout);
@@ -39,8 +40,9 @@ class GroupChannel {
                     continue;
                 } else {   
                     //connect as a server
-                    nSessions[i].start(ios, ip, SessionMode::Server);
-                    
+                    std::string sessionHint = std::to_string(current_node)+"_"+std::to_string(i);
+                    std::cout << sessionHint << std::endl;
+                    nSessions[i].start(ios, ip, SessionMode::Server, sessionHint);
                     Channel serverChl = nSessions[i].addChannel();
                     std::chrono::milliseconds timeout(1000000000000);
                     serverChl.waitForConnection(timeout);

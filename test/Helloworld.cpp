@@ -2,6 +2,7 @@
 #include <cryptoTools/Common/Timer.h>
 #include <cryptoTools/Network/IOService.h>
 #include <dEnc/distEnc/AmmrClient.h>
+#include <thread>
 #include <dEnc/dprf/Npr03SymDprf.h>
 #include "Algorithm.h"
 #include "GroupChannel.h"
@@ -11,8 +12,49 @@
 
 using namespace osuCrypto;
 
-static const std::vector<std::string> ips {"172.31.8.98", "172.31.45.217", "172.31.41.196", "172.31.37.196", "172.31.36.162", "172.31.35.132"};
+bool eq(span<block> a, span<block>b)
+{
+    return (a.size() == b.size() &&
+        memcmp(a.data(), b.data(), a.size() * sizeof(block)) == 0);
+};
 
+
+static const std::vector<std::string> ips {"172.31.8.98", "172.31.37.196", "172.31.35.132", "172.31.45.217"};
+
+void try_connect(u64 n, IOService *ios)
+{
+    // set up the networking
+    //IOService ios;
+    //GroupChannel gc(ips, n, ios);
+    std::string msg;
+    std::string ip = getIP();
+    std::cout << "attackTime: ";
+    
+
+    while(true)
+    {
+        for (u64 i = 1; i < n; i++)
+        {
+            IOService ios;
+            Session perPartySession(ios, ip, SessionMode::Server /* , serviceName */);
+            Channel serverChl = perPartySession.addChannel();
+            //try
+            //{
+                //chl0.send(ip);
+                serverChl.recv(msg);
+                std::cout << msg << std::endl;
+            //}
+            // catch(const std::exception& e)
+            // {
+            //     std::cerr << e.what() << '\n';
+            //     //gc.reconnectChannel(i,ios,ips[i]);
+            // }
+
+            
+        }            
+    }
+
+}
 
 template<typename DPRF>
 void eval(dEnc::AmmrClient<DPRF>& enc, u64 n, u64 m, u64 blockCount, u64 batch, u64 trials, u64 numAsync, bool lat, std::string tag)
@@ -26,13 +68,33 @@ void eval(dEnc::AmmrClient<DPRF>& enc, u64 n, u64 m, u64 blockCount, u64 batch, 
     auto& initiator = enc;
 
     // the buffers to hold the data.
-    std::vector<std::vector<block>> data(batch), ciphertext(batch);
+    std::vector<std::vector<block>> data(batch), ciphertext(batch), data2(batch);
     for (auto& d : data) d.resize(blockCount);
 
     // we are interested in latency and therefore we 
     // will only have one encryption in flight at a time.
-    for (u64 t = 0; t < trials; ++t) 
-        initiator.encrypt(data[0], ciphertext[0]);
+    for (u64 t = 0; t < trials; ++t)
+    {
+        //try
+        //{
+            std::cout << t << std::endl;
+            std::chrono::milliseconds timespan(300);
+            std::this_thread::sleep_for(timespan);
+            initiator.encrypt(data[0], ciphertext[0]);
+
+            //check if encryption and decryption works
+            //initiator.decrypt(ciphertext[0],data2[0]);
+
+            // if (!eq(data[0], data2[0]))
+            //     throw std::runtime_error(LOCATION);
+        //}
+        /*catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+            std::cout << "encrypt" << std::endl;
+            //gc.reconnectChannel(i,ios,ips[i]);
+        }*/
+    }
 
     auto e = t.setTimePoint("end");
 
@@ -52,7 +114,10 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     // set up the networking
     IOService ios;
     GroupChannel gc(ips, n, ios);
+    
 
+
+    std::cout << "asymclient" << std::endl;
     oc::block seed;
     if(gc.current_node == 0)
     {
@@ -60,7 +125,15 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
         seed = sysRandomSeed();
         for (u64 i = 1; i < n; i++)
         {
-            gc.getChannel(i).send(seed);
+            try
+            {
+                gc.getChannel(i).send(seed);
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+                //gc.reconnectChannel(i,ios,ips[i]);
+            }
         }
     } else 
     {
@@ -82,124 +155,63 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     
     // Perform the benchmark.                                          
     if (gc.current_node == 0) {
-        eval(enc, n, m, blockCount, batch, trials, numAsync, lat, "Sym      ");
+            eval(enc, n, m, blockCount, batch, trials, numAsync, lat, "Sym      ");
     }
 }
 
 
-void try_connect(u64 n)
+
+
+int main(int argc, char** argv) 
 {
-    // set up the networking
-    IOService ios;
-    GroupChannel gc(ips, n, ios);
-    std::string msg;
-    std::string ip = getIP();
-    
 
-    while(true)
-    {
-        for (u64 i = 0; i < n; i++)
-        {
+    //std::cout << "attackTime2: " << std::endl;
+
             
-            if(i != gc.current_node)
-            {
-                Channel chl0 = gc.getChannel(i);
-                try
-                {
-                    chl0.send(ip);
-                    chl0.recv(msg);
-                    std::cout << msg << std::endl;
-                }
-                catch(const std::exception& e)
-                {
-                    //std::cerr << e.what() << '\n';
-                    gc.reconnectChannel(i,ios,ips[i]);
-                }
+    CLP cmd;
+    cmd.parse(argc, argv);
 
-            }
-        }            
-    }
+    u64 n = ips.size();
+    //getLatency(ips, n);
 
-}
+    u64 t = 100;
+    u64 b = 128;
+    u64 a = 1024 / b;
+    cmd.setDefault("t", t);
+    cmd.setDefault("b", b);
+    cmd.setDefault("a", a);
+    cmd.setDefault("size", 20);
+    t = cmd.get<u64>("t");
+    b = cmd.get<u64>("b");
+    a = cmd.get<u64>("a");
+    auto size = cmd.get<u64>("size");
+    bool l = cmd.isSet("l");
 
-int main(int argc, char** argv) {
-
-    for(u64 ii = 0; ii < 50; ii++) 
+    cmd.setDefault("mf", "0.5");
+    auto mFrac = cmd.get<double>("mf");
+    if (mFrac <= 0 || mFrac > 1)
     {
-        CLP cmd;
-        cmd.parse(argc, argv);
-
-        // u64 n = cmd.get<u64>("n");
-        // RandomNodePicker nodePicker(n);
-        // std::cout << "Generators for n=" << n << " are " << std::endl;
-        // for(u64 i = 0; i < nodePicker.generators.size(); i++) {
-        //     std::cout << nodePicker.generators[i].first << ": ";
-        //     for (u64 x: nodePicker.generators[i].second)
-        //         std::cout << x << " ";
-        //     std::cout << std::endl;
-        // }
-
-        // u64 attackTime = 300, rebootTime = 100, t = 5;
-        // std::string stateFileName = "reboot_state";
-
-        // std::cout << "attackTime: " << attackTime << "ms" << std::endl;
-        // std::cout << "rebootTime: " << rebootTime << "ms" << std::endl;
-        // std::cout << "t+1: " << t+1 << std::endl;
-        // for (int i = 0; i < 5; i++) {
-        //     std::cout << "------------------" << std::endl;
-        //     RandomNodePicker _nodePicker(n);
-        //     Algorithm algorithm(ips, n, attackTime, rebootTime, t, _nodePicker, stateFileName);
-        //     algorithm.run();
-        // }
-        
-        // std::remove(stateFileName.c_str()); // remove file if exists
-
-        u64 n = ips.size();
-        //getLatency(ips, n);
-
-        /**u64 t = 4096;
-        u64 b = 128;
-        u64 a = 1024 / b;
-        cmd.setDefault("t", t);
-        cmd.setDefault("b", b);
-        cmd.setDefault("a", a);
-        cmd.setDefault("size", 20);
-        t = cmd.get<u64>("t");
-        b = cmd.get<u64>("b");
-        a = cmd.get<u64>("a");
-        auto size = cmd.get<u64>("size");
-        bool l = cmd.isSet("l");
-
-        cmd.setDefault("mf", "0.5");
-        auto mFrac = cmd.get<double>("mf");
-        if (mFrac <= 0 || mFrac > 1)
-        {
-            std::cout << ("bad mf") << std::endl;
-            return 0;
-        }
-
-        cmd.setDefault("mc", -1);
-        auto mc = cmd.get<i64>("mc");
-
-        auto m = std::max<u64>(2, (mc == -1) ? n * mFrac : mc);
-        m = 2;
-
-        if (m > n)
-        {
-            std::cout << "can not have a threshold larger than the number of parties. theshold=" << m << ", #parties=" << n << std::endl;
-            return -1;
-        }
-
-        AmmrSymClient_tp_Perf_test(n, m, size, t, a, b, l);
+        std::cout << ("bad mf") << std::endl;
+        return 0;
     }
 
-    return 0;**/
-    try_connect(n);
+    cmd.setDefault("mc", -1);
+    auto mc = cmd.get<i64>("mc");
+
+    auto m = std::max<u64>(2, (mc == -1) ? n * mFrac : mc);
+    m = 3;
+
+    if (m > n)
+    {
+        std::cout << "can not have a threshold larger than the number of parties. theshold=" << m << ", #parties=" << n << std::endl;
+        return -1;
     }
-        
 
     
-
-
-
+    AmmrSymClient_tp_Perf_test(n, m, size, t, a, b, l);
+    return 0;
+    //try_connect(n);
 }
+
+
+        

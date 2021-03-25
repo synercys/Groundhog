@@ -200,16 +200,18 @@ namespace dEnc {
         TODO("Add support for sending the party identity for allowing encryption to be distinguished from decryption. ");
 
         // Send the OPRF input to the next m-1 parties
-		auto end = mPartyIdx + mM;
+		//auto end = mPartyIdx + mM;
+        auto end = mPartyIdx + mN;
 		for (u64 i = mPartyIdx + 1; i < end; ++i)
 		{
 			auto c = i % mN;
 			if (c > mPartyIdx) --c;
 
 			mRequestChls[c].asyncSendCopy(&input, 1);
+            //TODO catch 
 		}
 
-
+        // std::cout << "sending commitment" << std::endl;
         // Set up the completion callback "AsyncEval".
         // This object holds a function that is called when 
         // the user wants to async eval to complete. This involves
@@ -228,44 +230,92 @@ namespace dEnc {
 
         };
         // allocate space to store the OPRF output shares
-        auto w = std::make_shared<State>(mM);
+        auto w = std::make_shared<State>(mN);
+
+        // mN - netwrok size , mM -> threshold
+        // auto temp = State(mN);
+        // auto w = &temp;
+
+
 
         // Futures which allow us to block until the repsonces have 
-        // been received
+        // been receivednjdwn
 
 
         // Evaluate the local OPRF output share.
         std::vector<block> buff(mDefaultKeys[mPartyIdx].mAESs.size());
         mDefaultKeys[mPartyIdx].ecbEncBlock(input, buff.data());
-
+         
         // store this share at the end of fx
-		auto& b = w->fx.back();
+		auto& b = w-> fx.back();
         b = oc::ZeroBlock;
 		for (u64 i = 0; i < buff.size(); ++i)
 			b = b ^ buff[i];
 
+        // std::cout << "local OPRF " << std::endl;
         // queue up the receive operations to receive the OPRF output shares
 		for (u64 i = mPartyIdx + 1, j = 0; j < w->async.size(); ++i, ++j)
 		{
 			auto c = i % mN;
 			if (c > mPartyIdx) --c;
-
+            try{
 			w->async[j] = mRequestChls[c].asyncRecv(&w->fx[j], 1);
+            // std::cout << "async "<< &w->async[j] << " " << j << std::endl;
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+                std::cout << "encrypt" << std::endl;
+                //gc.reconnectChannel(i,ios,ips[i]);
+            }
 		}
 
         // This function is called when the user wants the actual 
         // OPRF output. It must combine the OPRF output shares
         ae.get = [this, w = std::move(w)]() mutable ->std::vector<block> 
         {
+            int shares = 0;
             // block until all of the OPRF output shares have arrived.
-            for (u64 i = 0; i < mM - 1; ++i)
-                w->async[i].get();
+            for (u64 i = 0; i < mN - 1; ++i){
+                if(shares == mM-1)
+                    break;
+                // std::cout << "get "<< &w->async[i] << " " << i << std::endl;
+                auto timeout = std::chrono::milliseconds(4);
+                if( w->async[i].valid() and w->async[i].wait_for(timeout) == std::future_status::ready)
+                {
+                    w->async[i].get();
+                    shares += 1;
+                }
+                else{
+                         w->fx[i] = oc::ZeroBlock;
+                }
+                
+                // std::cout << "share index: "<< i << std::endl;
+                // }catch(const std::exception& e){
+               
+                //     std::cerr << e.what() << '\n';
+                //     std::cout << "get" << std::endl;
+                // }
+            }
+
+            // std::cout << "shares " << shares << std::endl;
+
+            if(shares < mM-1){
+                throw std::runtime_error(LOCATION);
+            }
 
             // XOR all of the output shares
             std::vector<block> ret{ w->fx[0] };
-            for (u64 i = 1; i < mM; ++i)
+            for (u64 i = 1; i < mN && shares > 0; ++i){
+                //std::cout << w->fx[i] << std::endl;
+                if(w->fx[i] == oc::ZeroBlock){
+                    continue;
+                }
                 ret[0] = ret[0] ^ w->fx[i];
+                shares--;
 
+                // std::cout << "xoring" << std::endl;
+            }
             return (ret);
         };
 		return ae;
