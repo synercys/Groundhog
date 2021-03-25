@@ -11,7 +11,7 @@
 
 using namespace osuCrypto;
 
-static const std::vector<std::string> ips {"172.31.8.98", "172.31.37.196"};
+static const std::vector<std::string> ips {"172.31.8.98", "172.31.37.196", "172.31.35.132", "172.31.45.217"};
 
 
 template<typename DPRF>
@@ -95,6 +95,9 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     // Perform the benchmark.                                          
     if (gc.current_node == 0) {
         eval(enc, n, m, blockCount, batch, trials, numAsync, lat, "Sym      ");
+    }
+    else{
+        while(1);
     }
 }
 
