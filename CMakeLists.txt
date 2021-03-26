@@ -13,9 +13,9 @@ set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/lib)
 #############################################
 add_definitions(-DSOLUTION_DIR=\"${CMAKE_SOURCE_DIR}\")
 set(CMAKE_C_FLAGS "-ffunction-sections -Wall -g -Wno-strict-aliasing  -maes -msse2 -msse4.1 -mpclmul -Wno-sign-compare -Wfatal-errors -pthread")
-set(CMAKE_CXX_FLAGS  "${CMAKE_C_FLAGS} -g   -std=c++14 -Wno-ignored-attributes")
+set(CMAKE_CXX_FLAGS  "${CMAKE_C_FLAGS} -g -fsanitize=address  -std=c++14 -Wno-ignored-attributes")
 
-#-fsanitize=address
+#
 
 # Set a default build type for single-configuration
 # CMake generators if no build type is set.

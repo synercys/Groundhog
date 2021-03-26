@@ -206,8 +206,17 @@ namespace dEnc {
 		{
 			auto c = i % mN;
 			if (c > mPartyIdx) --c;
-
-			mRequestChls[c].asyncSendCopy(&input, 1);
+            try
+            {
+                mRequestChls[c].asyncSendCopy(&input, 1);
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+                std::cout << "send error Line:216" << std::endl;
+            }
+            
+			
             //TODO catch 
 		}
 
@@ -252,15 +261,15 @@ namespace dEnc {
 		for (u64 i = 0; i < buff.size(); ++i)
 			b = b ^ buff[i];
 
-        // std::cout << "local OPRF " << std::endl;
+        std::cout << "local OPRF " << std::endl;
         // queue up the receive operations to receive the OPRF output shares
 		for (u64 i = mPartyIdx + 1, j = 0; j < w->async.size(); ++i, ++j)
 		{
 			auto c = i % mN;
 			if (c > mPartyIdx) --c;
             try{
-			w->async[j] = mRequestChls[c].asyncRecv(&w->fx[j], 1);
-            // std::cout << "async "<< &w->async[j] << " " << j << std::endl;
+                w->async[j] = mRequestChls[c].asyncRecv(&w->fx[j], 1);
+                std::cout << "async "<< &w->async[j] << " " << j << std::endl;
             }
             catch(const std::exception& e)
             {
@@ -275,22 +284,40 @@ namespace dEnc {
         ae.get = [this, w = std::move(w)]() mutable ->std::vector<block> 
         {
             int shares = 0;
+            std::vector<int> share_index;
             // block until all of the OPRF output shares have arrived.
             for (u64 i = 0; i < mN - 1; ++i){
-                if(shares == mM-1)
-                    break;
-                // std::cout << "get "<< &w->async[i] << " " << i << std::endl;
-                auto timeout = std::chrono::milliseconds(4);
+                //TODO uncomment
+                // if(shares == mM-1)
+                // {
+                //     break;
+                // }
+                // else {
+                std::cout << "get "<< &w->async[i] << " " << i << std::endl;
+                auto timeout = std::chrono::milliseconds(10);
                 if( w->async[i].valid() and w->async[i].wait_for(timeout) == std::future_status::ready)
                 {
-                    w->async[i].get();
-                    shares += 1;
+                    std::cout << "get logic comes here "<< std::endl;
+                    try{
+                        w->async[i].get();
+                        std::cout<< "return value " << w->fx[i] <<" type "<< typeid( w->fx[i]).name() <<" size " << sizeof(w->fx[i]) << std::endl;
+                        shares += 1;
+                        share_index.push_back(i);
+                    }
+                    catch(const std::exception& e){
+                        std::cerr << e.what() << '\n';
+                        std::cout << "index of failed get : Line number 302" << i <<std::endl;
+                    }
+                        
+                   
                 }
                 else{
-                         w->fx[i] = oc::ZeroBlock;
+                        std::cout << "the timeout has expired" << std::endl;
+                //         //w->fx[i] = oc::ZeroBlock;
+                // }
                 }
                 
-                // std::cout << "share index: "<< i << std::endl;
+                std::cout << "share index: "<< i << std::endl;
                 // }catch(const std::exception& e){
                
                 //     std::cerr << e.what() << '\n';
@@ -298,25 +325,34 @@ namespace dEnc {
                 // }
             }
 
-            // std::cout << "shares " << shares << std::endl;
+            std::cout << "shares " << shares << std::endl;
 
             if(shares < mM-1){
                 throw std::runtime_error(LOCATION);
             }
 
-            // XOR all of the output shares
+            //XOR all of the output shares
             std::vector<block> ret{ w->fx[0] };
-            for (u64 i = 1; i < mN && shares > 0; ++i){
+            // for (u64 i = 1; i < mN && shares > 0; ++i){
+            for(int i : share_index) {
                 //std::cout << w->fx[i] << std::endl;
-                if(w->fx[i] == oc::ZeroBlock){
-                    continue;
-                }
+                // if(w->fx[i] == oc::ZeroBlock){
+                //     continue;
+                // }
                 ret[0] = ret[0] ^ w->fx[i];
-                shares--;
+                // shares--;
 
-                // std::cout << "xoring" << std::endl;
+                 std::cout << "xoring" << std::endl;
             }
             return (ret);
+            // std::vector<block> ret;
+            // for (u64 i = 1; i < mN && shares > 0; ++i){
+
+            //     ret[i] = oc::toBlock(std::uint64_t (0));
+            //     std::cout<< "return value " << ret[i] <<" type "<< typeid( ret[i]).name() <<" size " << sizeof(ret[i]) << std::endl;
+            //     shares -- ;
+            // }
+        //return (ret); 
         };
 		return ae;
 	}
