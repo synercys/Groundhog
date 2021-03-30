@@ -11,9 +11,22 @@
 
 using namespace osuCrypto;
 
-static const std::vector<std::string> ips {"172.31.8.98", "172.31.37.196", "172.31.35.132", "172.31.45.217"};
+static const std::vector<std::string> ips {"172.31.8.98","172.31.37.196", "172.31.35.132", "172.31.45.217"};
 
 
+void writeSeed(oc::block seed, std::string stateFileName) 
+{
+    std::ofstream stateFile(stateFileName);
+    stateFile << seed;
+    stateFile.close();
+    
+    std::cout << "stored seed in file" << std::endl;
+}
+
+u32 convertString(std::string str)
+{
+    return std::stoul(str, nullptr, 16);
+}
 template<typename DPRF>
 void eval(dEnc::AmmrClient<DPRF>& enc, u64 n, u64 m, u64 blockCount, u64 batch, u64 trials, u64 numAsync, bool lat, std::string tag)
 {
@@ -47,7 +60,7 @@ void eval(dEnc::AmmrClient<DPRF>& enc, u64 n, u64 m, u64 blockCount, u64 batch, 
 }
 
 
-void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 numAsync, u64 batch, bool lat)
+void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 numAsync, u64 batch, bool lat, std::string stateFileName)
 {
     // set up the networking
     IOService ios;
@@ -56,41 +69,58 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     
     std::cout << "asymclient" << std::endl;
     oc::block seed;
-    if(gc.current_node == 0)
-    {
-        // Initialize the parties using a random seed from the OS.
-        seed = sysRandomSeed();
-        for (u64 i = 1; i < n; i++)
+    std::ifstream stateFile(stateFileName);
+    if (stateFile.good()) { // file exists
+        std::string e;
+        stateFile >> e;
+        std::cout<< e << std::endl;
+        auto ret = std::array<u32, 4>{convertString(e.substr(24,8)), convertString(e.substr(16,8)) , convertString(e.substr(8,8)), convertString(e.substr(0,8))};
+        memcpy(&seed, &ret, sizeof(block));
+        std::cout << "seed from file converted :" << seed <<std::endl;
+        stateFile.close();
+    }
+    else{
+        if(gc.current_node == 0)
         {
-            gc.getChannel(i).send(seed);
-        }
-    } else 
-    {
-        try
+            // Initialize the parties using a random seed from the OS.
+            seed = sysRandomSeed();
+            for (u64 i = 1; i < n; i++)
+            {
+                gc.getChannel(i).send(seed);
+            }
+        } else 
         {
-            gc.getChannel(0).recv(seed);
-            std::cout << "seed=" << seed << std::endl;
+            try
+            {
+                gc.getChannel(0).recv(seed);
+                writeSeed(seed,stateFileName);
+                std::cout << "seed=" << seed << std::endl;
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+                //gc.reconnectChannel(i,ios,ips[i]);
+            }
+            
         }
-        catch(const std::exception& e)
-        {
-            std::cerr << e.what() << '\n';
-            //gc.reconnectChannel(i,ios,ips[i]);
-        }
-        
     }
 
     // allocate the DPRFs and the encryptors
     dEnc::AmmrClient<dEnc::Npr03SymDprf> enc;
     dEnc::Npr03SymDprf dprf;
 
+    std::cout << "Line 112="  << std::endl;
     PRNG prng(seed);
     // Generate the master key for this DPRF.
     dEnc::Npr03SymDprf::MasterKey mk;
     mk.KeyGen(n, m, prng);
+    std::cout << "Line 117="  << std::endl;
 
     // initialize the DPRF and the encrypters
     dprf.init(gc.current_node, m, gc.nChannels, gc.nChannels, prng.get<block>(), mk.keyStructure, mk.getSubkey(gc.current_node));
+    std::cout << "Line 121="  << std::endl;
     enc.init(gc.current_node, prng.get<block>(), &dprf);
+    std::cout << "Line 123="  << std::endl;
     
     // Perform the benchmark.                                          
     if (gc.current_node == 0) {
@@ -186,6 +216,7 @@ int main(int argc, char** argv) {
 
         auto m = std::max<u64>(2, (mc == -1) ? n * mFrac : mc);
         m = 2;
+        std::string stateFileName = "seed_file";
 
         if (m > n)
         {
@@ -193,7 +224,7 @@ int main(int argc, char** argv) {
             return -1;
         }
 
-        AmmrSymClient_tp_Perf_test(n, m, size, t, a, b, l);
+        AmmrSymClient_tp_Perf_test(n, m, size, t, a, b, l, stateFileName);
     
 
     return 0;

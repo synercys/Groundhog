@@ -121,14 +121,14 @@ namespace dEnc {
         mD = boost::math::binomial_coefficient<double>(mN, subsetSize);
 
 		mDefaultKeys.resize(mN);
-		for (u64 i = mPartyIdx, j = 0; j < mM; ++j)
-		{
-			constructDefaultKeys(i, keyStructure, keys);
+		// for (u64 i = mPartyIdx, j = 0; j < mM; ++j)
+		// {
+		// 	constructDefaultKeys(i, keyStructure, keys);
 
-            // i = i - 1 mod mN
-            // mathematical mod where i can not be negative
-			i = i ? (i - 1) : mN - 1;
-		}
+        //     // i = i - 1 mod mN
+        //     // mathematical mod where i can not be negative
+		// 	i = i ? (i - 1) : mN - 1;
+		// }
 
 
 		startListening();
