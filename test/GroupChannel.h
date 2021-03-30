@@ -25,7 +25,7 @@ class GroupChannel {
 
             std::string sessionHint = std::to_string(0)+"_"+std::to_string(current_node);
             nSessions[0].start(ios, ips[0], SessionMode::Client, sessionHint);
-            Channel clientChl = nSessions[0].addChannel();
+            Channel clientChl = nSessions[0].addChannel(sessionHint);
             // std::chrono::milliseconds timeout(10000000);
             // clientChl.waitForConnection(timeout);
             nChannels.push_back(clientChl);
