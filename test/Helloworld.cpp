@@ -19,7 +19,7 @@ bool eq(span<block> a, span<block>b)
 };
 
 
-static const std::vector<std::string> ips {"172.31.8.98", "172.31.37.196", "172.31.35.132", "172.31.45.217"};
+static const std::vector<std::string> ips {"172.31.42.227","172.31.36.13","172.31.46.44"};
 
 void try_connect(u64 n, IOService *ios)
 {
@@ -77,9 +77,9 @@ void eval(dEnc::AmmrClient<DPRF>& enc, u64 n, u64 m, u64 blockCount, u64 batch, 
     {
         //try
         //{
-            std::cout << t << std::endl;
-            std::chrono::milliseconds timespan(300);
-            std::this_thread::sleep_for(timespan);
+            // std::cout << t << std::endl;
+            // std::chrono::milliseconds timespan(300);
+            // std::this_thread::sleep_for(timespan);
             initiator.encrypt(data[0], ciphertext[0]);
 
             //check if encryption and decryption works
@@ -172,7 +172,7 @@ int main(int argc, char** argv)
     u64 n = ips.size();
     //getLatency(ips, n);
 
-    u64 t = 100;
+    u64 t = 40000;
     u64 b = 128;
     u64 a = 1024 / b;
     cmd.setDefault("t", t);
