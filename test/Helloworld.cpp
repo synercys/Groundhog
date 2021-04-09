@@ -11,7 +11,7 @@
 
 using namespace osuCrypto;
 
-static const std::vector<std::string> ips {"172.31.42.227","172.31.37.209", "172.31.45.68", "172.31.45.106"};
+static const std::vector<std::string> ips {"172.31.42.227","172.31.36.13","172.31.46.44"};
 
 
 void writeSeed(oc::block seed, std::string stateFileName) 
@@ -216,7 +216,7 @@ int main(int argc, char** argv) {
 
         auto m = std::max<u64>(2, (mc == -1) ? n * mFrac : mc);
         m = 2;
-        std::string stateFileName = "seed_file";
+        std::string stateFileName = "/home/ubuntu/redise/dise/test/seed_file";
 
         if (m > n)
         {
