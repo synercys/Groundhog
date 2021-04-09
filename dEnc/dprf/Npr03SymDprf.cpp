@@ -1,8 +1,10 @@
 #include "Npr03SymDprf.h"
 #include <boost/math/special_functions/binomial.hpp>
-
+#include <cryptoTools/Common/config.h>
+#include <cryptoTools/Common/Defines.h>
 #include <cryptoTools/Common/BitVector.h>
 #include <cryptoTools/Common/MatrixView.h>
+#include <algorithm>
 namespace dEnc {
 
 
@@ -98,8 +100,8 @@ namespace dEnc {
 	void Npr03SymDprf::init(
 		u64 partyIdx,
 		u64 m,
-		span<Channel> requestChls,
-		span<Channel> listenChls,
+		std::vector<Channel> requestChls,
+		std::vector<Channel> listenChls,
 		block seed,
         oc::Matrix<u64>& keyStructure,
         span<block> keys)
@@ -195,6 +197,50 @@ namespace dEnc {
 		return asyncEval(input).get()[0];
 	}
 
+    std::string exec(const char* cmd) {
+        std::array<char, 128> buffer;
+        std::string result;
+        std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
+        if (!pipe) {
+            throw std::runtime_error("popen() failed!");
+        }
+        while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+            result += buffer.data();
+        }
+        return result;
+    }
+
+    std::string getIP() {
+        std::string result = exec("ifconfig");
+        std::istringstream iss(result);
+        std::vector<std::string> tokens{std::istream_iterator<std::string>{iss}, std::istream_iterator<std::string>{}};
+
+        std::string ip;
+        for(int i=0; i< tokens.size(); i++) {
+            if(tokens[i].compare("inet") == 0) {
+                ip = tokens[i+1];
+                break;
+            } 
+        }
+
+    return ip;
+}
+
+    Channel reconnectChannel(Channel& chl)
+    {
+        chl.cancel();
+        chl.getSession().stop();
+        std::string ip = getIP();
+        osuCrypto::Session session;
+        std::string sessionHint = chl.getName();
+        session.start(chl.getSession().getIOService(),ip,osuCrypto::SessionMode::Server, sessionHint);
+        Channel serverChl = session.addChannel(sessionHint);
+        std::chrono::milliseconds timeout(10);
+        serverChl.waitForConnection(timeout);
+        std::cout << "Line 238: returning channel" << std::endl;
+        return serverChl;
+    }
+
 	AsyncEval Npr03SymDprf::asyncEval(block input)
 	{
         TODO("Add support for sending the party identity for allowing encryption to be distinguished from decryption. ");
@@ -285,6 +331,7 @@ namespace dEnc {
         {
             int shares = 0;
             std::vector<int> share_index;
+            std::vector<int> send_index;
             // block until all of the OPRF output shares have arrived.
             for (u64 i = 0; i < mN - 1; ++i){
                 //TODO uncomment
@@ -294,7 +341,7 @@ namespace dEnc {
                 // }
                 // else {
                 std::cout << "get "<< &w->async[i] << " " << i << std::endl;
-                auto timeout = std::chrono::milliseconds(10);
+                auto timeout = std::chrono::milliseconds(15);
                 if( w->async[i].valid() and w->async[i].wait_for(timeout) == std::future_status::ready)
                 {
                     std::cout << "get logic comes here "<< std::endl;
@@ -303,17 +350,22 @@ namespace dEnc {
                         std::cout<< "return value " << w->fx[i] <<" type "<< typeid( w->fx[i]).name() <<" size " << sizeof(w->fx[i]) << std::endl;
                         shares += 1;
                         share_index.push_back(i);
+                        // if(shares >= mM-1)
+                        //     break;
                     }
                     catch(const std::exception& e){
                         std::cerr << e.what() << '\n';
-                        std::cout << "index of failed get : Line number 302" << i <<std::endl;
+                        send_index.push_back(i);
+                        std::cout << "index of failed get : Line number 302 " << i <<std::endl;
                     }
                         
                    
                 }
                 else{
-                        std::cout << "the timeout has expired" << std::endl;
+                        std::cout << "the timeout has expired" << w->async[i].valid() << std::endl;
+                        send_index.push_back(i);
                 //         //w->fx[i] = oc::ZeroBlock;
+                        
                 // }
                 }
                 
@@ -344,6 +396,16 @@ namespace dEnc {
 
                  std::cout << "xoring" << std::endl;
             }
+            std::cout << "Line 405 : re-established connection : " << std::endl;
+            for(int i : send_index) 
+            {
+                std::cout << "Line  : re-established connection : " << i << std::endl;
+                mRequestChls[i] = reconnectChannel(mRequestChls[i]);
+                mListenChls[i] = mRequestChls[i];
+                // std::replace(mRequestChls.begin(), mRequestChls.end(), mRequestChls[i], reconnectChannel(mRequestChls[i]));
+                std::cout << "Line 405 : re-connect connection : " << i << std::endl;
+                // mRequestChls[i].asyncSend(getIP());
+            }
             return (ret);
             // std::vector<block> ret;
             // for (u64 i = 1; i < mN && shares > 0; ++i){
@@ -354,6 +416,7 @@ namespace dEnc {
             // }
         //return (ret); 
         };
+      
 		return ae;
 	}
 
