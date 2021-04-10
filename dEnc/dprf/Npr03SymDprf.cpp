@@ -350,18 +350,21 @@ namespace dEnc {
             for(int i : share_index) {
                 ret[0] = ret[0] ^ w->fx[i];
             }
+            std::vector<int> elementsToRemove;
             for(auto x : send_index) 
             {
                 // std::cout << "Line  : re-established connection : " << i << std::endl;
                 int i = x.first;
                 if(x.second == time(0)){
                         mRequestChls[i] = reconnectChannel(mRequestChls[i]);
-                        std::cout << "re-established connection : " << i << std::endl;
+                        // std::cout << "re-established connection : " << i << std::endl;
                         mListenChls[i].cancel();
-                        mListenChls[i].getSession().stop();
                         mListenChls[i] = mRequestChls[i];
-                        send_index.erase(i);
+                        elementsToRemove.push_back(i);
                 }
+            }
+            for(int i : elementsToRemove) {
+                    send_index.erase(i);
             }
             return (ret);
         };

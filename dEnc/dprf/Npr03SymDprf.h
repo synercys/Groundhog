@@ -177,8 +177,6 @@ namespace dEnc {
         std::vector<Channel> mListenChls;
 
         std::map<int, time_t> send_index;
-
-        
     };
 
 }
