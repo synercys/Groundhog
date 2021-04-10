@@ -1,6 +1,6 @@
 #include "Npr03SymDprf.h"
 #include <boost/math/special_functions/binomial.hpp>
-
+#include <cryptoTools/Network/Channel.h>
 #include <cryptoTools/Common/BitVector.h>
 #include <cryptoTools/Common/MatrixView.h>
 namespace dEnc {
@@ -130,8 +130,18 @@ namespace dEnc {
 		// 	i = i ? (i - 1) : mN - 1;
 		// }
 
-
-		startListening();
+        try{
+		    startListening();
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << "error in listening"<<'\n';
+            // for(int i = 0; i < mListenChls.size(); i++)
+            // {
+            //     mListenChls[i] = reconnectChannel(mListenChls[i]);
+            // }
+            
+        }
 	}
 
 	void Npr03SymDprf::serveOne(span<u8> rr, u64 chlIdx)
@@ -186,7 +196,13 @@ namespace dEnc {
 		}
 
         // send back the OPRF output share.
+        try{
 		mListenChls[chlIdx].asyncSend(std::move(fx));
+        }
+        catch(const std::exception& e){
+                        std::cerr << e.what() << "Line203" << '\n';
+                        // mListenChls[i] = reconnectChannel( mListenChls[i]);
+                    }
 	}
 
 	block Npr03SymDprf::eval(block input)
@@ -294,7 +310,13 @@ namespace dEnc {
 			auto c = i % mN;
 			if (c > mPartyIdx) --c;
 
+            try{
 			w->async[j] = mRequestChls[c].asyncRecv(&w->fx[j], 1);
+            }
+            catch(const std::exception& e){
+                        std::cerr << e.what() << "Line311" << '\n';
+                        // mListenChls[i] = reconnectChannel( mListenChls[i]);
+                    }
 		}
 
         // This function is called when the user wants the actual 
@@ -341,7 +363,13 @@ namespace dEnc {
 
             // This send is smart and will increment the ref count of
             // the shared pointer
+            try{
 			mRequestChls[c].asyncSend(state->in);
+            }
+            catch(const std::exception& e){
+                    std::cerr << e.what() << "Line370" << '\n';
+                    // mListenChls[i] = reconnectChannel( mListenChls[i]);
+                }
 		}
 
 		auto numKeys = mDefaultKeys[mPartyIdx].mAESs.size();
@@ -376,7 +404,13 @@ namespace dEnc {
 			auto c = i % mN;
 			if (c > mPartyIdx) --c;
 
+            try{
 			state->async[j] = mRequestChls[c].asyncRecv(fx[j]);
+            }
+            catch(const std::exception& e){
+                        std::cerr << e.what() << "Line399" << '\n';
+                        // mListenChls[i] = reconnectChannel( mListenChls[i]);
+                    }
 		}
 
         // construct the completion handler that is called when the user wants to 
@@ -498,7 +532,13 @@ namespace dEnc {
 
             // closing the channel is done by sending a single byte.
 		    for (auto& c : mRequestChls)
+                try{
 			    c.asyncSendCopy(close, 1);
+                }
+                catch(const std::exception& e){
+                        std::cerr << e.what() << '\n';
+                        // mListenChls[i] = reconnectChannel( mListenChls[i]);
+                    }
 
         }
 	}
