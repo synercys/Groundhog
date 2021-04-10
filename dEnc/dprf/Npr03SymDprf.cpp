@@ -5,6 +5,7 @@
 #include <cryptoTools/Common/BitVector.h>
 #include <cryptoTools/Common/MatrixView.h>
 #include <algorithm>
+#include <time.h>
 namespace dEnc {
 
 
@@ -193,7 +194,6 @@ namespace dEnc {
         }
         catch(const std::exception& e){
                         std::cerr << e.what() << '\n';
-                        // mListenChls[i] = reconnectChannel( mListenChls[i]);
                     }
 	}
 
@@ -241,9 +241,8 @@ namespace dEnc {
         std::string sessionHint = chl.getName();
         session.start(chl.getSession().getIOService(),ip,osuCrypto::SessionMode::Server, sessionHint);
         Channel serverChl = session.addChannel(sessionHint);
-        std::chrono::milliseconds timeout(1);
-        serverChl.waitForConnection(timeout);
-        // std::cout << "Line 238: returning channel" << std::endl;
+        // std::chrono::milliseconds timeout(1);
+        // serverChl.waitForConnection(timeout);
         return serverChl;
     }
 
@@ -265,19 +264,11 @@ namespace dEnc {
             catch(const std::exception& e)
             {
                 // std::cerr << e.what() << '\n';
-                // std::cout << "send error Line:216" << std::endl;
             }
             
 			
-            //TODO catch 
 		}
 
-        // std::cout << "sending commitment" << std::endl;
-        // Set up the completion callback "AsyncEval".
-        // This object holds a function that is called when 
-        // the user wants to async eval to complete. This involves
-        // receiving the OPRF output shares from the other parties
-        // and combining them with the local share.
 		AsyncEval ae;
 
         struct State
@@ -293,12 +284,6 @@ namespace dEnc {
         // allocate space to store the OPRF output shares
         auto w = std::make_shared<State>(mN);
 
-        // mN - netwrok size , mM -> threshold
-        // auto temp = State(mN);
-        // auto w = &temp;
-
-
-
         // Futures which allow us to block until the repsonces have 
         // been receivednjdwn
 
@@ -313,7 +298,6 @@ namespace dEnc {
 		for (u64 i = 0; i < buff.size(); ++i)
 			b = b ^ buff[i];
 
-        // std::cout << "local OPRF " << std::endl;
         // queue up the receive operations to receive the OPRF output shares
 		for (u64 i = mPartyIdx + 1, j = 0; j < w->async.size(); ++i, ++j)
 		{
@@ -321,13 +305,10 @@ namespace dEnc {
 			if (c > mPartyIdx) --c;
             try{
                 w->async[j] = mRequestChls[c].asyncRecv(&w->fx[j], 1);
-                // std::cout << "async "<< &w->async[j] << " " << j << std::endl;
             }
             catch(const std::exception& e)
             {
                 // std::cerr << e.what() << '\n';
-                // std::cout << "encrypt" << std::endl;
-                //gc.reconnectChannel(i,ios,ips[i]);
             }
 		}
 
@@ -335,93 +316,54 @@ namespace dEnc {
         // OPRF output. It must combine the OPRF output shares
         ae.get = [this, w = std::move(w)]() mutable ->std::vector<block> 
         {
-            int shares = 0;
             std::vector<int> share_index;
-            std::vector<int> send_index;
             // block until all of the OPRF output shares have arrived.
             for (u64 i = 0; i < mN - 1; ++i){
-                //TODO uncomment
-                // if(shares == mM-1)
-                // {
-                //     break;
-                // }
-                // else {
-                // std::cout << "get "<< &w->async[i] << " " << i << std::endl;
-                auto timeout = std::chrono::milliseconds(500);
+                auto timeout = std::chrono::milliseconds(500); 
                 if( w->async[i].valid() and w->async[i].wait_for(timeout) == std::future_status::ready)
                 {
                     // std::cout << "get logic comes here "<< std::endl;
                     try{
                         w->async[i].get();
-                        // std::cout<< "return value " << w->fx[i] <<" type "<< typeid( w->fx[i]).name() <<" size " << sizeof(w->fx[i]) << std::endl;
-                        shares += 1;
                         share_index.push_back(i);
-                        // if(shares >= mM-1)
-                        //     break;
                     }
                     catch(const std::exception& e){
                         // std::cerr << e.what() << '\n';
-                        send_index.push_back(i);
-                        // std::cout << "index of failed get : Line number 302 " << i <<std::endl;
+                        send_index.insert({i,time(0)+20});
                     }
                         
                    
                 }
                 else{
-                        // std::cout << "the timeout has expired" << w->async[i].valid() << std::endl;
-                        send_index.push_back(i);
-                //         //w->fx[i] = oc::ZeroBlock;
-                        
-                // }
+                        send_index.insert({i,time(0)+20});
                 }
-                
-                // std::cout << "share index: "<< i << std::endl;
-                // }catch(const std::exception& e){
-               
-                //     std::cerr << e.what() << '\n';
-                //     std::cout << "get" << std::endl;
-                // }
             }
 
             // std::cout << "shares " << shares << std::endl;
 
-            if(shares < mM-1){
+            if(share_index.size() < mM-1){
                 throw std::runtime_error(LOCATION);
             }
 
             //XOR all of the output shares
             std::vector<block> ret{ w->fx[0] };
-            // for (u64 i = 1; i < mN && shares > 0; ++i){
             for(int i : share_index) {
-                //std::cout << w->fx[i] << std::endl;
-                // if(w->fx[i] == oc::ZeroBlock){
-                //     continue;
-                // }
                 ret[0] = ret[0] ^ w->fx[i];
-                // shares--;
-
-                //  std::cout << "xoring" << std::endl;
             }
-            // std::cout << "Line 405 : re-established connection : " << std::endl;
-            for(int i : send_index) 
+            for(auto x : send_index) 
             {
                 // std::cout << "Line  : re-established connection : " << i << std::endl;
-                mRequestChls[i] = reconnectChannel(mRequestChls[i]);
-                mListenChls[i].close();
-                mListenChls[i] = mRequestChls[i];
-                // std::replace(mRequestChls.begin(), mRequestChls.end(), mRequestChls[i], reconnectChannel(mRequestChls[i]));
-                // std::cout << "Line 405 : re-connect connection : " << i << std::endl;
-                // mRequestChls[i].asyncSend(getIP());
+                int i = x.first;
+                if(x.second == time(0)){
+                        mRequestChls[i] = reconnectChannel(mRequestChls[i]);
+                        std::cout << "re-established connection : " << i << std::endl;
+                        mListenChls[i].cancel();
+                        mListenChls[i].getSession().stop();
+                        mListenChls[i] = mRequestChls[i];
+                        send_index.erase(i);
+                }
             }
             return (ret);
-            // std::vector<block> ret;
-            // for (u64 i = 1; i < mN && shares > 0; ++i){
-
-            //     ret[i] = oc::toBlock(std::uint64_t (0));
-            //     std::cout<< "return value " << ret[i] <<" type "<< typeid( ret[i]).name() <<" size " << sizeof(ret[i]) << std::endl;
-            //     shares -- ;
-            // }
-        //return (ret); 
         };
       
 		return ae;
