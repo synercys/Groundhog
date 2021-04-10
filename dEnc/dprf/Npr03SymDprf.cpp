@@ -188,7 +188,13 @@ namespace dEnc {
 		}
 
         // send back the OPRF output share.
+        try{
 		mListenChls[chlIdx].asyncSend(std::move(fx));
+        }
+        catch(const std::exception& e){
+                        std::cerr << e.what() << '\n';
+                        // mListenChls[i] = reconnectChannel( mListenChls[i]);
+                    }
 	}
 
 	block Npr03SymDprf::eval(block input)
@@ -235,9 +241,9 @@ namespace dEnc {
         std::string sessionHint = chl.getName();
         session.start(chl.getSession().getIOService(),ip,osuCrypto::SessionMode::Server, sessionHint);
         Channel serverChl = session.addChannel(sessionHint);
-        std::chrono::milliseconds timeout(10);
+        std::chrono::milliseconds timeout(1);
         serverChl.waitForConnection(timeout);
-        std::cout << "Line 238: returning channel" << std::endl;
+        // std::cout << "Line 238: returning channel" << std::endl;
         return serverChl;
     }
 
@@ -258,8 +264,8 @@ namespace dEnc {
             }
             catch(const std::exception& e)
             {
-                std::cerr << e.what() << '\n';
-                std::cout << "send error Line:216" << std::endl;
+                // std::cerr << e.what() << '\n';
+                // std::cout << "send error Line:216" << std::endl;
             }
             
 			
@@ -307,7 +313,7 @@ namespace dEnc {
 		for (u64 i = 0; i < buff.size(); ++i)
 			b = b ^ buff[i];
 
-        std::cout << "local OPRF " << std::endl;
+        // std::cout << "local OPRF " << std::endl;
         // queue up the receive operations to receive the OPRF output shares
 		for (u64 i = mPartyIdx + 1, j = 0; j < w->async.size(); ++i, ++j)
 		{
@@ -315,12 +321,12 @@ namespace dEnc {
 			if (c > mPartyIdx) --c;
             try{
                 w->async[j] = mRequestChls[c].asyncRecv(&w->fx[j], 1);
-                std::cout << "async "<< &w->async[j] << " " << j << std::endl;
+                // std::cout << "async "<< &w->async[j] << " " << j << std::endl;
             }
             catch(const std::exception& e)
             {
-                std::cerr << e.what() << '\n';
-                std::cout << "encrypt" << std::endl;
+                // std::cerr << e.what() << '\n';
+                // std::cout << "encrypt" << std::endl;
                 //gc.reconnectChannel(i,ios,ips[i]);
             }
 		}
@@ -340,36 +346,36 @@ namespace dEnc {
                 //     break;
                 // }
                 // else {
-                std::cout << "get "<< &w->async[i] << " " << i << std::endl;
-                auto timeout = std::chrono::milliseconds(15);
+                // std::cout << "get "<< &w->async[i] << " " << i << std::endl;
+                auto timeout = std::chrono::milliseconds(500);
                 if( w->async[i].valid() and w->async[i].wait_for(timeout) == std::future_status::ready)
                 {
-                    std::cout << "get logic comes here "<< std::endl;
+                    // std::cout << "get logic comes here "<< std::endl;
                     try{
                         w->async[i].get();
-                        std::cout<< "return value " << w->fx[i] <<" type "<< typeid( w->fx[i]).name() <<" size " << sizeof(w->fx[i]) << std::endl;
+                        // std::cout<< "return value " << w->fx[i] <<" type "<< typeid( w->fx[i]).name() <<" size " << sizeof(w->fx[i]) << std::endl;
                         shares += 1;
                         share_index.push_back(i);
                         // if(shares >= mM-1)
                         //     break;
                     }
                     catch(const std::exception& e){
-                        std::cerr << e.what() << '\n';
+                        // std::cerr << e.what() << '\n';
                         send_index.push_back(i);
-                        std::cout << "index of failed get : Line number 302 " << i <<std::endl;
+                        // std::cout << "index of failed get : Line number 302 " << i <<std::endl;
                     }
                         
                    
                 }
                 else{
-                        std::cout << "the timeout has expired" << w->async[i].valid() << std::endl;
+                        // std::cout << "the timeout has expired" << w->async[i].valid() << std::endl;
                         send_index.push_back(i);
                 //         //w->fx[i] = oc::ZeroBlock;
                         
                 // }
                 }
                 
-                std::cout << "share index: "<< i << std::endl;
+                // std::cout << "share index: "<< i << std::endl;
                 // }catch(const std::exception& e){
                
                 //     std::cerr << e.what() << '\n';
@@ -377,7 +383,7 @@ namespace dEnc {
                 // }
             }
 
-            std::cout << "shares " << shares << std::endl;
+            // std::cout << "shares " << shares << std::endl;
 
             if(shares < mM-1){
                 throw std::runtime_error(LOCATION);
@@ -394,16 +400,17 @@ namespace dEnc {
                 ret[0] = ret[0] ^ w->fx[i];
                 // shares--;
 
-                 std::cout << "xoring" << std::endl;
+                //  std::cout << "xoring" << std::endl;
             }
-            std::cout << "Line 405 : re-established connection : " << std::endl;
+            // std::cout << "Line 405 : re-established connection : " << std::endl;
             for(int i : send_index) 
             {
-                std::cout << "Line  : re-established connection : " << i << std::endl;
+                // std::cout << "Line  : re-established connection : " << i << std::endl;
                 mRequestChls[i] = reconnectChannel(mRequestChls[i]);
+                mListenChls[i].close();
                 mListenChls[i] = mRequestChls[i];
                 // std::replace(mRequestChls.begin(), mRequestChls.end(), mRequestChls[i], reconnectChannel(mRequestChls[i]));
-                std::cout << "Line 405 : re-connect connection : " << i << std::endl;
+                // std::cout << "Line 405 : re-connect connection : " << i << std::endl;
                 // mRequestChls[i].asyncSend(getIP());
             }
             return (ret);

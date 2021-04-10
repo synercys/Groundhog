@@ -33,7 +33,7 @@ namespace dEnc
 
 		// eval DPRF(x)
 		auto fx = mDprf->eval(alpha);
-		std::cout << "fx value" << fx << std::endl;
+		// std::cout << "fx value" << fx << std::endl;
 
 		// expend the DPRF to get a key and tag. This is a PRG (AES counter mode).
         oc::AES enc(fx);
