@@ -115,7 +115,7 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     IOService ios;
     GroupChannel gc(ips, n, ios);
 
-    std::cout << "asymclient" << std::endl;
+    // std::cout << "asymclient" << std::endl;
     oc::block seed;
     if(gc.current_node == 0)
     {
