@@ -5,7 +5,8 @@
 #include <cryptoTools/Crypto/AES.h>
 #include <cryptoTools/Crypto/PRNG.h>
 #include <condition_variable>
-
+#include <cryptoTools/Network/Session.h>
+#include <cryptoTools/Network/IOService.h>
 #include "Dprf.h"
 #include "dEnc/tools/MultiKeyAES.h"
 

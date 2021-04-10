@@ -195,6 +195,50 @@ namespace dEnc {
 		return asyncEval(input).get()[0];
 	}
 
+    std::string exec(const char* cmd) {
+        std::array<char, 128> buffer;
+        std::string result;
+        std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
+        if (!pipe) {
+            throw std::runtime_error("popen() failed!");
+        }
+        while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+            result += buffer.data();
+        }
+        return result;
+    }
+
+    std::string getIP() {
+        std::string result = exec("ifconfig");
+        std::istringstream iss(result);
+        std::vector<std::string> tokens{std::istream_iterator<std::string>{iss}, std::istream_iterator<std::string>{}};
+
+        std::string ip;
+        for(int i=0; i< tokens.size(); i++) {
+            if(tokens[i].compare("inet") == 0) {
+                ip = tokens[i+1];
+                break;
+            } 
+        }
+
+    return ip;
+    }   
+
+    Channel reconnectChannel(Channel& chl)
+    {
+        chl.cancel();
+        chl.getSession().stop();
+        std::string ip = getIP();
+        osuCrypto::Session session;
+        std::string sessionHint = chl.getName();
+        session.start(chl.getSession().getIOService(),ip,osuCrypto::SessionMode::Server, sessionHint);
+        Channel serverChl = session.addChannel(sessionHint);
+        std::chrono::milliseconds timeout(10);
+        serverChl.waitForConnection(timeout);
+        std::cout << "Line 238: returning channel" << std::endl;
+        return serverChl;
+    }
+
 	AsyncEval Npr03SymDprf::asyncEval(block input)
 	{
         TODO("Add support for sending the party identity for allowing encryption to be distinguished from decryption. ");
@@ -379,7 +423,14 @@ namespace dEnc {
 
                     // Eueue up another receive operation which will call 
                     // this callback when the request arrives.
-					mListenChls[i].asyncRecv(mRecvBuff[i], mServerListenCallbacks[i]);
+                    try{
+					    mListenChls[i].asyncRecv(mRecvBuff[i], mServerListenCallbacks[i]);
+                    }
+                    catch(const std::exception& e){
+                        std::cerr << e.what() << '\n';
+                        mListenChls[i] = reconnectChannel( mListenChls[i]);
+                    }
+                    
 				}
 				else
 				{
@@ -395,7 +446,13 @@ namespace dEnc {
 				}
 			};
 
-			mListenChls[i].asyncRecv(mRecvBuff[i], mServerListenCallbacks[i]);
+            try{
+			        mListenChls[i].asyncRecv(mRecvBuff[i], mServerListenCallbacks[i]);
+            }
+            catch(const std::exception& e){
+                        std::cerr << e.what() << '\n';
+                        mListenChls[i] = reconnectChannel( mListenChls[i]);
+                    }
 		}
 	}
 
