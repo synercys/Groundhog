@@ -11,7 +11,7 @@
 
 using namespace osuCrypto;
 
-static const std::vector<std::string> ips {"10.0.60.177", "10.0.62.12", "10.0.60.64", "10.0.62.13", "10.0.62.14", "10.0.62.15"};
+static const std::vector<std::string> ips {"172.31.42.227","172.31.37.209","172.31.36.13","172.31.46.44"};
 
 
 template<typename DPRF>
