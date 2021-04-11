@@ -176,7 +176,12 @@ namespace dEnc {
         // Channels that the servers should listen to for DPRF requests.
         std::vector<Channel> mListenChls;
 
-        std::map<int, time_t> send_index;
+        std::map<int, int> send_index;
+
+        int number_of_encryptions=0;
+
+
+
     };
 
 }

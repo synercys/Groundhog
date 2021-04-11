@@ -5,7 +5,6 @@
 #include <cryptoTools/Common/BitVector.h>
 #include <cryptoTools/Common/MatrixView.h>
 #include <algorithm>
-#include <time.h>
 namespace dEnc {
 
 
@@ -311,7 +310,6 @@ namespace dEnc {
                 // std::cerr << e.what() << '\n';
             }
 		}
-
         // This function is called when the user wants the actual 
         // OPRF output. It must combine the OPRF output shares
         ae.get = [this, w = std::move(w)]() mutable ->std::vector<block> 
@@ -319,7 +317,7 @@ namespace dEnc {
             std::vector<int> share_index;
             // block until all of the OPRF output shares have arrived.
             for (u64 i = 0; i < mN - 1; ++i){
-                auto timeout = std::chrono::milliseconds(500); 
+                auto timeout = std::chrono::milliseconds(300); 
                 if( w->async[i].valid() and w->async[i].wait_for(timeout) == std::future_status::ready)
                 {
                     // std::cout << "get logic comes here "<< std::endl;
@@ -329,13 +327,16 @@ namespace dEnc {
                     }
                     catch(const std::exception& e){
                         // std::cerr << e.what() << '\n';
-                        send_index.insert({i,time(0)+20});
+                        send_index.insert({i,number_of_encryptions});
                     }
+                    // if(share_index.size()>= mM){
+                    //     break;
+                    // }
                         
                    
                 }
                 else{
-                        send_index.insert({i,time(0)+20});
+                        send_index.insert({i,number_of_encryptions});
                 }
             }
 
@@ -355,7 +356,7 @@ namespace dEnc {
             {
                 // std::cout << "Line  : re-established connection : " << i << std::endl;
                 int i = x.first;
-                if(x.second == time(0)){
+                if(number_of_encryptions - x.second >= 120000){
                         mRequestChls[i] = reconnectChannel(mRequestChls[i]);
                         // std::cout << "re-established connection : " << i << std::endl;
                         mListenChls[i].cancel();
@@ -366,6 +367,7 @@ namespace dEnc {
             for(int i : elementsToRemove) {
                     send_index.erase(i);
             }
+            ++number_of_encryptions;
             return (ret);
         };
       

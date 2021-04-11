@@ -19,7 +19,7 @@ bool eq(span<block> a, span<block>b)
 };
 
 
-static const std::vector<std::string> ips {"172.31.42.227","172.31.36.13","172.31.46.44"};
+static const std::vector<std::string> ips {"172.31.42.227","172.31.37.209","172.31.36.13","172.31.46.44"};
 
 void try_connect(u64 n, IOService *ios)
 {
