@@ -5,6 +5,7 @@
 #include <cryptoTools/Common/BitVector.h>
 #include <cryptoTools/Common/MatrixView.h>
 #include <algorithm>
+#include <time.h>
 namespace dEnc {
 
 
@@ -317,30 +318,25 @@ namespace dEnc {
             std::vector<int> share_index;
             // block until all of the OPRF output shares have arrived.
             for (u64 i = 0; i < mN - 1; ++i){
-                auto timeout = std::chrono::milliseconds(300); 
-                if( w->async[i].valid() and w->async[i].wait_for(timeout) == std::future_status::ready)
+                auto timeout = std::chrono::milliseconds(500); 
+                if(w->async[i].valid() and w->async[i].wait_for(timeout) == std::future_status::ready)
                 {
-                    // std::cout << "get logic comes here "<< std::endl;
                     try{
                         w->async[i].get();
                         share_index.push_back(i);
                     }
                     catch(const std::exception& e){
                         // std::cerr << e.what() << '\n';
-                        send_index.insert({i,number_of_encryptions});
+                        // send_index.insert({i,number_of_encryptions});
+                        send_index.insert({i,time(0)+10});
                     }
-                    // if(share_index.size()>= mM){
-                    //     break;
-                    // }
-                        
                    
                 }
                 else{
-                        send_index.insert({i,number_of_encryptions});
+                        // send_index.insert({i,number_of_encryptions});
+                        send_index.insert({i,time(0)+10});
                 }
             }
-
-            // std::cout << "shares " << shares << std::endl;
 
             if(share_index.size() < mM-1){
                 throw std::runtime_error(LOCATION);
@@ -348,26 +344,14 @@ namespace dEnc {
 
             //XOR all of the output shares
             std::vector<block> ret{ w->fx[0] };
+            int share = 0;
             for(int i : share_index) {
-                ret[0] = ret[0] ^ w->fx[i];
-            }
-            std::vector<int> elementsToRemove;
-            for(auto x : send_index) 
-            {
-                // std::cout << "Line  : re-established connection : " << i << std::endl;
-                int i = x.first;
-                if(number_of_encryptions - x.second >= 120000){
-                        mRequestChls[i] = reconnectChannel(mRequestChls[i]);
-                        // std::cout << "re-established connection : " << i << std::endl;
-                        mListenChls[i].cancel();
-                        mListenChls[i] = mRequestChls[i];
-                        elementsToRemove.push_back(i);
+                if(share==mM-1){
+                    break;
                 }
+                ret[0] = ret[0] ^ w->fx[i];
+                share++;
             }
-            for(int i : elementsToRemove) {
-                    send_index.erase(i);
-            }
-            ++number_of_encryptions;
             return (ret);
         };
       

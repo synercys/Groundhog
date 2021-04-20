@@ -77,6 +77,16 @@ namespace dEnc {
         // The total number of key shares
         u64 mD;
 
+         // Channels that the client should send their DPRF requests over.
+        std::vector<Channel> mRequestChls;
+
+        // Channels that the servers should listen to for DPRF requests.
+        std::vector<Channel> mListenChls;
+
+        // int number_of_encryptions=0;
+        
+        std::map<int, time_t> send_index;
+
         // Random number generator
         oc::PRNG mPrng;
 
@@ -169,16 +179,6 @@ namespace dEnc {
 
         // The number of active callback loops. 
         std::atomic<u64> mListens;
-
-        // Channels that the client should send their DPRF requests over.
-        std::vector<Channel> mRequestChls;
-
-        // Channels that the servers should listen to for DPRF requests.
-        std::vector<Channel> mListenChls;
-
-        std::map<int, int> send_index;
-
-        int number_of_encryptions=0;
 
 
 

@@ -8,7 +8,10 @@
 #include "GroupChannel.h"
 #include "RandomNodePicker.h"
 #include "util.h"
+#include <time.h>
 
+
+dEnc::Npr03SymDprf dprf;
 
 using namespace osuCrypto;
 
@@ -19,39 +22,48 @@ bool eq(span<block> a, span<block>b)
 };
 
 
-static const std::vector<std::string> ips {"172.31.42.227","172.31.37.209","172.31.36.13","172.31.46.44"};
+static const std::vector<std::string> ips {"172.31.42.227","172.31.36.13","172.31.46.44"};
 
-void try_connect(u64 n, IOService *ios)
+ Channel reconnectChannel(Channel& chl)
 {
-    // set up the networking
-    //IOService ios;
-    //GroupChannel gc(ips, n, ios);
-    std::string msg;
+    chl.cancel();
+    chl.getSession().stop();
     std::string ip = getIP();
-    std::cout << "attackTime: ";
-    
+    osuCrypto::Session session;
+    std::string sessionHint = chl.getName();
+    session.start(chl.getSession().getIOService(),ip,osuCrypto::SessionMode::Server, sessionHint);
+    Channel serverChl = session.addChannel(sessionHint);
+    // std::chrono::milliseconds timeout(1);
+    // serverChl.waitForConnection(timeout);
+    return serverChl;
+}
+
+void* try_connect(void* arg)
+{
+    // pthread_detach(pthread_self());
 
     while(true)
     {
-        for (u64 i = 1; i < n; i++)
+        std::vector<int> elementsToRemove;
+        // std::cout << "Line  : re-established connection : " << std::endl;
+        for(auto x : dprf.send_index) 
         {
-            IOService ios;
-            Session perPartySession(ios, ip, SessionMode::Server /* , serviceName */);
-            Channel serverChl = perPartySession.addChannel();
-            //try
-            //{
-                //chl0.send(ip);
-                serverChl.recv(msg);
-                std::cout << msg << std::endl;
-            //}
-            // catch(const std::exception& e)
+            int i = x.first;
+            // dprf.number_of_encryptions - x.second >= 120000
+            // if(x.second >= time(0))
             // {
-            //     std::cerr << e.what() << '\n';
-            //     //gc.reconnectChannel(i,ios,ips[i]);
+            std::cout << "Line  : re-established connection : " << i << std::endl;
+            dprf.mRequestChls[i] = reconnectChannel(dprf.mRequestChls[i]);
+            dprf.mListenChls[i].close();
+            dprf.mListenChls[i] = dprf.mRequestChls[i];
+            elementsToRemove.push_back(i);
             // }
+        }
+        for(int i : elementsToRemove) {
+                dprf.send_index.erase(i);
+        }
+        elementsToRemove.clear();
 
-            
-        }            
     }
 
 }
@@ -112,10 +124,13 @@ void eval(dEnc::AmmrClient<DPRF>& enc, u64 n, u64 m, u64 blockCount, u64 batch, 
 void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 numAsync, u64 batch, bool lat)
 {
     // set up the networking
+    
     IOService ios;
     GroupChannel gc(ips, n, ios);
+    // requestChls =  { gc.nChannels.begin(), gc.nChannels.end() };
 
-    std::cout << "asymclient" << std::endl;
+
+    // std::cout << "asymclient" << std::endl;
     oc::block seed;
     if(gc.current_node == 0)
     {
@@ -140,8 +155,7 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
 
     // allocate the DPRFs and the encryptors
     dEnc::AmmrClient<dEnc::Npr03SymDprf> enc;
-    dEnc::Npr03SymDprf dprf;
-
+    
     PRNG prng(seed);
     // Generate the master key for this DPRF.
     dEnc::Npr03SymDprf::MasterKey mk;
@@ -150,11 +164,15 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     // initialize the DPRF and the encrypters
     dprf.init(gc.current_node, m, gc.nChannels, gc.nChannels, prng.get<block>(), mk.keyStructure, mk.getSubkey(gc.current_node));
     enc.init(gc.current_node, prng.get<block>(), &dprf);
+
+    pthread_t thread;
+    pthread_create(&thread, NULL, try_connect, NULL);
     
     // Perform the benchmark.                                          
     if (gc.current_node == 0) {
             eval(enc, n, m, blockCount, batch, trials, numAsync, lat, "Sym      ");
     }
+    exit(0);
 }
 
 
