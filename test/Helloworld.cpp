@@ -117,7 +117,7 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     std::cout << "Line 117="  << std::endl;
 
     // initialize the DPRF and the encrypters
-    dprf.init(gc.current_node, m, gc.nChannels, gc.nChannels, prng.get<block>(), mk.keyStructure, mk.getSubkey(gc.current_node));
+    dprf.init(gc.current_node, m, n, gc.nChannels, gc.nChannels, prng.get<block>(), mk.keyStructure, mk.getSubkey(gc.current_node));
     std::cout << "Line 121="  << std::endl;
     enc.init(gc.current_node, prng.get<block>(), &dprf);
     std::cout << "Line 123="  << std::endl;

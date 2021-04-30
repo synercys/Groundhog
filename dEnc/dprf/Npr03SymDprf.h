@@ -99,6 +99,7 @@ namespace dEnc {
         void init(
             u64 partyIdx,
             u64 m,
+            u64 n,
             span<Channel> requestChls,
             span<Channel> listenChls,
             block seed,
