@@ -258,8 +258,22 @@ namespace dEnc {
         ae.get = [this, w = std::move(w)]() mutable ->std::vector<block> 
         {
             // block until all of the OPRF output shares have arrived.
+
             for (u64 i = 0; i < mM - 1; ++i)
-                w->async[i].get();
+            {
+                auto timeout = std::chrono::milliseconds(300); 
+                if( w->async[i].valid() and w->async[i].wait_for(timeout) == std::future_status::ready)
+                {
+                    // std::cout << "get logic comes here "<< std::endl;
+                    try{
+                            w->async[i].get();
+                    }
+                    catch(const std::exception& e)
+                    {
+                        // std::cerr << e.what() << '\n';
+                    }
+                }
+            }
 
             // XOR all of the output shares
             std::vector<block> ret{ w->fx[0] };
@@ -441,7 +455,7 @@ namespace dEnc {
 
             // closing the channel is done by sending a single byte.
 		    for (auto& c : mRequestChls){
-                std::cout << "closing connection" << std::endl;
+                // std::cout << "closing connection" << std::endl;
                 c.asyncSendCopy(close, 1);
             }
                 
