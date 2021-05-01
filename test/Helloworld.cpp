@@ -144,7 +144,7 @@ int main(int argc, char** argv) {
     auto mc = cmd.get<i64>("mc");
 
     auto m = std::max<u64>(2, (mc == -1) ? n * mFrac : mc);
-    m = 4;
+    m = 6;
 
     if (m > n)
     {
