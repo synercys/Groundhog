@@ -440,8 +440,12 @@ namespace dEnc {
 		    close[0] = 0;
 
             // closing the channel is done by sending a single byte.
-		    for (auto& c : mRequestChls)
-			    c.asyncSendCopy(close, 1);
+		    for (auto& c : mRequestChls){
+                std::cout << "closing connection" << std::endl;
+                c.asyncSendCopy(close, 1);
+            }
+                
+			   
 
         }
 	}
