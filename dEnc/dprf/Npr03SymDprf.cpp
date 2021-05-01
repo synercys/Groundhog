@@ -251,7 +251,9 @@ namespace dEnc {
 
         // Send the OPRF input to the next m-1 parties
 		//auto end = mPartyIdx + mM;
+
         auto end = mPartyIdx + mN;
+        end = std::min(end, mM+1);
 		for (u64 i = mPartyIdx + 1; i < end; ++i)
 		{
 			auto c = i % mN;
@@ -281,7 +283,7 @@ namespace dEnc {
 
         };
         // allocate space to store the OPRF output shares
-        auto w = std::make_shared<State>(mN);
+        auto w = std::make_shared<State>(end);
 
         // Futures which allow us to block until the repsonces have 
         // been receivednjdwn
@@ -316,7 +318,7 @@ namespace dEnc {
         {
             std::vector<int> share_index;
             // block until all of the OPRF output shares have arrived.
-            for (u64 i = 0; i < mN - 1; ++i){
+            for (u64 i = 0; i < w->async.size() ; ++i){
                 auto timeout = std::chrono::milliseconds(300); 
                 if( w->async[i].valid() and w->async[i].wait_for(timeout) == std::future_status::ready)
                 {

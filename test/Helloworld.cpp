@@ -19,7 +19,7 @@ bool eq(span<block> a, span<block>b)
 };
 
 
-static const std::vector<std::string> ips {"172.31.42.227","172.31.37.209","172.31.36.13","172.31.46.44"};
+static const std::vector<std::string> ips {"172.31.42.227","172.31.37.209","172.31.36.13","172.31.46.44","172.31.38.184", "172.31.37.243", "172.31.47.75", "172.31.34.105", "172.31.33.244", "172.31.38.99", "172.31.41.60", "172.31.45.247"};
 
 void try_connect(u64 n, IOService *ios)
 {
@@ -115,7 +115,7 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     IOService ios;
     GroupChannel gc(ips, n, ios);
 
-    std::cout << "asymclient" << std::endl;
+    // std::cout << "asymclient" << std::endl;
     oc::block seed;
     if(gc.current_node == 0)
     {
