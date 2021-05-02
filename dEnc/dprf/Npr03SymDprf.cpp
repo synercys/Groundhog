@@ -253,7 +253,7 @@ namespace dEnc {
 		//auto end = mPartyIdx + mM;
 
         auto end = mPartyIdx + mN;
-        end = std::min(end, mM+1);
+        end = std::min(end, mM+4);
 		for (u64 i = mPartyIdx + 1; i < end; ++i)
 		{
 			auto c = i % mN;
