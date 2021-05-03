@@ -119,7 +119,7 @@ int main(int argc, char** argv) {
     u64 n = ips.size();
     // getLatency(ips, n);
 
-    u64 t = 300000;
+    u64 t = 100000;
     u64 b = 128;
     u64 a = 1024 / b;
     cmd.setDefault("t", t);
@@ -144,7 +144,7 @@ int main(int argc, char** argv) {
     auto mc = cmd.get<i64>("mc");
 
     auto m = std::max<u64>(2, (mc == -1) ? n * mFrac : mc);
-    m =9;
+    m =12;
 
     if (m > n)
     {
