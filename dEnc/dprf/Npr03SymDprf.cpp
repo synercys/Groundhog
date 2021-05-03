@@ -5,6 +5,7 @@
 #include <cryptoTools/Common/BitVector.h>
 #include <cryptoTools/Common/MatrixView.h>
 #include <algorithm>
+#include <time.h>
 namespace dEnc {
 
 
@@ -253,7 +254,7 @@ namespace dEnc {
 		//auto end = mPartyIdx + mM;
 
         auto end = mPartyIdx + mN;
-        end = std::min(end, mM+2);
+        end = std::min(end, mM+4);
 		for (u64 i = mPartyIdx + 1; i < end; ++i)
 		{
 			auto c = i % mN;
@@ -329,7 +330,7 @@ namespace dEnc {
                     }
                     catch(const std::exception& e){
                         // std::cerr << e.what() << '\n';
-                        send_index.insert({i,number_of_encryptions});
+                        send_index.insert({i,time(0)+25});
                     }
                     // if(share_index.size()>= mM){
                     //     break;
@@ -338,7 +339,7 @@ namespace dEnc {
                    
                 }
                 else{
-                        send_index.insert({i,number_of_encryptions});
+                        send_index.insert({i,time(0)+25});
                 }
             }
 
@@ -358,7 +359,7 @@ namespace dEnc {
             {
                 // std::cout << "Line  : re-established connection : " << i << std::endl;
                 int i = x.first;
-                if(number_of_encryptions - x.second >= 120000){
+                if(x.second == time(0)){
                         mRequestChls[i] = reconnectChannel(mRequestChls[i]);
                         // std::cout << "re-established connection : " << i << std::endl;
                         mListenChls[i].cancel();
@@ -369,7 +370,7 @@ namespace dEnc {
             for(int i : elementsToRemove) {
                     send_index.erase(i);
             }
-            ++number_of_encryptions;
+            // ++number_of_encryptions;
             return (ret);
         };
       

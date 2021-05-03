@@ -178,7 +178,7 @@ namespace dEnc {
 
         std::map<int, int> send_index;
 
-        int number_of_encryptions=0;
+        // int number_of_encryptions=0;
 
 
 
