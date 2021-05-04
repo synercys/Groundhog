@@ -40,10 +40,10 @@ class GroupChannel {
                     continue;
                 } else {   
                     //connect as a server
-                    std::string sessionHint = std::to_string(current_node)+"_"+std::to_string(i);
+                    // std::string sessionHint = std::to_string(current_node)+"_"+std::to_string(i);
                     // std::cout << sessionHint << std::endl;
-                    nSessions[i].start(ios, ip, SessionMode::Server, sessionHint);
-                    Channel serverChl = nSessions[i].addChannel(sessionHint);
+                    nSessions[i].start(ios, ip, SessionMode::Server);
+                    Channel serverChl = nSessions[i].addChannel();
                     // std::chrono::milliseconds timeout(1000000000000);
                     // serverChl.waitForConnection(timeout);
                     nChannels.push_back(serverChl);
