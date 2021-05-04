@@ -2,6 +2,7 @@
 #include <vector>
 #include <cryptoTools/Crypto/AES.h>
 #include "dEnc/Defines.h"
+#include "sse2neon.h"
 
 namespace dEnc
 {

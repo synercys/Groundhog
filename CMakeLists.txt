@@ -12,7 +12,7 @@ set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/lib)
 #            Flag and #defines              #
 #############################################
 add_definitions(-DSOLUTION_DIR=\"${CMAKE_SOURCE_DIR}\")
-set(CMAKE_C_FLAGS "-ffunction-sections -Wall -Wno-strict-aliasing  -maes -msse2 -msse4.1 -mpclmul -Wno-sign-compare -Wfatal-errors -pthread")
+set(CMAKE_C_FLAGS "-ffunction-sections -Wall -Wno-strict-aliasing  -Wno-sign-compare -Wfatal-errors -pthread")
 set(CMAKE_CXX_FLAGS  "${CMAKE_C_FLAGS}  -std=c++14 -Wno-ignored-attributes")
 
 # Set a default build type for single-configuration
@@ -52,7 +52,7 @@ SET(CMAKE_CXX_FLAGS_DEBUG  "-O0 -g3 -ggdb -rdynamic")
 include_directories("${CMAKE_SOURCE_DIR}")
 
 # default location for libOTe
-set(CRYPTOTOOLS_DIR "${CMAKE_SOURCE_DIR}/../cryptoTools/" CACHE STRING "location of cryptoTools root")
+set(CRYPTOTOOLS_DIR "${CMAKE_SOURCE_DIR}/../cryptoTools" CACHE STRING "location of cryptoTools root")
 
 # default location for Boost
 set(BOOST_ROOT "${CRYPTOTOOLS_DIR}/thirdparty/linux/boost/" CACHE STRING "location of Boost root")
