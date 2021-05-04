@@ -12,8 +12,15 @@ set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/lib)
 #            Flag and #defines              #
 #############################################
 add_definitions(-DSOLUTION_DIR=\"${CMAKE_SOURCE_DIR}\")
+<<<<<<< HEAD
 set(CMAKE_C_FLAGS "-ffunction-sections -Wall -Wno-strict-aliasing  -Wno-sign-compare -Wfatal-errors -pthread")
 set(CMAKE_CXX_FLAGS  "${CMAKE_C_FLAGS}  -std=c++14 -Wno-ignored-attributes")
+=======
+set(CMAKE_C_FLAGS "-ffunction-sections -Wall  -Wno-strict-aliasing  -maes -msse2 -msse4.1 -mpclmul -Wno-sign-compare -Wfatal-errors -pthread")
+set(CMAKE_CXX_FLAGS  "${CMAKE_C_FLAGS} -std=c++14 -Wno-ignored-attributes")
+
+#
+>>>>>>> origin/serialserver
 
 # Set a default build type for single-configuration
 # CMake generators if no build type is set.

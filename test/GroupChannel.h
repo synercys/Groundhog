@@ -31,30 +31,30 @@ class GroupChannel {
             nChannels.push_back(clientChl);
             
             
-            // for(int i = 0; i < n ; i++) {
-            //     if (i < current_node) {
-            //         //connect as a client
-            //         std::string sessionHint = std::to_string(i)+"_"+std::to_string(current_node);
-            //         nSessions[i].start(ios, ips[i], SessionMode::Client, sessionHint);
-            //         Channel clientChl = nSessions[i].addChannel();
-            //         // std::chrono::milliseconds timeout(10000000);
-            //         // clientChl.waitForConnection(timeout);
-            //         nChannels.push_back(clientChl);
+            for(int i = 0; i < n ; i++) {
+                if (i < current_node) {
+                    //connect as a client
+                    std::string sessionHint = std::to_string(i)+"_"+std::to_string(current_node); 
+                    nSessions[i].start(ios, ips[i], SessionMode::Client,sessionHint);
+                    Channel clientChl = nSessions[i].addChannel(sessionHint);
+                    std::chrono::milliseconds timeout(10000000);
+                    clientChl.waitForConnection(timeout);
+                    nChannels.push_back(clientChl);
            
 
-            //     } else if (i == current_node) {
-            //         // Channel dummyChl;
-            //         // nChannels.push_back(dummyChl);
-            //         continue;
-            //     } else {   
-            //         //connect as a server
-            //         std::string sessionHint = std::to_string(current_node)+"_"+std::to_string(i);
-            //         nSessions[i].start(ios, ip, SessionMode::Server, sessionHint);
-                    
-            //         Channel serverChl = nSessions[i].addChannel();
-            //         std::chrono::milliseconds timeout(1000000000000);
-            //         serverChl.waitForConnection(timeout);
-            //         nChannels.push_back(serverChl);
+                } else if (i == current_node) {
+                    // Channel dummyChl;
+                    // nChannels.push_back(dummyChl);
+                    continue;
+                } else {   
+                    //connect as a server
+                    std::string sessionHint = std::to_string(current_node)+"_"+std::to_string(i);
+                    // std::cout << sessionHint << std::endl;
+                    nSessions[i].start(ios, ip, SessionMode::Server, sessionHint);
+                    Channel serverChl = nSessions[i].addChannel(sessionHint);
+                    // std::chrono::milliseconds timeout(1000000000000);
+                    // serverChl.waitForConnection(timeout);
+                    nChannels.push_back(serverChl);
 
             //     }
             // }
@@ -74,15 +74,39 @@ class GroupChannel {
             return nSessions[nodeIdx];
         }
 
-        Channel& reconnectChannel(u64 nodeIdx, Channel old, IOService& ios,std::string ip)
+        Channel& connectasClient(std::string ip, IOService& ios, u64 nodeIdx)
         {
-            
-            Session client(ios, ip, SessionMode::Client);
-            Channel clientChl = client.addChannel();
+            nSessions[nodeIdx].stop();
+            nSessions[nodeIdx].start(ios, ip, SessionMode::Client);
+            Channel clientChl = nSessions[nodeIdx].addChannel();
             std::chrono::milliseconds timeout(10000000);
             clientChl.waitForConnection(timeout);
-            std::replace(nChannels.begin(), nChannels.end(),old, clientChl);
-            return clientChl;
+            std::replace(nChannels.begin(), nChannels.end(), getChannel(nodeIdx), clientChl);
+            return clientChl;    
+
+        }
+
+        Channel& connectasServer(std::string ip, IOService& ios, u64 nodeIdx)
+        {
+            nSessions[nodeIdx].stop();
+            nSessions[nodeIdx].start(ios, ip, SessionMode::Server);
+            Channel serverChl = nSessions[nodeIdx].addChannel();
+            std::chrono::milliseconds timeout(1000000000000);
+            serverChl.waitForConnection(timeout);
+            std::replace(nChannels.begin(), nChannels.end(), getChannel(nodeIdx), serverChl);
+            return serverChl;
+        }
+
+
+        Channel& reconnectChannel(u64 nodeIdx, IOService& ios,std::string ip)
+        {
+            
+            if (nodeIdx < current_node) {
+                    return connectasClient(ip, ios, nodeIdx);
+                } 
+            else{   
+                   return connectasServer(ip, ios, nodeIdx);
+                }
 
         }
 };

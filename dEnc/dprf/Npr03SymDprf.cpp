@@ -1,8 +1,11 @@
 #include "Npr03SymDprf.h"
 #include <boost/math/special_functions/binomial.hpp>
-#include <cryptoTools/Network/Channel.h>
+#include <cryptoTools/Common/config.h>
+#include <cryptoTools/Common/Defines.h>
 #include <cryptoTools/Common/BitVector.h>
 #include <cryptoTools/Common/MatrixView.h>
+#include <algorithm>
+#include <time.h>
 namespace dEnc {
 
 
@@ -98,9 +101,8 @@ namespace dEnc {
 	void Npr03SymDprf::init(
 		u64 partyIdx,
 		u64 m,
-        u64 n,
-		span<Channel> requestChls,
-		span<Channel> listenChls,
+		std::vector<Channel> requestChls,
+		std::vector<Channel> listenChls,
 		block seed,
         oc::Matrix<u64>& keyStructure,
         span<block> keys)
@@ -201,8 +203,7 @@ namespace dEnc {
 		mListenChls[chlIdx].asyncSend(std::move(fx));
         }
         catch(const std::exception& e){
-                        std::cerr << e.what() << "Line203" << '\n';
-                        // mListenChls[i] = reconnectChannel( mListenChls[i]);
+                        std::cerr << e.what() << '\n';
                     }
 	}
 
@@ -239,7 +240,7 @@ namespace dEnc {
         }
 
     return ip;
-    }   
+}
 
     Channel reconnectChannel(Channel& chl)
     {
@@ -250,9 +251,8 @@ namespace dEnc {
         std::string sessionHint = chl.getName();
         session.start(chl.getSession().getIOService(),ip,osuCrypto::SessionMode::Server, sessionHint);
         Channel serverChl = session.addChannel(sessionHint);
-        std::chrono::milliseconds timeout(10);
-        serverChl.waitForConnection(timeout);
-        std::cout << "Line 238: returning channel" << std::endl;
+        // std::chrono::milliseconds timeout(1);
+        // serverChl.waitForConnection(timeout);
         return serverChl;
     }
 
@@ -261,21 +261,26 @@ namespace dEnc {
         TODO("Add support for sending the party identity for allowing encryption to be distinguished from decryption. ");
 
         // Send the OPRF input to the next m-1 parties
-		auto end = mPartyIdx + mM;
+		//auto end = mPartyIdx + mM;
+
+        auto end = mPartyIdx + mN;
+        end = std::min(end, mM+4);
 		for (u64 i = mPartyIdx + 1; i < end; ++i)
 		{
 			auto c = i % mN;
 			if (c > mPartyIdx) --c;
-
-			mRequestChls[c].asyncSendCopy(&input, 1);
+            try
+            {
+                mRequestChls[c].asyncSendCopy(&input, 1);
+            }
+            catch(const std::exception& e)
+            {
+                // std::cerr << e.what() << '\n';
+            }
+            
+			
 		}
 
-
-        // Set up the completion callback "AsyncEval".
-        // This object holds a function that is called when 
-        // the user wants to async eval to complete. This involves
-        // receiving the OPRF output shares from the other parties
-        // and combining them with the local share.
 		AsyncEval ae;
 
         struct State
@@ -289,18 +294,18 @@ namespace dEnc {
 
         };
         // allocate space to store the OPRF output shares
-        auto w = std::make_shared<State>(mM);
+        auto w = std::make_shared<State>(end);
 
         // Futures which allow us to block until the repsonces have 
-        // been received
+        // been receivednjdwn
 
 
         // Evaluate the local OPRF output share.
         std::vector<block> buff(mDefaultKeys[mPartyIdx].mAESs.size());
         mDefaultKeys[mPartyIdx].ecbEncBlock(input, buff.data());
-
+         
         // store this share at the end of fx
-		auto& b = w->fx.back();
+		auto& b = w-> fx.back();
         b = oc::ZeroBlock;
 		for (u64 i = 0; i < buff.size(); ++i)
 			b = b ^ buff[i];
@@ -310,45 +315,75 @@ namespace dEnc {
 		{
 			auto c = i % mN;
 			if (c > mPartyIdx) --c;
-
             try{
-			w->async[j] = mRequestChls[c].asyncRecv(&w->fx[j], 1);
+                w->async[j] = mRequestChls[c].asyncRecv(&w->fx[j], 1);
             }
-            catch(const std::exception& e){
-                        std::cerr << e.what() << "Line311" << '\n';
-                        // mListenChls[i] = reconnectChannel( mListenChls[i]);
-                    }
+            catch(const std::exception& e)
+            {
+                // std::cerr << e.what() << '\n';
+            }
 		}
-
         // This function is called when the user wants the actual 
         // OPRF output. It must combine the OPRF output shares
         ae.get = [this, w = std::move(w)]() mutable ->std::vector<block> 
         {
+            std::vector<int> share_index;
             // block until all of the OPRF output shares have arrived.
-
-            for (u64 i = 0; i < mM - 1; ++i)
-            {
+            for (u64 i = 0; i < w->async.size() ; ++i){
                 auto timeout = std::chrono::milliseconds(300); 
                 if( w->async[i].valid() and w->async[i].wait_for(timeout) == std::future_status::ready)
                 {
                     // std::cout << "get logic comes here "<< std::endl;
                     try{
-                            w->async[i].get();
+                        w->async[i].get();
+                        share_index.push_back(i);
                     }
-                    catch(const std::exception& e)
-                    {
+                    catch(const std::exception& e){
                         // std::cerr << e.what() << '\n';
+                        send_index.insert({i,time(0)+25});
                     }
+                    // if(share_index.size()>= mM){
+                    //     break;
+                    // }
+                        
+                   
+                }
+                else{
+                        send_index.insert({i,time(0)+25});
                 }
             }
 
-            // XOR all of the output shares
-            std::vector<block> ret{ w->fx[0] };
-            for (u64 i = 1; i < mM; ++i)
-                ret[0] = ret[0] ^ w->fx[i];
+            // std::cout << "shares " << shares << std::endl;
 
+            if(share_index.size() < mM-1){
+                throw std::runtime_error(LOCATION);
+            }
+
+            //XOR all of the output shares
+            std::vector<block> ret{ w->fx[0] };
+            for(int i : share_index) {
+                ret[0] = ret[0] ^ w->fx[i];
+            }
+            std::vector<int> elementsToRemove;
+            for(auto x : send_index) 
+            {
+                // std::cout << "Line  : re-established connection : " << i << std::endl;
+                int i = x.first;
+                if(x.second == time(0)){
+                        mRequestChls[i] = reconnectChannel(mRequestChls[i]);
+                        // std::cout << "re-established connection : " << i << std::endl;
+                        mListenChls[i].cancel();
+                        mListenChls[i] = mRequestChls[i];
+                        elementsToRemove.push_back(i);
+                }
+            }
+            for(int i : elementsToRemove) {
+                    send_index.erase(i);
+            }
+            // ++number_of_encryptions;
             return (ret);
         };
+      
 		return ae;
 	}
 
