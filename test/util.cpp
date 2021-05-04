@@ -23,7 +23,7 @@ std::string exec(const char* cmd) {
 }
 
 std::string getIP() {
-    std::string result = exec("ifconfig");
+    std::string result = exec("ifconfig wlan0");
     std::istringstream iss(result);
     std::vector<std::string> tokens{std::istream_iterator<std::string>{iss}, std::istream_iterator<std::string>{}};
 
