@@ -11,7 +11,7 @@
 
 using namespace osuCrypto;
 
-static const std::vector<std::string> ips {"10.0.0.228","10.0.0.6", "10.0.0.204", "10.0.0.135"};
+static const std::vector<std::string> ips {"10.0.0.228","10.0.0.6", "10.0.0.204", "10.0.0.135", "10.0.0.198", "10.0.0.231"};
 
 
 void writeSeed(oc::block seed, std::string stateFileName) 
