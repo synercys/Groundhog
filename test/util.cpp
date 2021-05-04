@@ -99,8 +99,14 @@ void senderGetLatency(Channel& chl)
 
 	for (u64 j = 0; j < (1 << 10); ++j)
 	{
+        try{
 		chl.asyncRecv(oneMbit.data(), oneMbit.size());
 		chl.asyncSend(oneMbit.data(), oneMbit.size());
+        }
+        catch(const std::exception& e){
+                        std::cerr << e.what() << "util" << '\n';
+                        // mListenChls[i] = reconnectChannel( mListenChls[i]);
+                    }
 	}
 
 	chl.recv(dummy, 1);
@@ -151,8 +157,15 @@ void recverGetLatency(Channel& chl)
 	recvStart = timer.setTimePoint("");
 	for (u64 j = 0; j < (1 << 10); ++j)
 	{
+        try{
 		f = chl.asyncRecv(oneMbit.data(), oneMbit.size());
 		chl.asyncSend(oneMbit.data(), oneMbit.size());
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << "Line364" << '\n';
+            // mListenChls[i] = reconnectChannel( mListenChls[i]);
+        }
 	}
 	f.get();
 	recvEnd = timer.setTimePoint("");

@@ -357,7 +357,13 @@ namespace dEnc
 
             // Schedule the OPRF output to be recieved and store it
             // in row i-1 of w->buff2
+            try{
             w->asyncs[i - 1] = chl.asyncRecv(w->buff2[i - 1]);
+            }
+            catch(const std::exception& e){
+                        std::cerr << e.what() << "Line364" << '\n';
+                        // mListenChls[i] = reconnectChannel( mListenChls[i]);
+                    }
         }
 
         // Construct the completion event that is executed when the
@@ -467,7 +473,13 @@ namespace dEnc
 
                     // Eueue up another receive operation which will call 
                     // this callback when the request arrives.
+                    try{
                     mListenChls[i].asyncRecv(mRecvBuff[i], mServerListenCallbacks[i]);
+                    }
+                    catch(const std::exception& e){
+                        std::cerr << e.what() << "Line480" << '\n';
+                        // mListenChls[i] = reconnectChannel( mListenChls[i]);
+                    }
                 }
                 else
                 {
@@ -483,7 +495,13 @@ namespace dEnc
                 }
             };
 
+            try{
             mListenChls[i].asyncRecv(mRecvBuff[i], mServerListenCallbacks[i]);
+            }
+            catch(const std::exception& e){
+                        std::cerr << e.what() << "Line364" << '\n';
+                        // mListenChls[i] = reconnectChannel( mListenChls[i]);
+                    }
         }
     }
 

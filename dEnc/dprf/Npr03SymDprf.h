@@ -5,7 +5,8 @@
 #include <cryptoTools/Crypto/AES.h>
 #include <cryptoTools/Crypto/PRNG.h>
 #include <condition_variable>
-
+#include <cryptoTools/Network/Session.h>
+#include <cryptoTools/Network/IOService.h>
 #include "Dprf.h"
 #include "dEnc/tools/MultiKeyAES.h"
 
@@ -98,6 +99,7 @@ namespace dEnc {
         void init(
             u64 partyIdx,
             u64 m,
+            u64 n,
             span<Channel> requestChls,
             span<Channel> listenChls,
             block seed,
