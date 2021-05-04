@@ -117,7 +117,7 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     {
         auto& e = eps[i];
 
-        dprfs[i].init(i, m, n, e.mRequestChls, e.mListenChls, prng.get<block>(),mk.keyStructure, mk.getSubkey(i));
+        dprfs[i].init(i, m, e.mRequestChls, e.mListenChls, prng.get<block>(),mk.keyStructure, mk.getSubkey(i));
         encs[i].init(i, prng.get<block>(), &dprfs[i]);
     }
 

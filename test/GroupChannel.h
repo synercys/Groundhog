@@ -18,18 +18,10 @@ class GroupChannel {
         u64 current_node; // index of current node's ip in vector of ips
 
         GroupChannel(std::vector<std::string> ips, u64 n, IOService& ios) {
-            nSessions.resize(1);
+            nSessions.resize(n);
             
             std::string ip = getIP();
             current_node = getCurrNodeIdx(ips, ip);
-
-            std::string sessionHint = std::to_string(0)+"_"+std::to_string(current_node);
-            nSessions[0].start(ios, ips[0], SessionMode::Client, sessionHint);
-            Channel clientChl = nSessions[0].addChannel(sessionHint);
-            // std::chrono::milliseconds timeout(10000000);
-            // clientChl.waitForConnection(timeout);
-            nChannels.push_back(clientChl);
-            
             
             for(int i = 0; i < n ; i++) {
                 if (i < current_node) {
@@ -56,8 +48,8 @@ class GroupChannel {
                     // serverChl.waitForConnection(timeout);
                     nChannels.push_back(serverChl);
 
-            //     }
-            // }
+                }
+            }
         }
 
         Channel& getChannel(u64 nodeIdx) {

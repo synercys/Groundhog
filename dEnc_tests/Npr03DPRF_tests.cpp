@@ -42,7 +42,7 @@ void Npr03SymShDPRF_eval_test()
 
 	for (u64 i = 0; i < n; ++i)
 	{
-		dprfs[i].init(i, m, n, comms[i].mRequestChls, comms[i].mListenChls, oc::toBlock(i), mk.keyStructure, mk.getSubkey(i));
+		dprfs[i].init(i, m, comms[i].mRequestChls, comms[i].mListenChls, oc::toBlock(i), mk.keyStructure, mk.getSubkey(i));
 	}
 
 	std::vector<oc::AES> keys(dprfs[0].mD);

@@ -107,7 +107,7 @@ void AmmrSymClient_encDec_test()
 	{
 		auto& e = eps[i];
 
-        dprfs[i].init(i, m, n, e.mRequestChls, e.mListenChls, prng.get<block>(), mk.keyStructure, mk.getSubkey(i));
+        dprfs[i].init(i, m, e.mRequestChls, e.mListenChls, prng.get<block>(), mk.keyStructure, mk.getSubkey(i));
 		encs[i].init(i, prng.get<block>(), &dprfs[i]);
 	}
 
@@ -194,5 +194,4 @@ void AmmrAsymMalClient_encDec_test()
 
     test_ammr(trials, prng, n, encs);
 }
-
 

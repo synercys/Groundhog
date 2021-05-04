@@ -115,7 +115,7 @@ namespace dEnc {
         mIsClosed = false;
 
 		mM = m;
-		mN = n;
+		mN = mRequestChls.size() + 1;
 
         // Each subKey k_i will be distributed to subsetSize-out-of-n of the parties.
         auto subsetSize = mN - mM + 1;
@@ -124,27 +124,17 @@ namespace dEnc {
         mD = boost::math::binomial_coefficient<double>(mN, subsetSize);
 
 		mDefaultKeys.resize(mN);
-		// for (u64 i = mPartyIdx, j = 0; j < mM; ++j)
-		// {
-		// 	constructDefaultKeys(i, keyStructure, keys);
+		for (u64 i = mPartyIdx, j = 0; j < mM; ++j)
+		{
+			constructDefaultKeys(i, keyStructure, keys);
 
-        //     // i = i - 1 mod mN
-        //     // mathematical mod where i can not be negative
-		// 	i = i ? (i - 1) : mN - 1;
-		// }
+            // i = i - 1 mod mN
+            // mathematical mod where i can not be negative
+			i = i ? (i - 1) : mN - 1;
+		}
 
-        try{
-		    startListening();
-        }
-        catch(const std::exception& e)
-        {
-            std::cerr << e.what() << "error in listening"<<'\n';
-            // for(int i = 0; i < mListenChls.size(); i++)
-            // {
-            //     mListenChls[i] = reconnectChannel(mListenChls[i]);
-            // }
-            
-        }
+
+		startListening();
 	}
 
 	void Npr03SymDprf::serveOne(span<u8> rr, u64 chlIdx)
@@ -413,13 +403,7 @@ namespace dEnc {
 
             // This send is smart and will increment the ref count of
             // the shared pointer
-            try{
 			mRequestChls[c].asyncSend(state->in);
-            }
-            catch(const std::exception& e){
-                    std::cerr << e.what() << "Line370" << '\n';
-                    // mListenChls[i] = reconnectChannel( mListenChls[i]);
-                }
 		}
 
 		auto numKeys = mDefaultKeys[mPartyIdx].mAESs.size();
@@ -454,13 +438,7 @@ namespace dEnc {
 			auto c = i % mN;
 			if (c > mPartyIdx) --c;
 
-            try{
 			state->async[j] = mRequestChls[c].asyncRecv(fx[j]);
-            }
-            catch(const std::exception& e){
-                        std::cerr << e.what() << "Line399" << '\n';
-                        // mListenChls[i] = reconnectChannel( mListenChls[i]);
-                    }
 		}
 
         // construct the completion handler that is called when the user wants to 
@@ -507,14 +485,7 @@ namespace dEnc {
 
                     // Eueue up another receive operation which will call 
                     // this callback when the request arrives.
-                    try{
-					    mListenChls[i].asyncRecv(mRecvBuff[i], mServerListenCallbacks[i]);
-                    }
-                    catch(const std::exception& e){
-                        std::cerr << e.what() << '\n';
-                        mListenChls[i] = reconnectChannel( mListenChls[i]);
-                    }
-                    
+					mListenChls[i].asyncRecv(mRecvBuff[i], mServerListenCallbacks[i]);
 				}
 				else
 				{
@@ -530,13 +501,7 @@ namespace dEnc {
 				}
 			};
 
-            try{
-			        mListenChls[i].asyncRecv(mRecvBuff[i], mServerListenCallbacks[i]);
-            }
-            catch(const std::exception& e){
-                        std::cerr << e.what() << '\n';
-                        mListenChls[i] = reconnectChannel( mListenChls[i]);
-                    }
+			mListenChls[i].asyncRecv(mRecvBuff[i], mServerListenCallbacks[i]);
 		}
 	}
 
@@ -582,13 +547,7 @@ namespace dEnc {
 
             // closing the channel is done by sending a single byte.
 		    for (auto& c : mRequestChls)
-                try{
 			    c.asyncSendCopy(close, 1);
-                }
-                catch(const std::exception& e){
-                        std::cerr << e.what() << '\n';
-                        // mListenChls[i] = reconnectChannel( mListenChls[i]);
-                    }
 
         }
 	}
