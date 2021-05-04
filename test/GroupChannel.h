@@ -8,7 +8,6 @@
 #include "util.h"
 #include <algorithm>
 
-
 using namespace osuCrypto;
 
 class GroupChannel {
