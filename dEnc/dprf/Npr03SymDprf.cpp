@@ -261,7 +261,7 @@ namespace dEnc {
 
             for (u64 i = 0; i < mM - 1; ++i)
             {
-                auto timeout = std::chrono::milliseconds(300); 
+                auto timeout = std::chrono::milliseconds(3000); 
                 if( w->async[i].valid() and w->async[i].wait_for(timeout) == std::future_status::ready)
                 {
                     // std::cout << "get logic comes here "<< std::endl;

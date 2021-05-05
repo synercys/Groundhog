@@ -11,7 +11,7 @@
 
 using namespace osuCrypto;
 
-static const std::vector<std::string> ips {"172.31.8.98", "172.31.45.217", "172.31.41.196", "172.31.37.196", "172.31.36.162", "172.31.35.132"};
+static const std::vector<std::string> ips {"10.0.0.228","10.0.0.6", "10.0.0.204", "10.0.0.135", "10.0.0.198", "10.0.0.231"};
 
 
 template<typename DPRF>
@@ -144,7 +144,7 @@ int main(int argc, char** argv) {
     auto mc = cmd.get<i64>("mc");
 
     auto m = std::max<u64>(2, (mc == -1) ? n * mFrac : mc);
-    m =16;
+    m =2;
 
     if (m > n)
     {
