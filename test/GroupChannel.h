@@ -22,6 +22,7 @@ class GroupChannel {
             
             std::string ip = getIP();
             current_node = getCurrNodeIdx(ips, ip);
+            // std::cout << current_node << std::endl;
             
             for(int i = 0; i < n ; i++) {
                 if (i < current_node) {

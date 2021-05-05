@@ -254,7 +254,7 @@ namespace dEnc {
 		//auto end = mPartyIdx + mM;
 
         auto end = mPartyIdx + mN;
-        end = std::min(end, mM+4);
+        end = std::min(end, mM+2);;
 		for (u64 i = mPartyIdx + 1; i < end; ++i)
 		{
 			auto c = i % mN;
@@ -320,7 +320,7 @@ namespace dEnc {
             std::vector<int> share_index;
             // block until all of the OPRF output shares have arrived.
             for (u64 i = 0; i < w->async.size() ; ++i){
-                auto timeout = std::chrono::milliseconds(300); 
+                auto timeout = std::chrono::milliseconds(2300); 
                 if( w->async[i].valid() and w->async[i].wait_for(timeout) == std::future_status::ready)
                 {
                     // std::cout << "get logic comes here "<< std::endl;
@@ -330,7 +330,7 @@ namespace dEnc {
                     }
                     catch(const std::exception& e){
                         // std::cerr << e.what() << '\n';
-                        send_index.insert({i,time(0)+25});
+                        send_index.insert({i,time(0)+20});
                     }
                     // if(share_index.size()>= mM){
                     //     break;
@@ -339,7 +339,7 @@ namespace dEnc {
                    
                 }
                 else{
-                        send_index.insert({i,time(0)+25});
+                        send_index.insert({i,time(0)+20});
                 }
             }
 

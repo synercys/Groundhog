@@ -19,7 +19,7 @@ bool eq(span<block> a, span<block>b)
 };
 
 
-static const std::vector<std::string> ips {"10.0.0.228","10.0.0.6", "10.0.0.204", "10.0.0.135"};
+static const std::vector<std::string> ips {"10.0.0.228","10.0.0.6", "10.0.0.204", "10.0.0.135", "10.0.0.198", "10.0.0.231"};
 
 void try_connect(u64 n, IOService *ios)
 {
@@ -172,7 +172,7 @@ int main(int argc, char** argv)
     u64 n = ips.size();
     //getLatency(ips, n);
 
-    u64 t = 10000;
+    u64 t = 2000;
     u64 b = 128;
     u64 a = 1024 / b;
     cmd.setDefault("t", t);
@@ -197,7 +197,7 @@ int main(int argc, char** argv)
     auto mc = cmd.get<i64>("mc");
 
     auto m = std::max<u64>(2, (mc == -1) ? n * mFrac : mc);
-    m = 2;
+    m = 4;
 
     if (m > n)
     {

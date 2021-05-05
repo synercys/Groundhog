@@ -23,7 +23,7 @@ std::string exec(const char* cmd) {
 }
 
 std::string getIP() {
-    std::string result = exec("ifconfig");
+    std::string result = exec("ifconfig wlan0");
     std::istringstream iss(result);
     std::vector<std::string> tokens{std::istream_iterator<std::string>{iss}, std::istream_iterator<std::string>{}};
 
@@ -41,6 +41,7 @@ std::string getIP() {
 u64 getCurrNodeIdx(std::vector<std::string> ips, std::string ip) {
     u64 current_node = -1;
     for (int i = 0; i < ips.size(); i++) {
+        // std::cout << ips[i] << ip << std::endl;
         if (ips[i].compare(ip) == 0) {
             current_node = i;
             break;  
