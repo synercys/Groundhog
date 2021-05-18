@@ -8,11 +8,14 @@
 #include "RandomNodePicker.h"
 #include "util.h"
 #include <time.h>
+#include "commonvar.h"
 
 
 using namespace osuCrypto;
 
 static const std::vector<std::string> ips {"10.0.0.228","10.0.0.6", "10.0.0.204", "10.0.0.135", "10.0.0.198", "10.0.0.231"};
+std::vector<u64> sequence;
+time_t start;
 
 
 template<typename DPRF>
@@ -80,10 +83,11 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     mk.KeyGen(n, m, prng);
 
     RandomNodePicker nodePicker(n);
-    auto start = time(0);
+    sequence = nodePicker.generators[0].second;
+    start = time(0);
 
     // initialize the DPRF and the encrypters
-    dprf.init(gc.current_node, m, start, nodePicker.generators[0].second, gc.nChannels, gc.nChannels, prng.get<block>(), mk.keyStructure, mk.getSubkey(gc.current_node));
+    dprf.init(gc.current_node, m, gc.nChannels, gc.nChannels, prng.get<block>(), mk.keyStructure, mk.getSubkey(gc.current_node));
     enc.init(gc.current_node, prng.get<block>(), &dprf);
     
     // Perform the benchmark.                                          

@@ -1,5 +1,4 @@
 #include "AmmrClient_tests.h"
-#include <RandomNodePicker.h>
 #include <dEnc/distEnc/AmmrClient.h>
 #include <dEnc/dprf/Npr03SymDprf.h>
 #include <dEnc/dprf/Npr03AsymDprf.h>
@@ -9,7 +8,6 @@
 #include <cryptoTools/Network/Endpoint.h>
 #include <cryptoTools/Network/Channel.h>
 #include <dEnc/tools/GroupChannel.h>
-#include <time.h>
 
 using namespace dEnc;
 
@@ -104,14 +102,12 @@ void AmmrSymClient_encDec_test()
     Npr03SymDprf::MasterKey mk;
     mk.KeyGen(n, m, prng);
 
-    RandomNodePicker nodePicker(n);
-    auto start = time(0);
 
 	for (u64 i = 0; i < n; ++i)
 	{
 		auto& e = eps[i];
 
-        dprfs[i].init(i, m, start, nodePicker.generators[0].second, e.mRequestChls, e.mListenChls, prng.get<block>(), mk.keyStructure, mk.getSubkey(i));
+        dprfs[i].init(i, m, e.mRequestChls, e.mListenChls, prng.get<block>(), mk.keyStructure, mk.getSubkey(i));
 		encs[i].init(i, prng.get<block>(), &dprfs[i]);
 	}
 

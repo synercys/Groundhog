@@ -5,7 +5,7 @@
 #include <cryptoTools/Crypto/AES.h>
 #include <cryptoTools/Crypto/PRNG.h>
 #include <condition_variable>
-
+#include <test/commonvar.h>
 #include "Dprf.h"
 #include "dEnc/tools/MultiKeyAES.h"
 
@@ -98,8 +98,6 @@ namespace dEnc {
         void init(
             u64 partyIdx,
             u64 m,
-            time_t st,
-            std::vector<u64> seq,
             span<Channel> requestChls,
             span<Channel> listenChls,
             block seed,
@@ -176,9 +174,6 @@ namespace dEnc {
         // Channels that the servers should listen to for DPRF requests.
         std::vector<Channel> mListenChls;
 
-        std::vector<u64> sequence;
-
-        time_t start;
     };
 
 }

@@ -112,15 +112,13 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     Npr03SymDprf::MasterKey mk;
     mk.KeyGen(n, m, prng);
 
-    RandomNodePicker nodePicker(n);
-    auto start = time(0);
 
     // initialize the DPRF and the encrypters
     for (u64 i = 0; i < n; ++i)
     {
         auto& e = eps[i];
 
-        dprfs[i].init(i, m, start, nodePicker.generators[0].second,  e.mRequestChls, e.mListenChls, prng.get<block>(),mk.keyStructure, mk.getSubkey(i));
+        dprfs[i].init(i, m, e.mRequestChls, e.mListenChls, prng.get<block>(),mk.keyStructure, mk.getSubkey(i));
         encs[i].init(i, prng.get<block>(), &dprfs[i]);
     }
 
