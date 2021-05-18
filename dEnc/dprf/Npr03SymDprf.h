@@ -98,6 +98,8 @@ namespace dEnc {
         void init(
             u64 partyIdx,
             u64 m,
+            time_t st,
+            std::vector<u64> seq,
             span<Channel> requestChls,
             span<Channel> listenChls,
             block seed,
@@ -173,6 +175,10 @@ namespace dEnc {
 
         // Channels that the servers should listen to for DPRF requests.
         std::vector<Channel> mListenChls;
+
+        std::vector<u64> sequence;
+
+        time_t start;
     };
 
 }

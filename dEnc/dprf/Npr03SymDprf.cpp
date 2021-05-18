@@ -98,6 +98,8 @@ namespace dEnc {
 	void Npr03SymDprf::init(
 		u64 partyIdx,
 		u64 m,
+        time_t st,
+        std::vector<u64> seq,
 		span<Channel> requestChls,
 		span<Channel> listenChls,
 		block seed,
@@ -113,6 +115,8 @@ namespace dEnc {
 
 		mM = m;
 		mN = mRequestChls.size() + 1;
+        sequence = seq;
+        start = st;
 
         // Each subKey k_i will be distributed to subsetSize-out-of-n of the parties.
         auto subsetSize = mN - mM + 1;
@@ -208,6 +212,7 @@ namespace dEnc {
 
 			mRequestChls[c].asyncSendCopy(&input, 1);
 		}
+
 
 
         // Set up the completion callback "AsyncEval".

@@ -3,7 +3,7 @@
 #include <dEnc/Defines.h>
 #include <bits/stdc++.h>
 
-using namespace osuCrypto;
+using namespace dEnc;
 
 
 class RandomNodePicker {

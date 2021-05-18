@@ -7,6 +7,7 @@
 #include "GroupChannel.h"
 #include "RandomNodePicker.h"
 #include "util.h"
+#include <time.h>
 
 
 using namespace osuCrypto;
@@ -50,6 +51,8 @@ void eval(dEnc::AmmrClient<DPRF>& enc, u64 n, u64 m, u64 blockCount, u64 batch, 
 void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 numAsync, u64 batch, bool lat)
 {
     // set up the networking
+    
+
     IOService ios;
     GroupChannel gc(ips, n, ios);
 
@@ -76,8 +79,11 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     dEnc::Npr03SymDprf::MasterKey mk;
     mk.KeyGen(n, m, prng);
 
+    RandomNodePicker nodePicker(n);
+    auto start = time(0);
+
     // initialize the DPRF and the encrypters
-    dprf.init(gc.current_node, m, gc.nChannels, gc.nChannels, prng.get<block>(), mk.keyStructure, mk.getSubkey(gc.current_node));
+    dprf.init(gc.current_node, m, start, nodePicker.generators[0].second, gc.nChannels, gc.nChannels, prng.get<block>(), mk.keyStructure, mk.getSubkey(gc.current_node));
     enc.init(gc.current_node, prng.get<block>(), &dprf);
     
     // Perform the benchmark.                                          

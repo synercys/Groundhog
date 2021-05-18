@@ -7,7 +7,7 @@
 #include <cryptoTools/Network/IOService.h>
 #include <cryptoTools/Network/Endpoint.h>
 #include <cryptoTools/Network/Channel.h>
-
+#include <RandomNodePicker.h>
 #include <dEnc/tools/GroupChannel.h>
 
 using namespace dEnc;
@@ -40,9 +40,12 @@ void Npr03SymShDPRF_eval_test()
     Npr03SymDprf::MasterKey mk;
     mk.KeyGen(n, m, prng);
 
+	RandomNodePicker nodePicker(n);
+	auto start = time(0);
+
 	for (u64 i = 0; i < n; ++i)
 	{
-		dprfs[i].init(i, m, comms[i].mRequestChls, comms[i].mListenChls, oc::toBlock(i), mk.keyStructure, mk.getSubkey(i));
+		dprfs[i].init(i, m, start, nodePicker.generators[0].second, comms[i].mRequestChls, comms[i].mListenChls, oc::toBlock(i), mk.keyStructure, mk.getSubkey(i));
 	}
 
 	std::vector<oc::AES> keys(dprfs[0].mD);
