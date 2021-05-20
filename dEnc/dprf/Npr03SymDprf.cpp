@@ -3,6 +3,19 @@
 
 #include <cryptoTools/Common/BitVector.h>
 #include <cryptoTools/Common/MatrixView.h>
+#include<test/RandomNodePicker.h>
+
+
+time_t start = time(0);
+int total = 4;
+int threshold= 2;
+int rebootTime = 30;
+int attackTIme = 60;
+int mIntervals = std::max(1,(int) floor(attackTIme/rebootTime));
+RandomNodePicker nodePicker(total);
+std::vector<u64> sequence = nodePicker.generators[0].second;
+int subsetSize = (int) ceil(threshold/mIntervals);
+
 namespace dEnc {
 
 
@@ -116,7 +129,7 @@ namespace dEnc {
 
         // Each subKey k_i will be distributed to subsetSize-out-of-n of the parties.
         auto subsetSize = mN - mM + 1;
-        
+    
         // the totak number of k_i
         mD = boost::math::binomial_coefficient<double>(mN, subsetSize);
 
@@ -199,15 +212,81 @@ namespace dEnc {
 	{
         TODO("Add support for sending the party identity for allowing encryption to be distinguished from decryption. ");
 
-        // Send the OPRF input to the next m-1 parties
-		auto end = mPartyIdx + mM;
-		for (u64 i = mPartyIdx + 1; i < end; ++i)
-		{
-			auto c = i % mN;
-			if (c > mPartyIdx) --c;
+        // std::cout << "subset size: " << subsetSize << "mIntervals: " << mIntervals << std::endl;
+        int difference = time(0) - start;
+        int currentSlot =  (int) floor(difference/ rebootTime);
+        //  std::cout << "current slot: " << currentSlot << std::endl;
+        std::vector<u64> live;
+        int first_index;
 
-			mRequestChls[c].asyncSendCopy(&input, 1);
-		}
+        if(mM >= mIntervals) 
+        {
+            first_index = (int) ((currentSlot * subsetSize ) % mN);
+            // std::cout << "first_index: " << first_index << std::endl;
+        }
+        else
+        {
+            first_index = (int) (((currentSlot / mM)* subsetSize) % mN);
+        }
+        if(first_index >= mM)
+        {
+            for (int i = (first_index - mM); i < first_index; i++)
+           {
+               if(sequence[i] != 0)
+               {
+                    live.push_back(sequence[i] - 1);
+               }
+           }
+        }
+        else{
+
+            for(int i = 0; i< first_index; i++)
+            {
+                if(sequence[i] != 0)
+                {
+                    live.push_back(sequence[i] - 1);
+                }
+            }
+
+            for(int i = (mN -(mM-first_index)); i < mN; i++)
+            {
+                if(sequence[i] != 0)
+                {
+                    live.push_back(sequence[i] - 1);
+                }
+            }
+        }
+
+        // for(auto x: live)
+        // {
+        //     std::cout << "live nodes: "<< x << ", " ;
+        // }
+        // std::cout << std::endl;
+        
+
+
+
+        // Send the OPRF input to the next m-1 parties
+		// auto end = mPartyIdx + mN;
+		// for (u64 i = mPartyIdx + 1; i < end; ++i)
+		// {
+		// 	auto c = i % mN;
+		// 	if (c > mPartyIdx) --c;
+
+        //     std::cout << c << std::endl;
+
+		// 	// mRequestChls[c].asyncSendCopy(&input, 1);
+		// }
+
+
+        for(int i =0; i<live.size(); i++)
+        {
+            // std::cout<< live[i] <<  mRequestChls[live[i]] << std::endl;
+            if(live[i] != 0)
+            {
+                mRequestChls[live[i]].asyncSendCopy(&input, 1);
+            }
+        }
 
 
         // Set up the completion callback "AsyncEval".
@@ -245,12 +324,10 @@ namespace dEnc {
 			b = b ^ buff[i];
 
         // queue up the receive operations to receive the OPRF output shares
-		for (u64 i = mPartyIdx + 1, j = 0; j < w->async.size(); ++i, ++j)
+		for (u64 j = 0; j < w->async.size(); ++j)
 		{
-			auto c = i % mN;
-			if (c > mPartyIdx) --c;
 
-			w->async[j] = mRequestChls[c].asyncRecv(&w->fx[j], 1);
+			w->async[j] = mRequestChls[live[j]].asyncRecv(&w->fx[j], 1);
 		}
 
         // This function is called when the user wants the actual 

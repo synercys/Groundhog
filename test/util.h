@@ -17,8 +17,5 @@ std::string getIP();
 
 u64 getCurrNodeIdx(std::vector<std::string> ips, std::string ip);
 
-bool isPrime(u64 n);
-
-u64 findNextPrime(u64 n);
 
 u64 rangeRand(u64 range_from, u64 range_to);

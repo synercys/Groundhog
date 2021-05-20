@@ -9,9 +9,11 @@
 #include "util.h"
 
 
+
 using namespace osuCrypto;
 
 static const std::vector<std::string> ips {"172.31.42.227","172.31.37.209","172.31.36.13","172.31.46.44" };
+
 
 
 template<typename DPRF>
@@ -91,6 +93,7 @@ int main(int argc, char** argv) {
     CLP cmd;
     cmd.parse(argc, argv);
 
+    
     // u64 n = cmd.get<u64>("n");
     // RandomNodePicker nodePicker(n);
     // std::cout << "Generators for n=" << n << " are " << std::endl;
@@ -118,6 +121,8 @@ int main(int argc, char** argv) {
 
     u64 n = ips.size();
     // getLatency(ips, n);
+    
+
 
     u64 t = 100000;
     u64 b = 128;
