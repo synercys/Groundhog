@@ -104,7 +104,7 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     mk.KeyGen(n, m, prng);
 
     // initialize the DPRF and the encrypters
-    dprf.init(gc.current_node, m, gc.nChannels, gc.nChannels, prng.get<block>(), mk.keyStructure, mk.getSubkey(gc.current_node));
+    dprf.init(gc.current_node, m, n, gc.nChannels, gc.nChannels, prng.get<block>(), mk.keyStructure, mk.getSubkey(gc.current_node));
     enc.init(gc.current_node, prng.get<block>(), &dprf);
     
     // Perform the benchmark.                                          

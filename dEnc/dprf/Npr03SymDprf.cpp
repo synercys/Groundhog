@@ -98,6 +98,7 @@ namespace dEnc {
 	void Npr03SymDprf::init(
 		u64 partyIdx,
 		u64 m,
+        u64 n,
 		span<Channel> requestChls,
 		span<Channel> listenChls,
 		block seed,
@@ -112,7 +113,7 @@ namespace dEnc {
         mIsClosed = false;
 
 		mM = m;
-		mN = mRequestChls.size() + 1;
+		mN = n;
 
         // Each subKey k_i will be distributed to subsetSize-out-of-n of the parties.
         auto subsetSize = mN - mM + 1;
