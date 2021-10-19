@@ -35,9 +35,9 @@ $BUILD_DIR/dise/
 Note: This project works on a specific commit for cryptotools-
 We can execute the following in the $BUILD_DIR/cryptoTools/ 
 
-'''
+```
 git checkout 851e388f8301a7e20aaa6ca5f5a57d609c2b8158
-'''
+```
 
 ### Part 2: Build and install Relic              
 
@@ -48,10 +48,6 @@ cmake . -D MULTI=PTHREAD
 make -j
 sudo make install
 ```
-
-On windows you can build relic with `-D MULTI=OPENMP`.
-
-Note, you can install to a non-sudo location by calling `make DESTDIR=<path/to/install> install`
 
 
 ### Part 3: build boost and cryptoTools          
@@ -74,12 +70,13 @@ make -j
 
 ### To run Baseline:
 We can run this setup with a minimum of 3 devices setup as given above. 
-'''
+```
 cd $BUILD_DIR/dise/
 git checkout 913a6fdd57e4b5e775fb69c8a5c551402f5f18b2
-'''
+```
 
 For now the ips of the 3 nodes are set here : https://github.com/disha-agarwal/dise/blob/913a6fdd57e4b5e775fb69c8a5c551402f5f18b2/test/Helloworld.cpp#L14 
-Ips of the n nodes should be set in  $BUILD_DIR/dise/test/Helloworld.cpp. (refer to the link above).
+Ips of the n nodes should be set in  
+```$BUILD_DIR/dise/test/Helloworld.cpp (refer to the link above)```.
  
 To Run- `./bin/test`
