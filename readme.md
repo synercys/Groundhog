@@ -21,7 +21,7 @@ sudo make install
 ### Part 1: clone the dependencies               
 Set the parent directory that we will build in
 ```
-git clone https://github.com/visa/dise.git
+git clone https://github.com/disha-agarwal/dise.git
 git clone https://github.com/relic-toolkit/relic.git
 git clone https://github.com/ladnir/cryptoTools
 ```
