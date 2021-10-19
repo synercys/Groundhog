@@ -75,7 +75,9 @@ cd $BUILD_DIR/dise/
 git checkout 913a6fdd57e4b5e775fb69c8a5c551402f5f18b2
 ```
 
-For now the ips of the 3 nodes are set here : https://github.com/disha-agarwal/dise/blob/913a6fdd57e4b5e775fb69c8a5c551402f5f18b2/test/Helloworld.cpp#L14 
+For now the ips of the 3 nodes are set here : https://github.com/disha-agarwal/dise/blob/913a6fdd57e4b5e775fb69c8a5c551402f5f18b2/test/Helloworld.cpp#L14 .
+
+
 Ips of the n nodes should be set in  
 ```$BUILD_DIR/dise/test/Helloworld.cpp (refer to the link above)```.
  
