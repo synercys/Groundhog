@@ -1,13 +1,22 @@
-# DiSE
-
-This repository contains the reference implementation of [DiSE: Distributed Symmetric-key Encryption](https://eprint.iacr.org/2018/727). This is only a proof of concept implementation and should not be considered production grade. Use at your own risk. 
-
-Threshold cryptography provides a mechanism for protecting secret keys by sharing them among multiple parties, who then jointly perform cryptographic operations. An attacker who corrupts upto a threshold number of parties cannot recover the secrets or violate security. Prior works in this space have mostly focused on definitions and constructions for public-key cryptography and digital signatures, and thus do not capture the security concerns and efficiency challenges of symmetric-key based applications which commonly use long-term (unprotected) master keys to protect data at rest, authenticate clients on enterprise networks, and secure data and payments on IoT devices.
-
-We propose a generic construction of threshold authenticated encryption based on any distributed pseudorandom function (DPRF). When instantiated with the two different DPRF constructions proposed by Naor, Pinkas and Reingold (Eurocrypt 1999) and our enhanced versions, we obtain several efficient constructions meeting different security definitions. We implement these variants and provide extensive performance comparisons. Our most efficient instantiation uses only symmetric-key primitives and achieves a throughput of upto 1 million encryptions/decryptions per seconds, or alternatively a sub-millisecond latency with upto 18 participating parties.
-
+# htDiSE
+'
+```
+sudo apt-get update
+sudo apt-get install build-essential
+sudo apt-get install libssl-dev
+```
 
 ## Build Instructions
+This project works for a particular cmake version. Instructions for installing is as follows :
+
+```
+wget https://github.com/Kitware/CMake/releases/download/v3.18.5/cmake-3.18.5.tar.gz
+tar -xf cmake-3.18.5.tar.gz
+cd cmake-3.18.5
+./bootstrap
+make -j 4
+sudo make install 
+```
 
 ### Part 1: clone the dependencies               
 Set the parent directory that we will build in
