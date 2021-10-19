@@ -60,9 +60,10 @@ make -j
 ```
 
 
-### Part 4: build DiSE                           
+### Part 4: build htDiSE                         
 ```
 cd ../dise
+git checkout 913a6fdd57e4b5e775fb69c8a5c551402f5f18b2
 cmake .
 make -j
 ```
@@ -70,11 +71,6 @@ make -j
 
 ### To run Baseline:
 We can run this setup with a minimum of 3 devices setup as given above. 
-```
-cd $BUILD_DIR/dise/
-git checkout 913a6fdd57e4b5e775fb69c8a5c551402f5f18b2
-```
-
 For now the ips of the 3 nodes are set here : https://github.com/disha-agarwal/dise/blob/913a6fdd57e4b5e775fb69c8a5c551402f5f18b2/test/Helloworld.cpp#L14 .
 
 
