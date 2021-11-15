@@ -55,7 +55,7 @@ include_directories("${CMAKE_SOURCE_DIR}")
 set(CRYPTOTOOLS_DIR "${CMAKE_SOURCE_DIR}/../cryptoTools/" CACHE STRING "location of cryptoTools root")
 
 # default location for Boost
-set(BOOST_ROOT "${CRYPTOTOOLS_DIR}/thirdparty/linux/boost/" CACHE STRING "location of Boost root")
+find_package(Boost 1.69 REQUIRED COMPONENTS system thread)
 
 message(STATUS "Option: CRYPTOTOOLS_DIR  = ${CRYPTOTOOLS_DIR}")
 message(STATUS "Option: BOOST_ROOT       = ${BOOST_ROOT}")

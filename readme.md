@@ -1,80 +1,79 @@
 # htDiSE
-'
-```
-sudo apt-get update
-sudo apt-get install build-essential
-sudo apt-get install libssl-dev
-```
 
 ## Build Instructions
-This project works for a particular cmake version. Instructions for installing is as follows :
 
+Run [setup.sh](Setup.sh) on a recent Debian-based distro, or follow these equivalent instructions manually:
+
+### System Setup
+
+If using Ubuntu, clear out some unneeded services that slow down booting:
+
+```sh
+sudo apt -y purge snapd lxd cloud-init apparmor
+sudo apt -y autoremove
 ```
-wget https://github.com/Kitware/CMake/releases/download/v3.18.5/cmake-3.18.5.tar.gz
-tar -xf cmake-3.18.5.tar.gz
-cd cmake-3.18.5
+
+Update the system and install important build dependencies
+
+```sh
+sudo apt -y update
+sudo apt -y upgrade
+sudo apt -y install build-essential libssl-dev python-is-python3
+```
+
+Choose the directory where everything will be cloned and built:
+
+```sh
+PRJ_DIR = "${HOME}/Redise"
+mkdir -p "$PRJ_DIR"
+```
+
+### Get Recent `cmake`
+
+Next, we'll need a newer version of `cmake` than what's in the repositories.
+So let's download, build, and install it:
+
+```sh
+cd "PRJ_DIR"
+CMAKE_V=3.21.4 # tested functional, most recent stable
+wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_V}/cmake-${CMAKE_V}.tar.gz
+tar -xf cmake-${CMAKE_V}.tar.gz
+cd cmake-${CMAKE_V}
 ./bootstrap
-make -j 4
-sudo make install 
-```
-
-### Part 1: clone the dependencies               
-Set the parent directory that we will build in
-```
-git clone https://github.com/disha-agarwal/dise.git
-git clone https://github.com/relic-toolkit/relic.git
-git clone https://github.com/ladnir/cryptoTools
-```
-
-We require the code has the following structure 
-```
-$BUILD_DIR/cryptoTools/
-$BUILD_DIR/dise/
-```
-
-Note: This project works on a specific commit for cryptotools-
-We can execute the following in the $BUILD_DIR/cryptoTools/ 
-
-```
-git checkout 851e388f8301a7e20aaa6ca5f5a57d609c2b8158
-```
-
-### Part 2: Build and install Relic              
-
-```
-cd relic
-
-cmake . -D MULTI=PTHREAD
-make -j
+make -j `nproc`
 sudo make install
 ```
 
+### Install cryptoTools (and Boost and Relic)
 
-### Part 3: build boost and cryptoTools          
-```
-cd ../cryptoTools/thirdparty/linux
-bash boost.get
-cd ../..
-cmake . -D ENABLE_RELIC=ON 
-make -j
+This project depends on [cryptoTools](https://github.com/ladnir/cryptoTools), so we need to build it (with `cmake) from source:
+
+```sh
+cd "PRJ_DIR"
+git clone https://github.com/ladnir/cryptoTools
+cd cryptoTools
+git checkout ca471904c3c49ee4ae6101efcbb22869337e3b7e # up to date
+python build.py --setup --boost --relic
+python build.py -- -D ENABLE_RELIC=ON
+python build.py --install --sudo
 ```
 
+### Build HTDiSE
 
-### Part 4: build htDiSE                         
-```
-cd ../dise
-git checkout 913a6fdd57e4b5e775fb69c8a5c551402f5f18b2
+And now we can build this project!
+
+```sh
+cd "PRJ_DIR"
+git clone https://github.com/disha-agarwal/dise.git
+cd dise
 cmake .
-make -j
+make -j `nproc`
 ```
 
+Finally, test that everything worked correctly with `./bin/dEncFrontend -u`.
 
 ### To run Baseline:
-We can run this setup with a minimum of 3 devices setup as given above. 
-For now the ips of the 3 nodes are set here : https://github.com/disha-agarwal/dise/blob/913a6fdd57e4b5e775fb69c8a5c551402f5f18b2/test/Helloworld.cpp#L14 .
+We can run this setup with a minimum of 3 devices setup as given above.
+For now the IPs of the 3 nodes are set in [test/Helloworld.cpp](test/Helloworld.cpp#L14) on line 14.
 
-
-Ips of the n nodes should be set in  
-```$BUILD_DIR/dise/test/Helloworld.cpp (refer to the link above)```.
- 
-To Run- `./bin/test`
+Then on each device, run `./bin/test`.
