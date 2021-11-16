@@ -1,0 +1,13 @@
+.dockerignore
+.gitignore
+.git
+Dockerfile
+readme.md
+Setup.sh
+
+bin
+lib
+CMakeFiles
+CMakeCache.txt
+cmake_install.cmake
+
