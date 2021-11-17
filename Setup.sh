@@ -13,7 +13,7 @@ sudo apt -y install git build-essential libssl-dev python-is-python3
 #apk add git gcc g++ make cmake python3 bash linux-headers openssl-dev
 
 # Set the directory where everything will be cloned and built
-PRJ_DIR = "${HOME}/Redise"
+PRJ_DIR="${HOME}/Redise"
 mkdir -p "$PRJ_DIR"
 
 
