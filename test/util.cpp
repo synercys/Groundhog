@@ -23,19 +23,10 @@ std::string exec(const char* cmd) {
 }
 
 std::string getIP() {
-    std::string result = exec("ifconfig");
-    std::istringstream iss(result);
-    std::vector<std::string> tokens{std::istream_iterator<std::string>{iss}, std::istream_iterator<std::string>{}};
-
-    std::string ip;
-    for(int i=0; i< tokens.size(); i++) {
-        if(tokens[i].compare("inet") == 0) {
-            ip = tokens[i+1];
-            break;
-        } 
-    }
-
-    return ip;
+    std::string result = exec("hostname -i");
+    // `hostname -i` requires that the  machine can resolve its own hostname
+    result.pop_back(); // remove trailing newline
+    return result;
 }
 
 u64 getCurrNodeIdx(std::vector<std::string> ips, std::string ip) {

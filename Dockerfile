@@ -14,7 +14,9 @@ RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-d
  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
 
 # Install HTDiSE
+#RUN apk add gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev
 COPY . ./dise
+#RUN echo temp! \
 RUN apk add gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev \
  && cd dise \
  && cmake . \

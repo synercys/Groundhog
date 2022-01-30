@@ -22,6 +22,10 @@ class GroupChannel {
             
             std::string ip = getIP();
             current_node = getCurrNodeIdx(ips, ip);
+            if (current_node >= n) {
+                std::cout << "My IP is " << ip << ", but I couldn't find it in the list of node IPs" << std::endl;
+            } else
+                std::cout << "My ip is " << ip << ", my idx is " << current_node << std::endl;
             
             for(int i = 0; i < n ; i++) {
                 if (i < current_node) {
@@ -47,6 +51,21 @@ class GroupChannel {
                     nChannels.push_back(serverChl);
 
                 }
+                /*
+                std::cout << "setting up idx " << i << ", mine is " << current_node << std::endl;
+                if (i == current_node) {
+                    std::cout << "my idx is " << i << std::endl;
+                    continue;
+                }
+                if (i < current_node)
+                    nSessions[i].start(ios, ips[i], SessionMode::Client);
+                else
+                    nSessions[i].start(ios, my_ip+":8080", SessionMode::Server);
+                
+                Channel newChannel = nSessions[i].addChannel();
+                std::chrono::milliseconds timeout(1000 * 1000);
+                newChannel.waitForConnection(timeout);
+                nChannels.push_back(newChannel);*/
             }
         }
 
@@ -63,7 +82,7 @@ class GroupChannel {
         Session& getSession(u64 nodeIdx) {
             return nSessions[nodeIdx];
         }
-
+/*
         Channel& reconnectChannel(u64 nodeIdx, Channel old, IOService& ios,std::string ip)
         {
             
@@ -74,5 +93,5 @@ class GroupChannel {
             std::replace(nChannels.begin(), nChannels.end(),old, clientChl);
             return clientChl;
 
-        }
+        }*/
 };
