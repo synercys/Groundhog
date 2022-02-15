@@ -3,13 +3,13 @@ version: '2'
 services:
   node:
     build: .
-    image: gabrielkulp/htdise:latest
+    image: htdise:latest
     restart: "no"
-    command: /usr/local/bin/test -n 10 -mc ${MC} -t 4
-    scale: 10
+    command: /usr/local/bin/test -n 5 -mc 4 -t 5
+    scale: 5
+    build: .
     networks:
       dise-net:
-#        ipv4_address: 10.0.10.0
 
 networks:
   dise-net:

@@ -53,7 +53,7 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
 {
     // set up the networking
     IOService ios;
-    ios.showErrorMessages(false);
+    //ios.showErrorMessages(false);
     GroupChannel gc(ips, n, ios);
 
     oc::block seed;
@@ -63,11 +63,11 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
         seed = sysRandomSeed();
         for (u64 i = 1; i < n; i++)
         {
-            gc.getChannel(i).send(seed);
+            gc.nRecvChannels[i].send(seed);
         }
     } else 
     {
-        gc.getChannel(0).recv(seed);
+        gc.nSendChannels[0].recv(seed);
         std::cout << "Seed is " << seed << std::endl;
     }
 
@@ -81,7 +81,7 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     mk.KeyGen(n, m, prng);
 
     // initialize the DPRF and the encrypters
-    dprf.init(gc.current_node, m, gc.nChannels, gc.nChannels, prng.get<block>(), mk.keyStructure, mk.getSubkey(gc.current_node));
+    dprf.init(gc.current_node, m, gc.nSendChannels, gc.nRecvChannels, prng.get<block>(), mk.keyStructure, mk.getSubkey(gc.current_node));
     enc.init(gc.current_node, prng.get<block>(), &dprf);
     
     sleep(1);

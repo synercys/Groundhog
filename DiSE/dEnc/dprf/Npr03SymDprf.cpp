@@ -1,20 +1,21 @@
 #include "Npr03SymDprf.h"
 #include <boost/math/special_functions/binomial.hpp>
 
+#include <cryptoTools/Network/Channel.h>
 #include <cryptoTools/Common/BitVector.h>
 #include <cryptoTools/Common/MatrixView.h>
 namespace dEnc {
 
 
-	Npr03SymDprf::~Npr03SymDprf()
-	{
+    Npr03SymDprf::~Npr03SymDprf()
+    {
         close();
 
         // if we have started listening to the network, then 
         // wait for the server callbacks to complete.
-		if (mServerListenCallbacks.size())
-			mServerDone.get();
-	}
+        if (mServerListenCallbacks.size())
+            mServerDone.get();
+    }
 
 
 
@@ -95,24 +96,24 @@ namespace dEnc {
 
 
 
-	void Npr03SymDprf::init(
-		u64 partyIdx,
-		u64 m,
-		span<Channel> requestChls,
-		span<Channel> listenChls,
-		block seed,
+    void Npr03SymDprf::init(
+        u64 partyIdx,
+        u64 m,
+        span<Channel> requestChls,
+        span<Channel> listenChls,
+        block seed,
         oc::Matrix<u64>& keyStructure,
         span<block> keys)
-	{
+    {
 
-		mPartyIdx = partyIdx;
-		mRequestChls = { requestChls.begin(), requestChls.end() };
-		mListenChls = { listenChls.begin(), listenChls.end() };
-		mPrng.SetSeed(seed);
+        mPartyIdx = partyIdx;
+        mRequestChls = { requestChls.begin(), requestChls.end() };
+        mListenChls = { listenChls.begin(), listenChls.end() };
+        mPrng.SetSeed(seed);
         mIsClosed = false;
 
-		mM = m;
-		mN = mRequestChls.size() + 1;
+        mM = m;
+        mN = mRequestChls.size() + 1;
 
         // Each subKey k_i will be distributed to subsetSize-out-of-n of the parties.
         auto subsetSize = mN - mM + 1;
@@ -120,22 +121,22 @@ namespace dEnc {
         // the totak number of k_i
         mD = boost::math::binomial_coefficient<double>(mN, subsetSize);
 
-		mDefaultKeys.resize(mN);
-		for (u64 i = mPartyIdx, j = 0; j < mM; ++j)
-		{
-			constructDefaultKeys(i, keyStructure, keys);
+        mDefaultKeys.resize(mN);
+        for (u64 i = mPartyIdx, j = 0; j < mM; ++j)
+        {
+            constructDefaultKeys(i, keyStructure, keys);
 
             // i = i - 1 mod mN
             // mathematical mod where i can not be negative
-			i = i ? (i - 1) : mN - 1;
-		}
+            i = i ? (i - 1) : mN - 1;
+        }
 
 
-		startListening();
-	}
+        startListening();
+    }
 
-	void Npr03SymDprf::serveOne(span<u8> rr, u64 chlIdx)
-	{
+    void Npr03SymDprf::serveOne(span<u8> rr, u64 chlIdx)
+    {
         TODO("Add support for allowing the request to specify which parties are involved in this evaluation. "
             "This can be done by sending a bit vector of the parties that contribute keys and then have this "
             "party figure out which keys to use in a similar way that constructDefaultKeys(...) does it.");
@@ -143,71 +144,71 @@ namespace dEnc {
         // Right now we only support allowing 16 bytes to be the OPRF input.
         // When a multiple is sent, this its interpreted as requesting 
         // several OPRF evaluations.
-		if(rr.size() % sizeof(block))
-			throw std::runtime_error(LOCATION);
+        if(rr.size() % sizeof(block))
+            throw std::runtime_error(LOCATION);
 
         // Get a view of the data as blocks.
-		span<block> request( (block*)rr.data(), rr.size() / sizeof(block) );
+        span<block> request( (block*)rr.data(), rr.size() / sizeof(block) );
 
         // a vector to hold the OPRF output shares.
-		std::vector<oc::block> fx(request.size());
+        std::vector<oc::block> fx(request.size());
 
         // compute the partyIdx based on the channel idx.
-		auto pIdx = chlIdx + (chlIdx >= mPartyIdx ? 1 : 0);
+        auto pIdx = chlIdx + (chlIdx >= mPartyIdx ? 1 : 0);
 
-		if (request.size() == 1)
-		{
+        if (request.size() == 1)
+        {
             // If only one OPRF input is used, we vectorize the AES evaluation
             // so that several keys are evaluated in parallel.
 
-			fx.resize(mDefaultKeys[pIdx].mAESs.size());
-			mDefaultKeys[pIdx].ecbEncBlock(request[0], fx.data());
+            fx.resize(mDefaultKeys[pIdx].mAESs.size());
+            mDefaultKeys[pIdx].ecbEncBlock(request[0], fx.data());
 
-			for (u64 j = 1; j < fx.size(); ++j)
-				fx[0] = fx[0] ^ fx[j];
+            for (u64 j = 1; j < fx.size(); ++j)
+                fx[0] = fx[0] ^ fx[j];
 
-			fx.resize(1);
-		}
-		else
-		{
+            fx.resize(1);
+        }
+        else
+        {
             // If several OPRF values are evaluated in parallel, then we apply a single key to several
             // OPRF inputs at a time. 
 
-			auto numKeys = mDefaultKeys[pIdx].mAESs.size();
-			std::vector<block> buff2(request.size());
-			for (u64 i = 0; i < numKeys; ++i)
-			{
-				mDefaultKeys[pIdx].mAESs[i].ecbEncBlocks(request.data(), request.size(), buff2.data());
-				for (u64 j = 0; j < request.size(); ++j)
-				{
-					fx[j] = fx[j] ^ buff2[j];
-				}
-			}
-		}
+            auto numKeys = mDefaultKeys[pIdx].mAESs.size();
+            std::vector<block> buff2(request.size());
+            for (u64 i = 0; i < numKeys; ++i)
+            {
+                mDefaultKeys[pIdx].mAESs[i].ecbEncBlocks(request.data(), request.size(), buff2.data());
+                for (u64 j = 0; j < request.size(); ++j)
+                {
+                    fx[j] = fx[j] ^ buff2[j];
+                }
+            }
+        }
 
         // send back the OPRF output share.
-		mListenChls[chlIdx].asyncSend(std::move(fx));
-	}
+        mListenChls[chlIdx].asyncSend(std::move(fx));
+    }
 
-	block Npr03SymDprf::eval(block input)
-	{
+    block Npr03SymDprf::eval(block input)
+    {
         // simply call the async version and then block for it to complete.
-		return asyncEval(input).get()[0];
-	}
+        return asyncEval(input).get()[0];
+    }
 
-	AsyncEval Npr03SymDprf::asyncEval(block input) // TODO: fix
-	{
+    AsyncEval Npr03SymDprf::asyncEval(block input) // TODO: fix
+    {
         TODO("Add support for sending the party identity for allowing encryption to be distinguished from decryption. ");
 
         // Send the OPRF input to the next m-1 parties
-		auto end = mPartyIdx + mM;
-		for (u64 i = mPartyIdx + 1; i < end; ++i)
-		{
-			auto c = i % mN;
-			if (c > mPartyIdx) --c;
+        auto end = mPartyIdx + mM;
+        for (u64 i = mPartyIdx + 1; i < end; ++i)
+        {
+            auto c = i % mN;
+            if (c > mPartyIdx) --c;
 
-			mRequestChls[c].asyncSendCopy(&input, 1);
-		}
+            mRequestChls[c].asyncSendCopy(&input, 1);
+        }
 
 
         // Set up the completion callback "AsyncEval".
@@ -215,7 +216,7 @@ namespace dEnc {
         // the user wants to async eval to complete. This involves
         // receiving the OPRF output shares from the other parties
         // and combining them with the local share.
-		AsyncEval ae;
+        AsyncEval ae;
 
         struct State
         {
@@ -223,7 +224,7 @@ namespace dEnc {
             :fx(m)
             ,async(m-1)
             {}
-		    std::vector<block> fx;
+            std::vector<block> fx;
             std::vector<std::future<void>> async;
 
         };
@@ -239,19 +240,28 @@ namespace dEnc {
         mDefaultKeys[mPartyIdx].ecbEncBlock(input, buff.data());
 
         // store this share at the end of fx
-		auto& b = w->fx.back();
+        auto& b = w->fx.back();
         b = oc::ZeroBlock;
-		for (u64 i = 0; i < buff.size(); ++i)
-			b = b ^ buff[i];
+        for (u64 i = 0; i < buff.size(); ++i)
+            b = b ^ buff[i];
 
         // queue up the receive operations to receive the OPRF output shares
-		for (u64 i = mPartyIdx + 1, j = 0; j < w->async.size(); ++i, ++j)
-		{
-			auto c = i % mN;
-			if (c > mPartyIdx) --c;
-
-			w->async[j] = mRequestChls[c].asyncRecv(&w->fx[j], 1);
-		}
+        for (u64 i = mPartyIdx + 1, j = 0; j < w->async.size(); ++i, ++j)
+        {
+            auto c = i % mN;
+            if (c > mPartyIdx) --c;
+            try
+            {
+                w->async[j] = mRequestChls[c].asyncRecv(&w->fx[j], 1);
+            }
+            catch(osuCrypto::BadReceiveBufferSize & e)
+            {
+                std::cout << "received only header from node " << c << std::endl;
+//                std::cout << "received: " << w->async[j].get() << std::endl;
+                std::cout << "trying to move on... " << i << std::endl;
+//                e.setBadRecvErrorState(osuCrypto::BadReceiveBufferSize.str());
+            }
+        }
 
         // This function is called when the user wants the actual 
         // OPRF output. It must combine the OPRF output shares
@@ -268,11 +278,11 @@ namespace dEnc {
 
             return (ret);
         };
-		return ae;
-	}
+        return ae;
+    }
 
-	AsyncEval Npr03SymDprf::asyncEval(span<block> in)
-	{
+    AsyncEval Npr03SymDprf::asyncEval(span<block> in)
+    {
         struct State
         {
             std::vector<block> out, in, fxx;
@@ -289,167 +299,167 @@ namespace dEnc {
         state->in.insert(state->in.end(), in.begin(), in.end());
 
         // send this input to all parties
-		auto end = mPartyIdx + mM;
-		for (u64 i = mPartyIdx + 1; i < end; ++i)
-		{
-			auto c = i % mN;
-			if (c > mPartyIdx) --c;
+        auto end = mPartyIdx + mM;
+        for (u64 i = mPartyIdx + 1; i < end; ++i)
+        {
+            auto c = i % mN;
+            if (c > mPartyIdx) --c;
 
             // This send is smart and will increment the ref count of
             // the shared pointer
-			mRequestChls[c].asyncSend(state->in);
-		}
+            mRequestChls[c].asyncSend(state->in);
+        }
 
-		auto numKeys = mDefaultKeys[mPartyIdx].mAESs.size();
+        auto numKeys = mDefaultKeys[mPartyIdx].mAESs.size();
 
         // evaluate the local OPRF output shares
-		std::vector<block> buff2(in.size());
-		for (u64 i = 0; i < numKeys; ++i)
-		{
-			mDefaultKeys[mPartyIdx].mAESs[i].ecbEncBlocks(in.data(), in.size(), buff2.data());
+        std::vector<block> buff2(in.size());
+        for (u64 i = 0; i < numKeys; ++i)
+        {
+            mDefaultKeys[mPartyIdx].mAESs[i].ecbEncBlocks(in.data(), in.size(), buff2.data());
             auto& out = state->out;
-			for (u64 j = 0; j < out.size(); ++j)
-			{
-				out[j] = out[j] ^ buff2[j];
-			}
-		}
+            for (u64 j = 0; j < out.size(); ++j)
+            {
+                out[j] = out[j] ^ buff2[j];
+            }
+        }
 
         // allocate space to store the other OPRF output shares
-		auto numRecv = (mM - 1);
+        auto numRecv = (mM - 1);
         state->fxx.resize(numRecv* in.size());
-		//auto fxx(new block[numRecv * in.size()]);
+        //auto fxx(new block[numRecv * in.size()]);
 
         // Each row of fx will hold a the OPRF output shares from one party
-		oc::MatrixView<block> fx(state->fxx.begin(), state->fxx.end(), in.size());
+        oc::MatrixView<block> fx(state->fxx.begin(), state->fxx.end(), in.size());
 
         // allocate space to store the futures which allow us to block until the
         // other OPRF output shares have arrived.
         state->async.reset(new std::future<void>[numRecv]);
 
         // schedule the receive operations for the other OPRF output shares.
-		for (u64 i = mPartyIdx + 1, j = 0; j < numRecv; ++i, ++j)
-		{
-			auto c = i % mN;
-			if (c > mPartyIdx) --c;
+        for (u64 i = mPartyIdx + 1, j = 0; j < numRecv; ++i, ++j)
+        {
+            auto c = i % mN;
+            if (c > mPartyIdx) --c;
 
-   			state->async[j] = mRequestChls[c].asyncRecv(fx[j]);
-		}
+               state->async[j] = mRequestChls[c].asyncRecv(fx[j]);
+        }
 
         // construct the completion handler that is called when the user wants to 
         // actual OPRF output. This requires blocking to receive the OPRF output
         // and then combining it.
-		AsyncEval ae;
-		ae.get = [state, numRecv, fx]() mutable -> std::vector<block>
-		{
+        AsyncEval ae;
+        ae.get = [state, numRecv, fx]() mutable -> std::vector<block>
+        {
             auto& o = state->out;
-			for (u64 i = 0; i < numRecv; ++i)
-			{
+            for (u64 i = 0; i < numRecv; ++i)
+            {
                 state->async[i].get();
 
-				auto buff2 = fx[i];
-				for (u64 j = 0; j < o.size(); ++j)
-				{
-					o[j] = o[j] ^ buff2[j];
-				}
-			}
-			return std::move(o);
-		};
+                auto buff2 = fx[i];
+                for (u64 j = 0; j < o.size(); ++j)
+                {
+                    o[j] = o[j] ^ buff2[j];
+                }
+            }
+            return std::move(o);
+        };
 
-		return ae;
-	}
+        return ae;
+    }
 
-	void Npr03SymDprf::startListening()
-	{
+    void Npr03SymDprf::startListening()
+    {
 
-		mRecvBuff.resize(mRequestChls.size());
-		mListens = mListenChls.size();
-		mServerListenCallbacks.resize(mListenChls.size());
+        mRecvBuff.resize(mRequestChls.size());
+        mListens = mListenChls.size();
+        mServerListenCallbacks.resize(mListenChls.size());
 
 
-		for (u64 i = 0; i < mListenChls.size(); ++i)
-		{
-			mServerListenCallbacks[i] = [&, i]()
-			{
-                std::cout << "Received buffer from " << i << " : 0x";
+        for (u64 i = 0; i < mListenChls.size(); ++i)
+        {
+            mServerListenCallbacks[i] = [&, i]()
+            {
+/*                std::cout << "Received buffer from " << i << " : 0x";
                 for (auto v: mRecvBuff)
                     for (auto c: v)
                         std::cout << std::hex << (int)c;
                 std::cout << std::endl;
-
+*/
                 // If the client sends more than one byte, interpret this
                 // as a request to evaluate the DPRF.
-				if (mRecvBuff[i].size() > 1)
-				{
+                if (mRecvBuff[i].size() > 1)
+                {
                     // Evaluate the DPRF and send the result back.
-					serveOne(mRecvBuff[i], i);
+                    serveOne(mRecvBuff[i], i);
 
                     // Eueue up another receive operation which will call 
                     // this callback when the request arrives.
-   					mListenChls[i].asyncRecv(mRecvBuff[i], mServerListenCallbacks[i]);
-				}
-				else
-				{
+                       mListenChls[i].asyncRecv(mRecvBuff[i], mServerListenCallbacks[i]);
+                }
+                else
+                {
                     // One byte means that the cleint is done requiresting 
                     // DPRf evaluations. We can close down.
-					if (--mListens == 0)
-					{
+                    if (--mListens == 0)
+                    {
                         // If this is the last callback to close, set
                         // the promise that denotes that the server
                         // callback loops have all completed.
-						mServerDoneProm.set_value();
-					}
-				}
-			};
+                        mServerDoneProm.set_value();
+                    }
+                }
+            };
 
-   			mListenChls[i].asyncRecv(mRecvBuff[i], mServerListenCallbacks[i]);
-		}
-	}
+               mListenChls[i].asyncRecv(mRecvBuff[i], mServerListenCallbacks[i]);
+        }
+    }
 
-	void Npr03SymDprf::constructDefaultKeys(u64 pIdx, oc::Matrix<u64>& mKeyIdxs, span<block> myKeys)
+    void Npr03SymDprf::constructDefaultKeys(u64 pIdx, oc::Matrix<u64>& mKeyIdxs, span<block> myKeys)
     {
         // Default keys are computed taking all the keys that party pIdx has
         // followed by all the missing keys party pIdx+1 has and so on.
 
         // A list indicating which keys have already been accounted for.
-		std::vector<u8> keyList(mD, 0);
-		auto p = pIdx;
+        std::vector<u8> keyList(mD, 0);
+        auto p = pIdx;
 
         // First lets figure out what keys are been provided 
         // by parties {pIdx, pIdx+1, ..., mPartyIdx-1} 
-		while (p != mPartyIdx)
-		{
-			for (u64 i = 0; i < myKeys.size(); ++i)
-				keyList[mKeyIdxs(p, i)] = 1;
+        while (p != mPartyIdx)
+        {
+            for (u64 i = 0; i < myKeys.size(); ++i)
+                keyList[mKeyIdxs(p, i)] = 1;
 
-			p = (p + 1) % mN;
-		}
+            p = (p + 1) % mN;
+        }
 
         // Now lets see if any remaining keys that this party can contribute.
-		std::vector<block> keys; keys.reserve(myKeys.size());
-		for (u64 j = 0; j < myKeys.size(); ++j)
-		{
-			if (keyList[mKeyIdxs(mPartyIdx, j)] == 0)
-				keys.push_back(myKeys[j]);
-		}
+        std::vector<block> keys; keys.reserve(myKeys.size());
+        for (u64 j = 0; j < myKeys.size(); ++j)
+        {
+            if (keyList[mKeyIdxs(mPartyIdx, j)] == 0)
+                keys.push_back(myKeys[j]);
+        }
 
         // initialize the "multi-key" AES instance with these keys.
-		mDefaultKeys[pIdx].setKeys(keys);
-	}
+        mDefaultKeys[pIdx].setKeys(keys);
+    }
 
-	void Npr03SymDprf::close()
-	{
+    void Npr03SymDprf::close()
+    {
         if (mIsClosed == false)
         {
             mIsClosed = true;
 
-		    u8 close[1];
-		    close[0] = 0;
+            u8 close[1];
+            close[0] = 0;
 
             // closing the channel is done by sending a single byte.
-		    for (auto& c : mRequestChls)
-			    c.asyncSendCopy(close, 1);
+            for (auto& c : mRequestChls)
+                c.asyncSendCopy(close, 1);
 
         }
-	}
+    }
 
 }

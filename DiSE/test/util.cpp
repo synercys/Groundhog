@@ -39,7 +39,7 @@ u64 getCurrNodeIdx(std::vector<std::string> ips, std::string ip) {
     }
     return current_node;
 }
-
+/*
 void getLatency(std::vector<std::string> ips, u64 n)
 {
     IOService ios;
@@ -68,7 +68,7 @@ void getLatency(std::vector<std::string> ips, u64 n)
         }
     }
 }
-
+*/
 void senderGetLatency(Channel& chl)
 {
     u8 dummy[1];
