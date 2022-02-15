@@ -2,10 +2,9 @@ FROM alpine:3.15
 WORKDIR /usr/local/src
 
 # Install cryptoTools
+COPY ./cryptoTools ./cryptoTools
 RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev \
- && git clone https://github.com/ladnir/cryptoTools \
  && cd cryptoTools \
- && git checkout 1f9d4708f96bdda5ecb1ac92b2005ffb567017b0 \
  && python3 build.py --setup --relic -DFETCH_BOOST=OFF \
  && python3 build.py -DENABLE_RELIC=ON \
  && python3 build.py --install \
@@ -14,16 +13,16 @@ RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-d
  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
 
 # Install HTDiSE
-#RUN apk add gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev
-COPY . ./dise
-#RUN echo temp! \
-RUN apk add gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev \
- && cd dise \
- && cmake . \
+RUN apk add gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev
+COPY ./DiSE ./DiSE
+#RUN apk add gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev \
+RUN echo temp! \
+ && cd DiSE \
+ && cmake . -Wno-dev \
  && make -j `nproc` \
  && cp -r bin /usr/local \
  && cd .. \
- && rm -rf dise \
+ && rm -rf DiSE \
  && apk del gcc g++ make cmake openssl-dev boost1.77-static boost1.77-dev libc-utils
 
 #boost1.77-thread boost1.77-system

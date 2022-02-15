@@ -6,8 +6,8 @@
 #include "Algorithm.h"
 #include "GroupChannel.h"
 #include "RandomNodePicker.h"
-#include "util.h"
-
+//#include "util.h"
+#include "unistd.h"
 
 using namespace osuCrypto;
 
@@ -32,8 +32,9 @@ void eval(dEnc::AmmrClient<DPRF>& enc, u64 n, u64 m, u64 blockCount, u64 batch, 
 
     // we are interested in latency and therefore we 
     // will only have one encryption in flight at a time.
-    for (u64 t = 0; t < trials; ++t) 
+    for (u64 t = 0; t < trials; ++t) {
         initiator.encrypt(data[0], ciphertext[0]);
+    }
 
     auto e = t.setTimePoint("end");
 
@@ -52,6 +53,7 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
 {
     // set up the networking
     IOService ios;
+    ios.showErrorMessages(false);
     GroupChannel gc(ips, n, ios);
 
     oc::block seed;
@@ -66,6 +68,7 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     } else 
     {
         gc.getChannel(0).recv(seed);
+        std::cout << "Seed is " << seed << std::endl;
     }
 
     // allocate the DPRFs and the encryptors
@@ -81,6 +84,8 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     dprf.init(gc.current_node, m, gc.nChannels, gc.nChannels, prng.get<block>(), mk.keyStructure, mk.getSubkey(gc.current_node));
     enc.init(gc.current_node, prng.get<block>(), &dprf);
     
+    sleep(1);
+
     // Perform the benchmark.
     if (gc.current_node == 0) {
         std::cout << "Key exchange done. Starting benchmark." << std::endl;

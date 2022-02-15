@@ -32,7 +32,14 @@ namespace dEnc
 		H.Final(alpha);
 
 		// eval DPRF(x)
-		auto fx = mDprf->eval(alpha);
+		block fx;
+		try {
+			fx = mDprf->eval(alpha);
+		}
+		catch(const std::exception& e)
+		{
+			std::cerr << "(AmmrClient mDprf->eval) " << e.what() << '\n';
+		}
 
 		// expend the DPRF to get a key and tag. This is a PRG (AES counter mode).
         oc::AES enc(fx);

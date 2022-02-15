@@ -195,7 +195,7 @@ namespace dEnc {
 		return asyncEval(input).get()[0];
 	}
 
-	AsyncEval Npr03SymDprf::asyncEval(block input)
+	AsyncEval Npr03SymDprf::asyncEval(block input) // TODO: fix
 	{
         TODO("Add support for sending the party identity for allowing encryption to be distinguished from decryption. ");
 
@@ -332,7 +332,7 @@ namespace dEnc {
 			auto c = i % mN;
 			if (c > mPartyIdx) --c;
 
-			state->async[j] = mRequestChls[c].asyncRecv(fx[j]);
+   			state->async[j] = mRequestChls[c].asyncRecv(fx[j]);
 		}
 
         // construct the completion handler that is called when the user wants to 
@@ -370,6 +370,12 @@ namespace dEnc {
 		{
 			mServerListenCallbacks[i] = [&, i]()
 			{
+                std::cout << "Received buffer from " << i << " : 0x";
+                for (auto v: mRecvBuff)
+                    for (auto c: v)
+                        std::cout << std::hex << (int)c;
+                std::cout << std::endl;
+
                 // If the client sends more than one byte, interpret this
                 // as a request to evaluate the DPRF.
 				if (mRecvBuff[i].size() > 1)
@@ -379,7 +385,7 @@ namespace dEnc {
 
                     // Eueue up another receive operation which will call 
                     // this callback when the request arrives.
-					mListenChls[i].asyncRecv(mRecvBuff[i], mServerListenCallbacks[i]);
+   					mListenChls[i].asyncRecv(mRecvBuff[i], mServerListenCallbacks[i]);
 				}
 				else
 				{
@@ -395,7 +401,7 @@ namespace dEnc {
 				}
 			};
 
-			mListenChls[i].asyncRecv(mRecvBuff[i], mServerListenCallbacks[i]);
+   			mListenChls[i].asyncRecv(mRecvBuff[i], mServerListenCallbacks[i]);
 		}
 	}
 

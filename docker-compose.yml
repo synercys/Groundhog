@@ -5,7 +5,7 @@ services:
     build: .
     image: gabrielkulp/htdise:latest
     restart: "no"
-    command: /usr/local/bin/test -n 10 -mc ${MC}
+    command: /usr/local/bin/test -n 10 -mc ${MC} -t 4
     scale: 10
     networks:
       dise-net:
