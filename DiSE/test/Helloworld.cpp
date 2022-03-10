@@ -7,7 +7,7 @@
 #include "GroupChannel.h"
 #include "RandomNodePicker.h"
 //#include "util.h"
-#include "unistd.h"
+#include <unistd.h>
 
 using namespace osuCrypto;
 
@@ -53,7 +53,7 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
 {
     // set up the networking
     IOService ios;
-    //ios.showErrorMessages(false);
+    ios.showErrorMessages(true);
     GroupChannel gc(ips, n, ios);
 
     oc::block seed;
@@ -61,13 +61,15 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     {
         // Initialize the parties using a random seed from the OS.
         seed = sysRandomSeed();
-        for (u64 i = 1; i < n; i++)
+        for (u64 i = 0; i < n-1; i++)
         {
-            gc.nRecvChannels[i].send(seed);
+            gc.mRequestChls[i].send(seed);
+            std::cout << "Sent seed to [" << i+1 << "/" << n-1 << "]" << std::endl;
         }
+        std::cout << "Done sending seed" << std::endl;
     } else 
     {
-        gc.nSendChannels[0].recv(seed);
+        gc.mListenChls[0].recv(seed);
         std::cout << "Seed is " << seed << std::endl;
     }
 
@@ -81,8 +83,12 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     mk.KeyGen(n, m, prng);
 
     // initialize the DPRF and the encrypters
-    dprf.init(gc.current_node, m, gc.nSendChannels, gc.nRecvChannels, prng.get<block>(), mk.keyStructure, mk.getSubkey(gc.current_node));
+    try{
+    dprf.init(gc.current_node, m, n, gc.mRequestChls, gc.mListenChls, prng.get<block>(), mk.keyStructure, mk.getSubkey(gc.current_node));
+    }catch(const std::exception& e){ std::cout<<"T1"<<std::endl; }
+    try{
     enc.init(gc.current_node, prng.get<block>(), &dprf);
+    }catch(const std::exception& e){ std::cout<<"T2"<<std::endl; }
     
     sleep(1);
 
@@ -91,6 +97,8 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
         std::cout << "Key exchange done. Starting benchmark." << std::endl;
         eval(enc, n, m, blockCount, batch, trials, numAsync, lat, "Sym      ");
     }
+
+    std::cout << "made it" << std::endl;
 }
 
 /*

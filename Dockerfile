@@ -5,6 +5,7 @@ WORKDIR /usr/local/src
 COPY ./cryptoTools ./cryptoTools
 RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev \
  && cd cryptoTools \
+ && rm cryptoTools/Common/config.h \
  && python3 build.py --setup --relic -DFETCH_BOOST=OFF \
  && python3 build.py -DENABLE_RELIC=ON \
  && python3 build.py --install \
@@ -15,15 +16,14 @@ RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-d
 # Install HTDiSE
 RUN apk add gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev
 COPY ./DiSE ./DiSE
-#RUN apk add gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev \
-RUN echo temp! \
+RUN echo fast build \
  && cd DiSE \
  && cmake . -Wno-dev \
  && make -j `nproc` \
  && cp -r bin /usr/local \
  && cd .. \
- && rm -rf DiSE \
- && apk del gcc g++ make cmake openssl-dev boost1.77-static boost1.77-dev libc-utils
+ && rm -rf DiSE
+# && apk del gcc g++ make cmake openssl-dev boost1.77-static boost1.77-dev libc-utils
 
 #boost1.77-thread boost1.77-system
 # Minimize packages for runtime
@@ -35,4 +35,5 @@ RUN echo temp! \
 # && rm -rf /lib/apk /etc/apk
 
 # Test
+WORKDIR /usr/local
 CMD ["/usr/local/bin/dEncFrontend", "-u"]
