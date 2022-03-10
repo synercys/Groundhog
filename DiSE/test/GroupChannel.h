@@ -22,12 +22,10 @@ class GroupChannel {
             u64 partyIdx = getCurrNodeIdx(ips, ip);
             current_node = partyIdx;
 
-            //sleep(partyIdx/2);
-
-            if (partyIdx >= numParties) {
+            if (partyIdx >= numParties)
                 std::cout << "My IP is " << ip << ", but I couldn't find it in the list of node IPs" << std::endl;
-            } else
-                std::cout << "My IP is " << ip << ", my idx is " << partyIdx << std::endl;
+            //else
+            //    std::cout << "My IP is " << ip << ", my idx is " << partyIdx << std::endl;
             
             if (mSessions.size())
                 throw std::runtime_error("connect can be called once " LOCATION);
@@ -39,7 +37,6 @@ class GroupChannel {
 
                 for (u64 i = 1; i < numParties; ++i)
                 {
-                    std::cout << "setting up connection " << i << std::endl;
                     mSessions[i-1].start(ios, ip, oc::EpMode::Server);
                     auto listenChl = mSessions[i-1].addChannel("listen", "request");
                     auto requestChl = mSessions[i-1].addChannel("request", "listen");

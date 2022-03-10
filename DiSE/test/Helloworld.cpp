@@ -64,13 +64,11 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
         for (u64 i = 0; i < n-1; i++)
         {
             gc.mRequestChls[i].send(seed);
-            std::cout << "Sent seed to [" << i+1 << "/" << n-1 << "]" << std::endl;
         }
-        std::cout << "Done sending seed" << std::endl;
+        //std::cout << "Done sending seed. Starting key exchange." << std::endl;
     } else 
     {
         gc.mListenChls[0].recv(seed);
-        std::cout << "Seed is " << seed << std::endl;
     }
 
     // allocate the DPRFs and the encryptors
@@ -90,15 +88,11 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     enc.init(gc.current_node, prng.get<block>(), &dprf);
     }catch(const std::exception& e){ std::cout<<"T2"<<std::endl; }
     
-    sleep(1);
-
     // Perform the benchmark.
     if (gc.current_node == 0) {
-        std::cout << "Key exchange done. Starting benchmark." << std::endl;
-        eval(enc, n, m, blockCount, batch, trials, numAsync, lat, "Sym      ");
+        //std::cout << "Key exchange done. Starting benchmark." << std::endl;
+        eval(enc, n, m, blockCount, batch, trials, numAsync, lat, "Net      ");
     }
-
-    std::cout << "made it" << std::endl;
 }
 
 /*
