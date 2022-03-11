@@ -3,7 +3,7 @@ version: '2'
 services:
   node:
     build: .
-    image: htdise:latest
+    image: gabrielkulp/htdise:latest
     restart: "no"
     command: /usr/local/bin/test -n "${NODE_COUNT:-10}" -mf "${THRESHOLD_FRACTION:-0.7}" -t "${TRIAL_SIZE:-4096}"
     deploy:
