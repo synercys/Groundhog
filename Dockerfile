@@ -5,7 +5,7 @@ WORKDIR /usr/local/src
 COPY ./cryptoTools ./cryptoTools
 RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev \
  && cd cryptoTools \
- && rm cryptoTools/Common/config.h \
+ && rm -f cryptoTools/Common/config.h \
  && python3 build.py --setup --relic -DFETCH_BOOST=OFF \
  && python3 build.py -DENABLE_RELIC=ON \
  && python3 build.py --install \
