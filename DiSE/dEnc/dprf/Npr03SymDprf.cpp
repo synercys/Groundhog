@@ -200,8 +200,13 @@ namespace dEnc {
     AsyncEval Npr03SymDprf::asyncEval(block input) // TODO: fix
     {
         TODO("Add support for sending the party identity for allowing encryption to be distinguished from decryption. ");
+        // mM threshold
+        // mN node count
+        // mPartyIdx this node's ID
 
         // Send the OPRF input to the next m-1 parties
+        // TODO: locally compute which parties are available
+        // for rebooting parties add to queue, connect after x seconds
         auto end = mPartyIdx + mM;
         for (u64 i = mPartyIdx + 1; i < end; ++i)
         {

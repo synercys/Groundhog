@@ -17,20 +17,22 @@ class GroupChannel {
         std::vector<Channel> mRequestChls, mListenChls;
         u64 current_node; // index of current node's ip in vector of ips
 
-        GroupChannel(std::vector<std::string> ips, u64 numParties, oc::IOService& ios) {
+        GroupChannel(std::vector<std::string> ips, u64 numParties, oc::IOService& ios, bool isClient) {
             std::string ip = getIP();
             u64 partyIdx = getCurrNodeIdx(ips, ip);
             current_node = partyIdx;
 
-            if (partyIdx >= numParties)
-                std::cout << "My IP is " << ip << ", but I couldn't find it in the list of node IPs" << std::endl;
+            if (partyIdx >= numParties) {
+                std::cout << "My IP is " << ip << ", but I couldn't find it in the list of node IPs." << std::endl;
+                std::cout << "This could be an inconsistency between n and the actual node count." << std::endl;
+            }
             //else
             //    std::cout << "My IP is " << ip << ", my idx is " << partyIdx << std::endl;
             
             if (mSessions.size())
                 throw std::runtime_error("connect can be called once " LOCATION);
 
-            if (partyIdx == 0) {
+            if (isClient) {
                 mSessions.resize(numParties-1);
                 mRequestChls.resize(numParties-1);
                 mListenChls.resize(numParties-1);
@@ -53,7 +55,7 @@ class GroupChannel {
                 mRequestChls.resize(1);
                 mListenChls.resize(1);
 
-                mSessions[0].start(ios, ips[0], oc::EpMode::Client);
+                mSessions[0].start(ios, "10.0.0.2", oc::EpMode::Client);
                 auto listenChl = mSessions[0].addChannel("listen", "request");
                 auto requestChl = mSessions[0].addChannel("request", "listen");
 
