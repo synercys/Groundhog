@@ -13,17 +13,40 @@ RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-d
  && rm -rf cryptoTools \
  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
 
-# Install HTDiSE
-RUN apk add gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev
+
+
+# Install HTDiSE, development mode (faster iteration)
+RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3
+# compile from GitHub to get some baseline .o files
+RUN echo initial git build \
+ && git clone "https://github.com/disha-agarwal/dise" repo \
+ && mv repo/DiSE . \
+ && cd DiSE \
+ && cmake . -Wno-dev \
+ && make -j `nproc`
+# overwrite git files with any local development changes
 COPY ./DiSE ./DiSE
-RUN echo fast build \
+# compile again, taking advantage of unchanged .o files to be faster
+RUN echo incremental build \
  && cd DiSE \
  && cmake . -Wno-dev \
  && make -j `nproc` \
- && cp -r bin /usr/local \
- && cd .. \
- && rm -rf DiSE
+ && cp -r bin /usr/local
+
+
+
+# Install HTDiSE, release mode (smaller image)
+#COPY ./DiSE ./DiSE
+#RUN apk add gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3
+# && cd DiSE \
+# && cmake . -Wno-dev \
+# && make -j `nproc` \
+# && cp -r bin /usr/local \
+# && cd .. \
+# && rm -rf DiSE \
 # && apk del gcc g++ make cmake openssl-dev boost1.77-static boost1.77-dev libc-utils
+
+
 
 #boost1.77-thread boost1.77-system
 # Minimize packages for runtime
@@ -36,4 +59,5 @@ RUN echo fast build \
 
 # Test
 WORKDIR /usr/local
+COPY restart.py /usr/local/bin
 CMD ["/usr/local/bin/dEncFrontend", "-u"]

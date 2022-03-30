@@ -16,8 +16,10 @@ class GroupChannel {
         std::vector<Session> mSessions;
         std::vector<Channel> mRequestChls, mListenChls;
         u64 current_node; // index of current node's ip in vector of ips
+        std::vector<std::string> ips;
 
         GroupChannel(std::vector<std::string> ips, u64 numParties, oc::IOService& ios, bool isClient) {
+            this->ips = ips;
             std::string ip = getIP();
             u64 partyIdx = getCurrNodeIdx(ips, ip);
             current_node = partyIdx;
@@ -26,8 +28,8 @@ class GroupChannel {
                 std::cout << "My IP is " << ip << ", but I couldn't find it in the list of node IPs." << std::endl;
                 std::cout << "This could be an inconsistency between n and the actual node count." << std::endl;
             }
-            //else
-            //    std::cout << "My IP is " << ip << ", my idx is " << partyIdx << std::endl;
+            else
+                std::cout << "My IP is " << ip << ", my idx is " << partyIdx << std::endl;
             
             if (mSessions.size())
                 throw std::runtime_error("connect can be called once " LOCATION);
@@ -43,7 +45,7 @@ class GroupChannel {
                     auto listenChl = mSessions[i-1].addChannel("listen", "request");
                     auto requestChl = mSessions[i-1].addChannel("request", "listen");
 
-                    std::chrono::milliseconds timeout(numParties * 1 * 1000);
+                    std::chrono::milliseconds timeout(numParties * 1000);
                     requestChl.waitForConnection(timeout);
                     listenChl.waitForConnection(timeout);
 
@@ -59,7 +61,7 @@ class GroupChannel {
                 auto listenChl = mSessions[0].addChannel("listen", "request");
                 auto requestChl = mSessions[0].addChannel("request", "listen");
 
-                std::chrono::milliseconds timeout(numParties * 1 * 1000);
+                std::chrono::milliseconds timeout(numParties * 1000);
                 listenChl.waitForConnection(timeout);
                 requestChl.waitForConnection(timeout);
 
@@ -138,16 +140,18 @@ class GroupChannel {
         Session& getSession(u64 nodeIdx) {
             return mSessions[nodeIdx];
         }
-/*
-        Channel& reconnectChannel(u64 nodeIdx, Channel old, IOService& ios,std::string ip)
-        {
-            
-            Session client(ios, ip, SessionMode::Client);
-            Channel requestChl = client.addChannel();
-            std::chrono::milliseconds timeout(10000000);
-            requestChl.waitForConnection(timeout);
-            std::replace(nChannels.begin(), nChannels.end(),old, requestChl);
-            return requestChl;
 
-        }*/
+        void reconnectChannel(u64 nodeIdx, IOService& ios)
+        {
+            Session newSession(ios, this->ips[nodeIdx], SessionMode::Server);
+            auto listenChl = newSession.addChannel("listen", "request");
+            auto requestChl = newSession.addChannel("request", "listen");
+
+            std::chrono::milliseconds timeout(1000 * 60 * 5); // 5-minute timeout
+            requestChl.waitForConnection(timeout);
+            listenChl.waitForConnection(timeout);
+
+            mListenChls[nodeIdx] = listenChl;
+            mRequestChls[nodeIdx] = requestChl;
+        }
 };

@@ -1,6 +1,7 @@
 #include "Npr03SymDprf.h"
 #include <boost/math/special_functions/binomial.hpp>
-
+#include <cryptoTools/Network/Session.h>
+#include <cryptoTools/Network/IOService.h>
 #include <cryptoTools/Network/Channel.h>
 #include <cryptoTools/Common/BitVector.h>
 #include <cryptoTools/Common/MatrixView.h>
@@ -194,7 +195,22 @@ namespace dEnc {
     block Npr03SymDprf::eval(block input)
     {
         // simply call the async version and then block for it to complete.
+        try {
         return asyncEval(input).get()[0];
+        } catch (std::exception & e) {
+            std::cout << "atrastrrst " << e.what() << std::endl;
+        }
+    }
+
+    std::tuple<Channel, Channel> reconnectChannel(Channel& chl)
+    {
+        chl.cancel();
+        chl.getSession().stop();
+        osuCrypto::Session session;
+        session.start(chl.getSession().getIOService(), "10.0.0.2", osuCrypto::SessionMode::Server);
+        auto listenChl = session.addChannel("listen", "request");
+        auto requestChl = session.addChannel("request", "listen");
+        return {listenChl, requestChl};
     }
 
     AsyncEval Npr03SymDprf::asyncEval(block input) // TODO: fix
@@ -207,13 +223,28 @@ namespace dEnc {
         // Send the OPRF input to the next m-1 parties
         // TODO: locally compute which parties are available
         // for rebooting parties add to queue, connect after x seconds
+        std::cout << "1" << std::endl;
         auto end = mPartyIdx + mM;
-        for (u64 i = mPartyIdx + 1; i < end; ++i)
+        for (u64 i = mPartyIdx + 1; i < mN; ++i)
         {
             auto c = i % mN;
             if (c > mPartyIdx) --c;
+            /*if (!mRequestChls[c].isConnected()) { // skip if not connected
+                i++;
+                end++;
+                std::cout << "skipping stopped channel " << c << std::endl;
+                continue;
+            }*/
 
-            mRequestChls[c].asyncSendCopy(&input, 1);
+            try {
+                mRequestChls[c].asyncSendCopy(&input, 1);
+            } catch(const std::exception & e) {
+                i++; // skip if it disconnects
+                end++;
+                std::cout << "channel " << c << " is now unavailable" << std::endl;
+
+                // todo: schedule reconnect
+            }
         }
 
 
@@ -268,14 +299,24 @@ namespace dEnc {
 //                e.setBadRecvErrorState(osuCrypto::BadReceiveBufferSize.str());
             }
         }
+        std::cout << "3" << std::endl;
 
         // This function is called when the user wants the actual 
         // OPRF output. It must combine the OPRF output shares
         ae.get = [this, w = std::move(w)]() mutable ->std::vector<block> 
         {
             // block until all of the OPRF output shares have arrived.
-            for (u64 i = 0; i < mM - 1; ++i)
-                w->async[i].get();
+            u64 recvCount = 0;
+            u64 i = 0;
+            while (++i < mN && recvCount < mM) {
+                try {
+                    w->async[i].get();
+                    recvCount++;
+                } catch (std::exception & e){
+                    std::cout << "heyyy " << e.what() << std::endl;
+                    mRequestChls[i].close();
+                }
+            }
 
             // XOR all of the output shares
             std::vector<block> ret{ w->fx[0] };

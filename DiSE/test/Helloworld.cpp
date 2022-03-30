@@ -21,11 +21,11 @@ u64 numAsync, bool lat, std::string tag)
     // The party that will initiate the encryption.
     // The other parties will respond to requests on the background.
     // This happens using the threads created by IOService
-    auto& initiator = enc;
+    dEnc::AmmrClient<DPRF>& initiator = enc;
 
     // the buffers to hold the data.
     std::vector<std::vector<block>> data(batch), ciphertext(batch);
-    for (auto& d : data) d.resize(blockCount);
+    for (std::vector<block>& d : data) d.resize(blockCount);
 
     Timer t;
     auto s = t.setTimePoint("start");
@@ -34,6 +34,7 @@ u64 numAsync, bool lat, std::string tag)
     // will only have one encryption in flight at a time.
     for (u64 t = 0; t < trials; ++t) {
         initiator.encrypt(data[0], ciphertext[0]);
+        sleep(1);
     }
 
     auto e = t.setTimePoint("end");
@@ -92,7 +93,7 @@ u64 batch, bool lat, bool isClient)
     
     // Perform the benchmark.
     if (isClient) {
-        std::cout << "Key exchange done. Starting benchmark." << std::endl;
+        std::cout << "Key exchange done. Starting  benchmark." << std::endl;
         eval(enc, n, m, blockCount, batch, trials, numAsync, lat, "Net      ");
     }
 }
