@@ -20,6 +20,8 @@
 #include "Dprf.h"
 #include "dEnc/tools/MultiKeyAES.h"
 
+#define MAXLINE 1024
+
 namespace dEnc {
 
     // DPRF class implementing the Naor,Pinkas,Reingold based on 
