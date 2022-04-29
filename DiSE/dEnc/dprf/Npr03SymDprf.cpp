@@ -5,6 +5,12 @@
 #include <cryptoTools/Network/Channel.h>
 #include <cryptoTools/Common/BitVector.h>
 #include <cryptoTools/Common/MatrixView.h>
+
+#define PORT    5959
+#define MAXLINE 256
+
+const unsigned char proto_dn = 'd', proto_up = 'u', proto_rq = 'r';
+
 namespace dEnc {
 
 
@@ -133,6 +139,26 @@ namespace dEnc {
             i = i ? (i - 1) : mN - 1;
         }
 
+        //connect to the local python server on node0 which has the current status of nodes (up,down)
+        // Creating socket file descriptor
+        try
+        {
+            sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+        }
+        catch(const std::exception& e)
+        {
+            std::cout << "socket connection to uptime server failed";
+            std::cerr << e.what() << '\n';
+        }
+        
+        memset(&servaddr, 0, sizeof(servaddr));
+
+        // Filling server information
+        servaddr.sin_family = AF_INET;
+        servaddr.sin_port = htons(PORT);
+        servaddr.sin_addr.s_addr = inet_addr("10.0.0.2");
+
+        socklen_t n, len;
 
         startListening();
     }
@@ -215,6 +241,7 @@ namespace dEnc {
 
     AsyncEval Npr03SymDprf::asyncEval(block input) // TODO: fix
     {
+
         TODO("Add support for sending the party identity for allowing encryption to be distinguished from decryption. ");
         // mM threshold
         // mN node count
@@ -222,6 +249,20 @@ namespace dEnc {
 
         // Send the OPRF input to the next m-1 parties
         // TODO: locally compute which parties are available
+        //querying uptime server to find live nodes 
+
+        sendto(sockfd, (const char *)&proto_rq, 1,
+        MSG_CONFIRM, (const struct sockaddr *) &servaddr, 
+            sizeof(servaddr));
+        printf("reply: ");
+        std::cout.flush();
+
+        n = recvfrom(sockfd, buffer, MAXLINE, 
+            MSG_WAITALL, (struct sockaddr *) &servaddr,
+            &len);
+        buffer[n] = '\x00';
+        printf("%s\n", buffer);
+
         // for rebooting parties add to queue, connect after x seconds
         std::cout << "1" << std::endl;
         auto end = mPartyIdx + mM;
@@ -294,9 +335,9 @@ namespace dEnc {
             catch(osuCrypto::BadReceiveBufferSize & e)
             {
                 std::cout << "received only header from node " << c << std::endl;
-//                std::cout << "received: " << w->async[j].get() << std::endl;
+                // std::cout << "received: " << w->async[j].get() << std::endl;
                 std::cout << "trying to move on... " << i << std::endl;
-//                e.setBadRecvErrorState(osuCrypto::BadReceiveBufferSize.str());
+                //e.setBadRecvErrorState(osuCrypto::BadReceiveBufferSize.str());
             }
         }
         std::cout << "3" << std::endl;

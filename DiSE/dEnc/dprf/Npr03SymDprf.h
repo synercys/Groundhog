@@ -5,6 +5,17 @@
 #include <cryptoTools/Crypto/AES.h>
 #include <cryptoTools/Crypto/PRNG.h>
 #include <condition_variable>
+#include "string"
+#include "iostream"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+   
 
 #include "Dprf.h"
 #include "dEnc/tools/MultiKeyAES.h"
@@ -174,6 +185,12 @@ namespace dEnc {
 
         // Channels that the servers should listen to for DPRF requests.
         std::vector<Channel> mListenChls;
+
+        //connection to server to find current live nodes
+        int sockfd;
+	    char buffer[MAXLINE];
+	    struct sockaddr_in servaddr;
+
     };
 
 }
