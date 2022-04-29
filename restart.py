@@ -1,13 +1,18 @@
+#!/usr/bin/env python
 import logging
 import subprocess
 import sys
-import os
+import socket
 
 exe = "/usr/local/bin/test"
-schedule_log = "/usr/local/schedule.log"
 logfile = "/usr/local/app.log"
 logging.basicConfig(filename=logfile, filemode='w', level=logging.DEBUG, format='%(name)s - %(levelname)s - %(message)s')
 
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+server_addr = ('10.0.0.2', 5959) # server IP and port
+proto_dn = b'd' # announce down
+proto_up = b'u' # announce up
+proto_rq = b'r' # request
 
 def getIP():
 	import socket
@@ -25,6 +30,7 @@ def findNextPrime(n):
 			break
 	return prime
 
+
 def isPrime(n):
 	if (n <= 1):
 		return False 
@@ -39,6 +45,7 @@ def isPrime(n):
 		i = i+6
 	return True
 
+
 def getCurrNodeIdx(ips,ip):
 	current_node = -1
 	for i in range(len(ips)):
@@ -46,6 +53,7 @@ def getCurrNodeIdx(ips,ip):
 			current_node = i
 			break
 	return current_node
+
 
 class RandomNodePicker:
 	def __init__(self, n):
@@ -83,7 +91,7 @@ class RandomNodePicker:
 
 
 class Algorithm:
-	def __init__(self,ips, n, attackTime, rebootTime, t, nodePicker, stateFileName):
+	def __init__(self,ips, n, attackTime, rebootTime, t, nodePicker):
 		self.ip = getIP()
 		self.mIntervals = max(1,attackTime//rebootTime)
 		self.currNodeIdx = getCurrNodeIdx(ips,self.ip)
@@ -92,44 +100,31 @@ class Algorithm:
 		self.rebootTime = rebootTime
 		self.nodePicker = nodePicker
 		self.n = n 
-		self.stateFileName = stateFileName
-		self.numRebootsSoFar = self.restoreNumRebootsFromFile()
-	   
-	def restoreNumRebootsFromFile(self):
-		numRebootsSoFar = 0
-		import os.path
-		if(os.path.isfile(self.stateFileName)):
-			f = open(self.stateFileName, "r")
-			numRebootsSoFar = int(f.readline().split()[0])
-			f.close()
-		# print(numRebootsSoFar)
-		logging.debug(numRebootsSoFar)
-		return numRebootsSoFar
+		self.numRebootsSoFar = 0
+
 
 	def rebootAfterTime(self, timeToReboot):
 		import time
 		import os
 		self.numRebootsSoFar += 1
-		# print("here")
-		f = open(self.stateFileName, "w")
-		f.write(str(self.numRebootsSoFar))
-		f.close()
-		os.system(f"echo {self.ip} up >> {schedule_log}")
+		sock.sendto(proto_up, server_addr)
 
 		# Reboot logic
 		# timetoReboot is the time after which the node is scheduled to be rebooted. 
 		try:
 			#process = subprocess.run("/home/ubuntu/redise/dise/bin/test",universal_newlines=True,capture_output=False,timeout=timeToReboot)
-			process = subprocess.run([exe, "-n", str(server_count)],
+			#process = subprocess.run([exe, "-n", str(server_count)],
+			process = subprocess.run(["/bin/sleep", "100"],
 					universal_newlines=True, capture_output=True, timeout=timeToReboot)
 			sys.stdout.flush()
 		except subprocess.TimeoutExpired:
+			sock.sendto(proto_dn, server_addr)
 			logging.debug("timeout done")
 			print("timeout done")
 		finally:
-			os.system(f"echo {self.ip} down >> {schedule_log}")
-			time.sleep(20)
-		
+			sock.sendto(proto_dn, server_addr)
+			time.sleep(self.rebootTime)
+
 
 	def run(self):
 		if ((self.t) < self.mIntervals):
@@ -198,13 +193,12 @@ for i in range(node_count):
 attackTime = int(sys.argv[3])
 rebootTime = int(sys.argv[4])
 t = int(node_count * float(sys.argv[2]))
-stateFileName = "/usr/local/reboot_state"
 
 n = node_count
 nodePicker = RandomNodePicker(n)
 # print(nodePicker.generators)
 logging.debug(nodePicker.generators)
-algo = Algorithm(ips,n,attackTime,rebootTime,t,nodePicker,stateFileName)
+algo = Algorithm(ips,n,attackTime,rebootTime,t,nodePicker)
 while(1):
 	algo.run()
 

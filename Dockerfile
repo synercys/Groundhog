@@ -59,5 +59,5 @@ RUN echo incremental build \
 
 # Test
 WORKDIR /usr/local
-COPY restart.py /usr/local/bin
+COPY *.py /usr/local/bin/
 CMD ["/usr/local/bin/dEncFrontend", "-u"]

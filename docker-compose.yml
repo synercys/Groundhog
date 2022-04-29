@@ -1,22 +1,22 @@
 version: '2'
 
 services:
-#  client:
-#    build: .
-#    image: gabrielkulp/htdise:latest
-#    restart: "no"
-#    command: /usr/local/bin/test -n "${SERVER_COUNT:-9}" -mf "${THRESHOLD_FRACTION:-0.7}" -t "${TRIAL_SIZE:-4096}" -client
-#    volumes:
-#      - ./schedule.log:/usr/local/schedule.log
-#    networks:
-#      dise-net:
-#        ipv4_address: 10.0.0.2
+  client:
+    build: .
+    image: gabrielkulp/htdise:latest
+    restart: "no"
+    command: ./bin/entry.sh -n "${SERVER_COUNT:-9}" -mf "${THRESHOLD_FRACTION:-0.7}" -t "${TRIAL_SIZE:-4096}" -client
+    volumes:
+      - ./schedule.log:/usr/local/schedule.log
+    networks:
+      dise-net:
+        ipv4_address: 10.0.0.2
 
   server:
     build: .
     image: gabrielkulp/htdise:latest
     restart: "no"
-    command: /usr/bin/python3 /usr/local/bin/restart.py "${SERVER_COUNT:-9}" "${THRESHOLD_FRACTION:-0.7}" 60 30
+    command: ./restart.py "${SERVER_COUNT:-9}" "${THRESHOLD_FRACTION:-0.7}" 60 30
     volumes:
       - ${PWD}/schedule.log:/usr/local/schedule.log
     deploy:
