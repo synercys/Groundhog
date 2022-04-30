@@ -6,8 +6,7 @@
 #include <cryptoTools/Common/BitVector.h>
 #include <cryptoTools/Common/MatrixView.h>
 
-#define PORT    5959
-#define MAXLINE 256
+#define PORT  5000
 
 const unsigned char proto_dn = 'd', proto_up = 'u', proto_rq = 'r';
 
@@ -141,15 +140,9 @@ namespace dEnc {
 
         //connect to the local python server on node0 which has the current status of nodes (up,down)
         // Creating socket file descriptor
-        try
-        {
-            sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-        }
-        catch(const std::exception& e)
-        {
-            std::cout << "socket connection to uptime server failed";
-            std::cerr << e.what() << '\n';
-        }
+        if ( (sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0 ) {
+            throw std::runtime_error(LOCATION);
+	    }
         
         memset(&servaddr, 0, sizeof(servaddr));
 
@@ -157,8 +150,6 @@ namespace dEnc {
         servaddr.sin_family = AF_INET;
         servaddr.sin_port = htons(PORT);
         servaddr.sin_addr.s_addr = inet_addr("10.0.0.2");
-
-        socklen_t n, len;
 
         startListening();
     }
@@ -220,12 +211,8 @@ namespace dEnc {
 
     block Npr03SymDprf::eval(block input)
     {
-        // simply call the async version and then block for it to complete.
-        try {
+        // simply call the async version and then block for it to complete
         return asyncEval(input).get()[0];
-        } catch (std::exception & e) {
-            std::cout << "atrastrrst " << e.what() << std::endl;
-        }
     }
 
     std::tuple<Channel, Channel> reconnectChannel(Channel& chl)
@@ -257,10 +244,10 @@ namespace dEnc {
         printf("reply: ");
         std::cout.flush();
 
-        n = recvfrom(sockfd, buffer, MAXLINE, 
+        ret = recvfrom(sockfd, buffer, MAXLINE, 
             MSG_WAITALL, (struct sockaddr *) &servaddr,
-            &len);
-        buffer[n] = '\x00';
+            &value);
+        buffer[ret] = '\x00';
         printf("%s\n", buffer);
 
         // for rebooting parties add to queue, connect after x seconds

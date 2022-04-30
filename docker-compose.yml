@@ -16,7 +16,7 @@ services:
     build: .
     image: gabrielkulp/htdise:latest
     restart: "no"
-    command: ./restart.py "${SERVER_COUNT:-9}" "${THRESHOLD_FRACTION:-0.7}" 60 30
+    command: ./bin/restart.py "${SERVER_COUNT:-9}" "${THRESHOLD_FRACTION:-0.7}" 60 30
     volumes:
       - ${PWD}/schedule.log:/usr/local/schedule.log
     deploy:

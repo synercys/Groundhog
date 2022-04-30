@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import asyncio
 import sys
 
@@ -39,7 +39,7 @@ asyncio.set_event_loop(loop)
 
 # One protocol instance will be created to serve all client requests
 listen = loop.create_datagram_endpoint(UptimeServerProtocol,
-	local_addr=('10.0.0.2', 5959))
+	local_addr=('10.0.0.2', 5000))
 
 transport, protocol = loop.run_until_complete(listen)
 

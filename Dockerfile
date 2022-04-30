@@ -59,5 +59,5 @@ RUN echo incremental build \
 
 # Test
 WORKDIR /usr/local
-COPY *.py /usr/local/bin/
+COPY entry.sh restart.py uptime_server.py /usr/local/bin/
 CMD ["/usr/local/bin/dEncFrontend", "-u"]

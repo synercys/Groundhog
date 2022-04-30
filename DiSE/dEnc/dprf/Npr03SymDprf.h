@@ -193,6 +193,8 @@ namespace dEnc {
 	    char buffer[MAXLINE];
 	    struct sockaddr_in servaddr;
 
+        socklen_t ret, value;
+
     };
 
 }
