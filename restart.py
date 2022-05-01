@@ -9,7 +9,7 @@ logfile = "/usr/local/app.log"
 logging.basicConfig(filename=logfile, filemode='w', level=logging.DEBUG, format='%(name)s - %(levelname)s - %(message)s')
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-server_addr = ('10.0.0.2', 5959) # server IP and port
+server_addr = ('10.0.0.254', 5000) # server IP and port
 proto_dn = b'd' # announce down
 proto_up = b'u' # announce up
 proto_rq = b'r' # request
@@ -108,6 +108,7 @@ class Algorithm:
 		import os
 		self.numRebootsSoFar += 1
 		sock.sendto(proto_up, server_addr)
+		print("Going up")
 
 		# Reboot logic
 		# timetoReboot is the time after which the node is scheduled to be rebooted. 
@@ -124,7 +125,7 @@ class Algorithm:
 		finally:
 			sock.sendto(proto_dn, server_addr)
 			time.sleep(self.rebootTime)
-
+		print("Went down")
 
 	def run(self):
 		if ((self.t) < self.mIntervals):

@@ -18,7 +18,9 @@ echo "" > schedule.log
 
 if [ "$1" = "--build" ]; then
 	docker-compose down
+	sleep 5
 	docker build . -t gabrielkulp/htdise:latest || exit 1
+	sleep 5
 	docker-compose up --remove-orphans || exit 2 # show full log
 else
 # Until this gets addressed, I have to use some ugly hacks to get only the output
