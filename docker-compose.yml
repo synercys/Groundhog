@@ -7,7 +7,6 @@ services:
     command: bin/test -n "${SERVER_COUNT:-9}" -mf "${THRESHOLD_FRACTION:-0.7}" -t "${TRIAL_SIZE:-4096}" -client
     depends_on:
       - uptime
-      - server
     networks:
       dise-net:
         ipv4_address: 10.0.0.2
