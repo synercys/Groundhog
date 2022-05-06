@@ -15,7 +15,7 @@ node_count = int(sys.argv[1])+1
 class UptimeServerProtocol:
 	def __init__(self):
 		print("Starting UDP server")
-		self.state = [b'u']*(node_count)
+		self.state = [b'd']*(node_count)
 
 	def connection_made(self, transport):
 		self.transport = transport
