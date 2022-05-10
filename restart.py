@@ -114,8 +114,7 @@ class Algorithm:
 		# timetoReboot is the time after which the node is scheduled to be rebooted. 
 		try:
 			#process = subprocess.run("/home/ubuntu/redise/dise/bin/test",universal_newlines=True,capture_output=False,timeout=timeToReboot)
-			#process = subprocess.run([exe, "-n", str(server_count)],
-			process = subprocess.run(["/bin/sleep", "100"],
+			process = subprocess.run([exe, "-n", str(server_count)],
 					universal_newlines=True, capture_output=True, timeout=timeToReboot)
 			sys.stdout.flush()
 		except subprocess.TimeoutExpired:

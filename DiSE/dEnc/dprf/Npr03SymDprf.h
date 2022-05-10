@@ -15,6 +15,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
+#include <map>
    
 
 #include "Dprf.h"
@@ -190,10 +191,12 @@ namespace dEnc {
 
         //connection to server to find current live nodes
         int sockfd;
-	    char buffer[MAXLINE];
 	    struct sockaddr_in servaddr;
 
         socklen_t ret, value;
+
+        std::map<int, time_t> rebooting_nodes;
+        std::map<int, bool> pending_nodes;
 
     };
 
