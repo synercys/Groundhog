@@ -23,7 +23,7 @@ RUN echo initial git build \
  && mv repo/DiSE . \
  && cd DiSE \
  && cmake . -Wno-dev \
- && make -j `nproc`
+ && make -j `nproc` || echo "GitHub build failed! Continuing..."
 # overwrite git files with any local development changes
 COPY ./DiSE ./DiSE
 # compile again, taking advantage of unchanged .o files to be faster
