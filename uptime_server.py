@@ -14,24 +14,24 @@ node_count = int(sys.argv[1])+1
 
 class UptimeServerProtocol:
 	def __init__(self):
-		# print("Starting UDP server")
-		self.state = [b'd']*(node_count)
+		print("Starting UDP server")
+		self.state = [b'u']*(node_count)
 
 	def connection_made(self, transport):
 		self.transport = transport
 
 	def datagram_received(self, data, addr):
-		# print(f"Received {data.decode()} from {addr}")
+		print(f"Received {data.decode()} from {addr}")
 		if data == b'u' or data == b'd':
 			(ip, _) = addr
 			idx = int(ip.split('.')[-1]) - 2
-			# print(f"Received {data.decode()} from {ip}")
+			print(f"Received {data.decode()} from {ip}")
 			if idx in range(node_count):
 				self.state[idx] = data
 			else:
 				print("IP out of expected range!")
 		else:
-			# print("sending", b"".join(self.state).decode())
+			print("sending", b"".join(self.state).decode())
 			self.transport.sendto(b''.join(self.state), addr)
 
 loop = asyncio.new_event_loop()

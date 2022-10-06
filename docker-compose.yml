@@ -17,7 +17,6 @@ services:
     command: bin/restart.py "${SERVER_COUNT:-9}" "${THRESHOLD_FRACTION:-0.7}" 60 30
     depends_on:
       - uptime
-      - client # because of IP address assignment
     deploy:
       replicas: "${SERVER_COUNT:-9}"
     networks:

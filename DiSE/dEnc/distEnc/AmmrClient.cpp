@@ -8,11 +8,6 @@
 
 namespace dEnc
 {
-	bool eq(span<block> a, span<block>b)
-	{
-		return (a.size() == b.size() &&
-			memcmp(a.data(), b.data(), a.size() * sizeof(block)) == 0);
-	};
 
     template<typename DPRF>
 	void AmmrClient<DPRF>::init(u64 partyIdx, block seed, DPRF* dprf)
@@ -40,11 +35,6 @@ namespace dEnc
 		block fx;
 		try {
 			fx = mDprf->eval(alpha);
-			block zero_block= oc::ZeroBlock;
-			if(!eq(fx[0],zero_block[0]))
-				std::cout << "abort";
-			else
-				std::cout << successfull;
 		}
 		catch(const std::exception& e)
 		{

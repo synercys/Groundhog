@@ -5,18 +5,12 @@
 #include <cryptoTools/Network/Channel.h>
 #include <cryptoTools/Common/BitVector.h>
 #include <cryptoTools/Common/MatrixView.h>
-#include <tuple>
 
 #define PORT  5000
 
 const unsigned char proto_dn = 'd', proto_up = 'u', proto_rq = 'r';
 
 namespace dEnc {
-
-    struct Chls {
-    Channel listen;
-    Channel request;
-    };
 
 
     Npr03SymDprf::~Npr03SymDprf()
@@ -212,16 +206,7 @@ namespace dEnc {
         }
 
         // send back the OPRF output share.
-        try
-        {
-            mListenChls[chlIdx].asyncSend(std::move(fx));
-        }
-        catch(const std::exception& e)
-        {
-            std::cout << "Line 221" << '\n';
-        }
-        
-       
+        mListenChls[chlIdx].asyncSend(std::move(fx));
     }
 
     block Npr03SymDprf::eval(block input)
@@ -230,18 +215,15 @@ namespace dEnc {
         return asyncEval(input).get()[0];
     }
 
-    Chls reconnectChannel(Channel& listen, Channel& request)
+    std::tuple<Channel, Channel> reconnectChannel(Channel& chl)
     {
-        listen.cancel();
-        request.cancel();
-        request.getSession().stop();
-        listen.getSession().stop();
+        chl.cancel();
+        chl.getSession().stop();
         osuCrypto::Session session;
-        session.start(request.getSession().getIOService(), "10.0.0.2", osuCrypto::SessionMode::Server);
-        Chls Channels;
-        Channels.listen = session.addChannel("listen", "request");
-        Channels.request = session.addChannel("request", "listen");
-        return Channels;
+        session.start(chl.getSession().getIOService(), "10.0.0.2", osuCrypto::SessionMode::Server);
+        auto listenChl = session.addChannel("listen", "request");
+        auto requestChl = session.addChannel("request", "listen");
+        return {listenChl, requestChl};
     }
 
     AsyncEval Npr03SymDprf::asyncEval(block input) // TODO: fix
@@ -256,8 +238,6 @@ namespace dEnc {
         // TODO: locally compute which parties are available
         //querying uptime server to find live nodes 
 
-        char buffer[MAXLINE];
-
         sendto(sockfd, (const char *)&proto_rq, 1,
         MSG_CONFIRM, (const struct sockaddr *) &servaddr, 
             sizeof(servaddr));
@@ -270,78 +250,31 @@ namespace dEnc {
         buffer[ret] = '\x00';
         printf("%s\n", buffer);
 
-        // for rebooting parties add to send_index queue, connect after x seconds
-        // auto end = mPartyIdx + mM;
-        std::vector<int> live_nodes;
+        // for rebooting parties add to queue, connect after x seconds
+        std::cout << "1" << std::endl;
+        auto end = mPartyIdx + mM;
         for (u64 i = mPartyIdx + 1; i < mN; ++i)
         {
             auto c = i % mN;
             if (c > mPartyIdx) --c;
-            if(buffer[i]=='u')
-            {
-                try
-                {
-                    mRequestChls[c].asyncSendCopy(&input, 1);
-                    pending_nodes.erase(c);
-                    if(live_nodes.size() < mM-1)
-                        live_nodes.push_back(c);
+            /*if (!mRequestChls[c].isConnected()) { // skip if not connected
+                i++;
+                end++;
+                std::cout << "skipping stopped channel " << c << std::endl;
+                continue;
+            }*/
 
-                } catch(const std::exception & e) 
-                {
-                    std::cout << " node=" << i << " is available according to state server but unable to send copy" << std::endl;
-                }
-            }
-            else
-                {
-                    //maps: will only insert if c is not in the map already
-                    if(pending_nodes.find(c) == pending_nodes.end())
-                        rebooting_nodes.insert({c,time(0)+20});
-                } 
+            try {
+                mRequestChls[c].asyncSendCopy(&input, 1);
+            } catch(const std::exception & e) {
+                i++; // skip if it disconnects
+                end++;
+                std::cout << "channel " << c << " is now unavailable" << std::endl;
 
                 // todo: schedule reconnect
-        }
-
-        // printing live nodes 
-        std::cout << "live nodes =";
-        for (auto i: live_nodes)
-        {
-            std::cout << i << ", ";
-        }
-        std::cout << std::endl;
-
-        std::cout << "down nodes =";
-        for (auto i: rebooting_nodes)
-        {
-            std::cout << i.first << ", ";
-        }
-        std::cout << std::endl;
-
-        std::cout << "pending nodes";
-        for(auto i: pending_nodes)
-        {
-            std::cout << i.first  << ", ";
-        }
-        std::cout << std::endl;
-
-
-
-        std::vector<int> elementsToRemove;
-        for(auto x :rebooting_nodes) 
-        {
-            int i = x.first;
-            if(x.second <= time(0)){
-                    Chls Channels = reconnectChannel(mListenChls[i], mRequestChls[i]);
-                    mListenChls[i] = Channels.listen;
-                    mRequestChls[i] = Channels.request;
-                    elementsToRemove.push_back(i);
-                    pending_nodes.insert({i,true});
-                    std::cout << "re-established connection : " << i+1 << std::endl;
             }
-            
         }
-        for(int i : elementsToRemove) {
-                rebooting_nodes.erase(i);
-        }
+
 
         // Set up the completion callback "AsyncEval".
         // This object holds a function that is called when 
@@ -361,7 +294,7 @@ namespace dEnc {
 
         };
         // allocate space to store the OPRF output shares
-        auto w = std::make_shared<State>(live_nodes.size()+1);
+        auto w = std::make_shared<State>(mM);
 
         // Futures which allow us to block until the repsonces have 
         // been received
@@ -378,19 +311,23 @@ namespace dEnc {
             b = b ^ buff[i];
 
         // queue up the receive operations to receive the OPRF output shares
-        for (u64 i = 0, j = 0; j < w->async.size(); ++i, ++j)
+        for (u64 i = mPartyIdx + 1, j = 0; j < w->async.size(); ++i, ++j)
         {
-            // auto c = i % mN;
-            // if (c > mPartyIdx) --c;
+            auto c = i % mN;
+            if (c > mPartyIdx) --c;
             try
             {
-                w->async[j] = mRequestChls[live_nodes[i]].asyncRecv(&w->fx[j], 1);
+                w->async[j] = mRequestChls[c].asyncRecv(&w->fx[j], 1);
             }
-            catch(std::exception & e)
+            catch(osuCrypto::BadReceiveBufferSize & e)
             {
-                std::cout << "error receiving share from node =  " << live_nodes[i]+1 << std::endl;
+                std::cout << "received only header from node " << c << std::endl;
+                // std::cout << "received: " << w->async[j].get() << std::endl;
+                std::cout << "trying to move on... " << i << std::endl;
+                //e.setBadRecvErrorState(osuCrypto::BadReceiveBufferSize.str());
             }
         }
+        std::cout << "3" << std::endl;
 
         // This function is called when the user wants the actual 
         // OPRF output. It must combine the OPRF output shares
@@ -398,26 +335,20 @@ namespace dEnc {
         {
             // block until all of the OPRF output shares have arrived.
             u64 recvCount = 0;
-            for (u64 i = 0; i < w->async.size(); ++i)
-            {
+            u64 i = 0;
+            while (++i < mN && recvCount < mM) {
                 try {
                     w->async[i].get();
                     recvCount++;
                 } catch (std::exception & e){
-                    std::cout << "async get gives an issue for node= " << i+1 << e.what() << std::endl;
-                    //some issue return with an equivalent "abort"
-                    std::vector<block> ret{oc::ZeroBlock};
-                    return ret;
+                    std::cout << "heyyy " << e.what() << std::endl;
+                    mRequestChls[i].close();
                 }
             }
 
-            // std::cout << "shares received" << recvCount << std::endl;
-            // std::cout << "time(0)" << time(0);
-            assert(recvCount == (mM-1));
-
             // XOR all of the output shares
             std::vector<block> ret{ w->fx[0] };
-            for (u64 i = 0; i < w->async.size(); ++i)
+            for (u64 i = 1; i < mM; ++i)
                 ret[0] = ret[0] ^ w->fx[i];
 
             return (ret);
@@ -601,18 +532,7 @@ namespace dEnc {
 
             // closing the channel is done by sending a single byte.
             for (auto& c : mRequestChls)
-            {
-                try
-                {
-                    c.asyncSendCopy(close, 1);
-                }
-                catch(const std::exception& e)
-                {
-                    std::cout << "some issue while closing the channel" << '\n';
-                }
-                
-            }
-                
+                c.asyncSendCopy(close, 1);
 
         }
     }
