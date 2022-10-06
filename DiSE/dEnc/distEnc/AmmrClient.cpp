@@ -41,10 +41,10 @@ namespace dEnc
 		try {
 			fx = mDprf->eval(alpha);
 			block zero_block= oc::ZeroBlock;
-			//if(!eq(fx[0],zero_block[0]))
-			//	std::cout << "abort";
-			//else
-			//	std::cout << successfull;
+			if(!eq(fx[0],zero_block[0]))
+				std::cout << "abort";
+			else
+				std::cout << successfull;
 		}
 		catch(const std::exception& e)
 		{
