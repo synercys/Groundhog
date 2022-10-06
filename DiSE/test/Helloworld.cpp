@@ -58,26 +58,26 @@ u64 batch, bool lat, bool isClient)
     ios.showErrorMessages(true);
     GroupChannel gc(ips, n, ios, isClient);
 
-    oc::block seed;
-    if(isClient)
-    {
-        // Initialize the parties using a random seed from the OS.
-        seed = sysRandomSeed();
-        for (u64 i = 0; i < n-1; i++)
-        {
-            gc.mRequestChls[i].send(seed);
-        }
-        std::cout << "Done sending seed. Starting key exchange." << std::endl;
-    } else 
-    {
-        gc.mListenChls[0].recv(seed);
-    }
+    // oc::block seed;
+    // if(isClient)
+    // {
+    //     // Initialize the parties using a random seed from the OS.
+    //     seed = sysRandomSeed();
+    //     for (u64 i = 0; i < n-1; i++)
+    //     {
+    //         gc.mRequestChls[i].send(seed);
+    //     }
+    //     std::cout << "Done sending seed. Starting key exchange." << std::endl;
+    // } else 
+    // {
+    //     gc.mListenChls[0].recv(seed);
+    // }
 
     // allocate the DPRFs and the encryptors
     dEnc::AmmrClient<dEnc::Npr03SymDprf> enc;
     dEnc::Npr03SymDprf dprf;
 
-    PRNG prng(seed);
+    PRNG prng(oc::ZeroBlock);
     // Generate the master key for this DPRF.
     dEnc::Npr03SymDprf::MasterKey mk;
     mk.KeyGen(n, m, prng);
