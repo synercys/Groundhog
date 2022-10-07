@@ -235,43 +235,15 @@ namespace dEnc {
         // mPartyIdx this node's ID
 
         // Send the OPRF input to the next m-1 parties
-        // TODO: locally compute which parties are available
-        //querying uptime server to find live nodes 
-
-        sendto(sockfd, (const char *)&proto_rq, 1,
-        MSG_CONFIRM, (const struct sockaddr *) &servaddr, 
-            sizeof(servaddr));
-        printf("reply: ");
-        std::cout.flush();
-
-        ret = recvfrom(sockfd, buffer, MAXLINE, 
-            MSG_WAITALL, (struct sockaddr *) &servaddr,
-            &value);
-        buffer[ret] = '\x00';
-        printf("%s\n", buffer);
-
-        // for rebooting parties add to queue, connect after x seconds
-        std::cout << "1" << std::endl;
         auto end = mPartyIdx + mM;
-        for (u64 i = mPartyIdx + 1; i < mN; ++i)
+        for (u64 i = mPartyIdx + 1; i < end; ++i)
         {
             auto c = i % mN;
             if (c > mPartyIdx) --c;
-            /*if (!mRequestChls[c].isConnected()) { // skip if not connected
-                i++;
-                end++;
-                std::cout << "skipping stopped channel " << c << std::endl;
-                continue;
-            }*/
-
             try {
                 mRequestChls[c].asyncSendCopy(&input, 1);
             } catch(const std::exception & e) {
-                i++; // skip if it disconnects
-                end++;
-                std::cout << "channel " << c << " is now unavailable" << std::endl;
-
-                // todo: schedule reconnect
+                std::cout << "Line 270" << std::endl;
             }
         }
 
@@ -327,22 +299,17 @@ namespace dEnc {
                 //e.setBadRecvErrorState(osuCrypto::BadReceiveBufferSize.str());
             }
         }
-        std::cout << "3" << std::endl;
-
+        
         // This function is called when the user wants the actual 
         // OPRF output. It must combine the OPRF output shares
         ae.get = [this, w = std::move(w)]() mutable ->std::vector<block> 
         {
             // block until all of the OPRF output shares have arrived.
-            u64 recvCount = 0;
-            u64 i = 0;
-            while (++i < mN && recvCount < mM) {
+            for (u64 i = 0; i < mM - 1; ++i) {
                 try {
                     w->async[i].get();
-                    recvCount++;
                 } catch (std::exception & e){
-                    std::cout << "heyyy " << e.what() << std::endl;
-                    mRequestChls[i].close();
+                    std::cout << " Line 330" << std::endl;
                 }
             }
 

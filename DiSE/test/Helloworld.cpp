@@ -34,7 +34,6 @@ u64 numAsync, bool lat, std::string tag)
     // will only have one encryption in flight at a time.
     for (u64 t = 0; t < trials; ++t) {
         initiator.encrypt(data[0], ciphertext[0]);
-        sleep(1);
     }
 
     auto e = t.setTimePoint("end");
