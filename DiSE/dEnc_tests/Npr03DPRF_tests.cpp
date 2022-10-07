@@ -23,6 +23,7 @@ void Npr03SymShDPRF_eval_test()
 	u64 m = 2;
 
 	u64 trials = 4;
+    int placeholder = 10;
 
 	oc::IOService ios;
 	std::vector<GroupChannel> comms(n);
@@ -42,7 +43,7 @@ void Npr03SymShDPRF_eval_test()
 
 	for (u64 i = 0; i < n; ++i)
 	{
-		dprfs[i].init(i, m, n, comms[i].mRequestChls, comms[i].mListenChls, oc::toBlock(i), mk.keyStructure, mk.getSubkey(i));
+		dprfs[i].init(placeholder, i, m, n, comms[i].mRequestChls, comms[i].mListenChls, oc::toBlock(i), mk.keyStructure, mk.getSubkey(i));
 	}
 
 	std::vector<oc::AES> keys(dprfs[0].mD);
