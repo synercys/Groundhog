@@ -101,8 +101,9 @@ namespace dEnc {
     }
 
 
-
+     // ASHISH TODO: In init initialize the sequence vector.
     void Npr03SymDprf::init(
+        int x,
         u64 partyIdx,
         u64 m,
         u64 n,
@@ -119,8 +120,12 @@ namespace dEnc {
         mPrng.SetSeed(seed);
         mIsClosed = false;
 
+        //threshold (because trials was t :(, m is consistently threshold in code))
         mM = m;
+        //
         mN = n;
+         // ASHISH TODO: copy the sequence vector.
+        mX=x;
 
         // Each subKey k_i will be distributed to subsetSize-out-of-n of the parties.
         auto subsetSize = mN - mM + 1;
@@ -228,7 +233,8 @@ namespace dEnc {
 
     AsyncEval Npr03SymDprf::asyncEval(block input) // TODO: fix
     {
-
+        // ASHISH TODO: find the current live node
+        std::cout << mX << std::endl;
         TODO("Add support for sending the party identity for allowing encryption to be distinguished from decryption. ");
         // mM threshold
         // mN node count

@@ -33,6 +33,7 @@ u64 numAsync, bool lat, std::string tag)
     // we are interested in latency and therefore we 
     // will only have one encryption in flight at a time.
     for (u64 t = 0; t < trials; ++t) {
+        // ASHISH TODO: get result ? check if abort.(Check with Prof) If abort continue with next trial
         initiator.encrypt(data[0], ciphertext[0]);
     }
 
@@ -43,6 +44,7 @@ u64 numAsync, bool lat, std::string tag)
     auto online = (double)std::chrono::duration_cast<std::chrono::milliseconds>(e - s).count();
 
     // print the statistics.
+    // ASHISH TODO: Print aborts too.
     std::cout << tag <<"      n:" << n << "  m:" << m << "   t:" << trials
         << "     enc/s:" << 1000 * trials / online << "   ms/enc:" << online / trials << " \t "
         << " Mbps:" << (trials * sizeof(block) * 2 * (m - 1) * 8 / (1 << 20)) / (online / 1000) << std::endl;
@@ -52,10 +54,17 @@ u64 numAsync, bool lat, std::string tag)
 void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 numAsync,
 u64 batch, bool lat, bool isClient)
 {
+
+    //ASHISH TODO: Read uptime server reboot sequence file and store in a vector. 
+    // every 30 seconds we reboot something. So lets say we want to run for 3 mins. 
+
+
     // set up the networking
     IOService ios;
     ios.showErrorMessages(true);
     GroupChannel gc(ips, n, ios, isClient);
+
+    int x=10;
 
     // oc::block seed;
     // if(isClient)
@@ -82,8 +91,9 @@ u64 batch, bool lat, bool isClient)
     mk.KeyGen(n, m, prng);
 
     // initialize the DPRF and the encrypters
+    // ASHISH TODO: In init pass the sequence vector. Fix compilation issue. 
     try{
-    dprf.init(gc.current_node, m, n, gc.mRequestChls, gc.mListenChls, prng.get<block>(),
+    dprf.init(x, gc.current_node, m, n, gc.mRequestChls, gc.mListenChls, prng.get<block>(),
         mk.keyStructure, mk.getSubkey(gc.current_node));
     }catch(const std::exception& e){ std::cout<<"T1"<<std::endl; }
     try{

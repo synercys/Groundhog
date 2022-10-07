@@ -22,6 +22,7 @@ class UptimeServerProtocol:
 
 	def datagram_received(self, data, addr):
 		print(f"Received {data.decode()} from {addr}")
+		# ASHISH TODO: print to file self.state  everytime the state is updated.
 		if data == b'u' or data == b'd':
 			(ip, _) = addr
 			idx = int(ip.split('.')[-1]) - 2
@@ -31,6 +32,7 @@ class UptimeServerProtocol:
 			else:
 				print("IP out of expected range!")
 		else:
+			# replies saying uuddduuu
 			print("sending", b"".join(self.state).decode())
 			self.transport.sendto(b''.join(self.state), addr)
 

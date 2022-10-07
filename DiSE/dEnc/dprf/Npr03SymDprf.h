@@ -108,7 +108,9 @@ namespace dEnc {
          * @param[in] keyStructure - A 2D array where row i lists they keys party i has.
          * @param[in] keys         - The keys that this party has
          */
+        // ASHISH TODO: In init initialize the sequence vector.
         void init(
+            int x,
             u64 partyIdx,
             u64 m,
             u64 n,
@@ -187,6 +189,9 @@ namespace dEnc {
 
         // Channels that the servers should listen to for DPRF requests.
         std::vector<Channel> mListenChls;
+
+        // ASHISH TODO: create a sequence vector.
+        int mX;
 
         //connection to server to find current live nodes
         int sockfd;
