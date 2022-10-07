@@ -29,12 +29,19 @@ u64 numAsync, bool lat, std::string tag)
 
     Timer t;
     auto s = t.setTimePoint("start");
+    int count_aborts = 0;
 
     // we are interested in latency and therefore we 
     // will only have one encryption in flight at a time.
     for (u64 t = 0; t < trials; ++t) {
         // ASHISH TODO: get result ? check if abort.(Check with Prof) If abort continue with next trial
-        initiator.encrypt(data[0], ciphertext[0]);
+        try{
+            initiator.encrypt(data[0], ciphertext[0]);
+        }
+        catch(const std::exception& e){ 
+                count_aborts++;
+                std::cout<<"Encryption Aborts"<<std::endl; 
+        }
     }
 
     auto e = t.setTimePoint("end");
@@ -47,7 +54,7 @@ u64 numAsync, bool lat, std::string tag)
     // ASHISH TODO: Print aborts too.
     std::cout << tag <<"      n:" << n << "  m:" << m << "   t:" << trials
         << "     enc/s:" << 1000 * trials / online << "   ms/enc:" << online / trials << " \t "
-        << " Mbps:" << (trials * sizeof(block) * 2 * (m - 1) * 8 / (1 << 20)) / (online / 1000) << std::endl;
+        << " Mbps:" << (trials * sizeof(block) * 2 * (m - 1) * 8 / (1 << 20)) / (online / 1000) << "Aborts = "<<count_aborts<<std::endl;
 }
 
 
@@ -58,13 +65,20 @@ u64 batch, bool lat, bool isClient)
     //ASHISH TODO: Read uptime server reboot sequence file and store in a vector. 
     // every 30 seconds we reboot something. So lets say we want to run for 3 mins. 
 
+    std::string state_file = "state.txt";
+    std::vector<char> cur_state{};
+    ifstream state_file_handle(state_file);
+
+    char ch;
+    while(!state_file_handle.eof()){
+        state_file_handle>>ch;
+        cur_state.push_back(cur_state);
+    }
 
     // set up the networking
     IOService ios;
     ios.showErrorMessages(true);
     GroupChannel gc(ips, n, ios, isClient);
-
-    int x=10;
 
     // oc::block seed;
     // if(isClient)
@@ -93,7 +107,7 @@ u64 batch, bool lat, bool isClient)
     // initialize the DPRF and the encrypters
     // ASHISH TODO: In init pass the sequence vector. Fix compilation issue. 
     try{
-    dprf.init(x, gc.current_node, m, n, gc.mRequestChls, gc.mListenChls, prng.get<block>(),
+    dprf.init(cur_state, gc.current_node, m, n, gc.mRequestChls, gc.mListenChls, prng.get<block>(),
         mk.keyStructure, mk.getSubkey(gc.current_node));
     }catch(const std::exception& e){ std::cout<<"T1"<<std::endl; }
     try{
