@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import asyncio
 import sys
+import os
 
 if len(sys.argv) != 1+1:
 	print("Must pass server count")
@@ -16,10 +17,22 @@ class UptimeServerProtocol:
 	def __init__(self):
 		print("Starting UDP server")
 		self.state = [b'u']*(node_count)
+		self.state_file = 'state.txt'
+		self.write_state_to_file(self.state_file)
 
 	def connection_made(self, transport):
 		self.transport = transport
+	
+	def change_in_state(self, prev_state):
+		if prev_state == self.state:
+			return False
+		else:
+			return True
 
+	def write_state_to_file(self, state_file):
+		with open(os.path.join(os.getcwd(), state_file), mode="w") as f:
+			print(f"{self.state}", file=f)
+		
 	def datagram_received(self, data, addr):
 		print(f"Received {data.decode()} from {addr}")
 		# ASHISH TODO: print to file self.state  everytime the state is updated.
@@ -28,7 +41,10 @@ class UptimeServerProtocol:
 			idx = int(ip.split('.')[-1]) - 2
 			print(f"Received {data.decode()} from {ip}")
 			if idx in range(node_count):
+				prev_state = self.state
 				self.state[idx] = data
+				if self.change_in_state(prev_state):
+					self.write_state_to_file(self.state_file)
 			else:
 				print("IP out of expected range!")
 		else:
