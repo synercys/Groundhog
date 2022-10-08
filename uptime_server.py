@@ -18,6 +18,7 @@ class UptimeServerProtocol:
 		print("Starting UDP server")
 		self.state = [b'u']*(node_count)
 		self.state_file = 'state.txt'
+		self.prev_time = time.time()
 		self.write_state_to_file(self.state_file)
 
 	def connection_made(self, transport):
@@ -30,8 +31,9 @@ class UptimeServerProtocol:
 			return True
 
 	def write_state_to_file(self, state_file):
-		with open(os.path.join(os.getcwd(), state_file), mode="w") as f:
-			print(f"{self.state}", file=f)
+		with open(os.path.join(os.getcwd(), state_file), mode="a") as f:
+			print(f"{time.time()- self.prev_time}  {self.state}", file=f)
+			# self.prev_time = time.time()
 		
 	def datagram_received(self, data, addr):
 		print(f"Received {data.decode()} from {addr}")
@@ -41,7 +43,7 @@ class UptimeServerProtocol:
 			idx = int(ip.split('.')[-1]) - 2
 			print(f"Received {data.decode()} from {ip}")
 			if idx in range(node_count):
-				prev_state = self.state
+				prev_state = self.state.copy()
 				self.state[idx] = data
 				if self.change_in_state(prev_state):
 					self.write_state_to_file(self.state_file)

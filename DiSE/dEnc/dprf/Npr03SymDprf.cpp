@@ -252,7 +252,7 @@ namespace dEnc {
             try {
                 mRequestChls[c].asyncSendCopy(&input, 1);
             } catch(const std::exception & e) {
-                std::cout << "Line 270" << std::endl;
+                //std::cout << "Line 270" << std::endl;
             }
         }
 
@@ -318,7 +318,7 @@ namespace dEnc {
                 try {
                     w->async[i].get();
                 } catch (std::exception & e){
-                    std::cout << " Line 330" << std::endl;
+                    //std::cout << " Line 330" << std::endl;
                 }
             }
 
