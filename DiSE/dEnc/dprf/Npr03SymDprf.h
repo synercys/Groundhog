@@ -110,7 +110,7 @@ namespace dEnc {
          */
         // ASHISH TODO: In init initialize the sequence vector.
         void init(
-            int x,
+            std::vector<char> cur_state,
             u64 partyIdx,
             u64 m,
             u64 n,
@@ -191,7 +191,7 @@ namespace dEnc {
         std::vector<Channel> mListenChls;
 
         // ASHISH TODO: create a sequence vector.
-        int mX;
+        std::vector<char> cur_state;
 
         //connection to server to find current live nodes
         int sockfd;

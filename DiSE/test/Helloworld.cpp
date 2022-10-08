@@ -67,12 +67,12 @@ u64 batch, bool lat, bool isClient)
 
     std::string state_file = "state.txt";
     std::vector<char> cur_state{};
-    ifstream state_file_handle(state_file);
+    std::ifstream state_file_handle(state_file);
 
     char ch;
     while(!state_file_handle.eof()){
         state_file_handle>>ch;
-        cur_state.push_back(cur_state);
+        cur_state.push_back(ch);
     }
 
     // set up the networking

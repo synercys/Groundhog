@@ -23,7 +23,7 @@ void Npr03SymShDPRF_eval_test()
 	u64 m = 2;
 
 	u64 trials = 4;
-    int placeholder = 10;
+    std::vector<char> placeholder{};
 
 	oc::IOService ios;
 	std::vector<GroupChannel> comms(n);

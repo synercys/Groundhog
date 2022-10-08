@@ -111,7 +111,7 @@ void AmmrSymClient_tp_Perf_test(u64 n, u64 m, u64 blockCount, u64 trials, u64 nu
     Npr03SymDprf::MasterKey mk;
     mk.KeyGen(n, m, prng);
 
-    int placeholder = 10;
+    std::vector<char> placeholder{};
     // initialize the DPRF and the encrypters
     for (u64 i = 0; i < n; ++i)
     {
