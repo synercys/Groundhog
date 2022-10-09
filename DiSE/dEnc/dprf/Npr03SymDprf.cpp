@@ -5,6 +5,8 @@
 #include <cryptoTools/Network/Channel.h>
 #include <cryptoTools/Common/BitVector.h>
 #include <cryptoTools/Common/MatrixView.h>
+#include <chrono>
+#include <fstream>
 
 #define PORT  5000
 
@@ -156,6 +158,9 @@ namespace dEnc {
         servaddr.sin_port = htons(PORT);
         servaddr.sin_addr.s_addr = inet_addr("10.0.0.254");
 
+        //Filling in start time
+        start_time = std::chrono::high_resolution_clock::now();
+
         startListening();
     }
 
@@ -231,17 +236,55 @@ namespace dEnc {
         return {listenChl, requestChl};
     }
 
+    int Npr03SymDprf::calcBucket()
+    {
+        std::ifstream file_name("state_from_uptime.txt");
+        float number_read;
+        std::string string_read;
+
+        std::vector<float> times{};
+        std::vector<std::string> states{};
+
+        while(file_name >> number_read >> string_read){
+            times.push_back(number_read);
+            states.push_back(string_read);
+        }
+
+        for (auto& num: times)
+            std::cout<<num<<" ";
+        std::cout<<std::endl;
+
+        for (auto& str: states)
+            std::cout<<str<<" ";
+        std::cout<<std::endl;
+
+        return 0;
+
+    }
+
     AsyncEval Npr03SymDprf::asyncEval(block input) // TODO: fix
     {
         // ASHISH TODO: find the current live node
         for (auto& ch: cur_state)
             std::cout<<ch<<" ";
 
+        //ASHISH TODO: exact opposite of the python script. 
+        // prev_time, curr_time. Use that to find our bucket. 
+        // up those nodes we query. -> vector of live node 
+
+        auto cur_time = std::chrono::high_resolution_clock::now();
+        auto time_delta_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(cur_time - start_time).count();
+        std::ofstream time_file_handle("thing.txt");
+        time_file_handle << time_delta_ns;
+
         std::cout<<std::endl;
         TODO("Add support for sending the party identity for allowing encryption to be distinguished from decryption. ");
         // mM threshold
         // mN node count
         // mPartyIdx this node's ID
+
+
+        // partyidx of encryptor is 0. I query node 1 - node t-1.
 
         // Send the OPRF input to the next m-1 parties
         auto end = mPartyIdx + mM;
