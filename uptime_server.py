@@ -2,6 +2,8 @@
 import asyncio
 import sys
 import os
+import time
+import re
 
 if len(sys.argv) != 1+1:
 	print("Must pass server count")
@@ -32,9 +34,10 @@ class UptimeServerProtocol:
 
 	def write_state_to_file(self, state_file):
 		with open(os.path.join(os.getcwd(), state_file), mode="a") as f:
-			print(f"{time.time()- self.prev_time}  {self.state}", file=f)
-			# self.prev_time = time.time()
-		
+			char_to_replace={" ":"", "'":"", "[":"", "]":"", ",":"", "b":""}
+			value = re.sub(r"[b\[\ \'\],]", lambda x:char_to_replace[x.group(0)], str(self.state))
+			print(f"{time.time()- self.prev_time}  {value}", file=f)
+
 	def datagram_received(self, data, addr):
 		print(f"Received {data.decode()} from {addr}")
 		# ASHISH TODO: print to file self.state  everytime the state is updated.

@@ -5,6 +5,8 @@
 #include <cryptoTools/Network/Channel.h>
 #include <cryptoTools/Common/BitVector.h>
 #include <cryptoTools/Common/MatrixView.h>
+#include <chrono>
+#include <fstream>
 
 #define PORT  5000
 
@@ -156,6 +158,9 @@ namespace dEnc {
         servaddr.sin_port = htons(PORT);
         servaddr.sin_addr.s_addr = inet_addr("10.0.0.254");
 
+        //Filling in start time
+        start_time = std::chrono::high_resolution_clock::now();
+
         startListening();
     }
 
@@ -231,17 +236,80 @@ namespace dEnc {
         return {listenChl, requestChl};
     }
 
+    std::string bucket(const std::vector<float>& times, const std::vector<std::string>& states, float cur_time){
+
+        std::string result{""};
+        int i;
+
+        for (i = 0; i < (times.size()-1); i++){
+                if((times[i] <= cur_time) && (times[i+1] > cur_time)){
+                        result.assign(states[i]);
+                        break;
+                }
+        }
+        //std::cout<<i<<std::endl;
+        return result;
+    }
+
+    int Npr03SymDprf::calcBucket(std::vector<int>& up_nodes, std::vector<int>& down_nodes)
+        std::ifstream file_name("state.txt");
+        float number_read;
+        std::string string_read;
+
+        std::vector<float> times{};
+        std::vector<std::string> states{};
+
+        while(file_name >> number_read >> string_read){
+            times.push_back(number_read);
+            states.push_back(string_read);
+        }
+
+        auto result = bucket(times, states, 50.0);
+
+        std::vector<int> up_nodes{};
+        std::vector<int> down_nodes{};
+
+        for (int i = 0; i != result.size(); i++){
+            //std::cout<<"Node "<<i<<" is "<<result[i]<<std::endl;
+            if(result[i] == 'u')
+                    up_nodes.push_back(i);
+            else if (result[i] == 'd')
+                    down_nodes.push_back(i);
+        }
+
+        for (auto& up:up_nodes)
+                std::cout<<up<<" ";
+        std::cout<<std::endl;
+
+        for (auto& down:down_nodes)
+                std::cout<<down<<" ";
+        std::cout<<std::endl;
+
+    }
+
     AsyncEval Npr03SymDprf::asyncEval(block input) // TODO: fix
     {
         // ASHISH TODO: find the current live node
         for (auto& ch: cur_state)
             std::cout<<ch<<" ";
 
+        //ASHISH TODO: exact opposite of the python script. 
+        // prev_time, curr_time. Use that to find our bucket. 
+        // up those nodes we query. -> vector of live node 
+
+        auto cur_time = std::chrono::high_resolution_clock::now();
+        auto time_delta_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(cur_time - start_time).count();
+        std::ofstream time_file_handle("thing.txt");
+        time_file_handle << time_delta_ns;
+
         std::cout<<std::endl;
         TODO("Add support for sending the party identity for allowing encryption to be distinguished from decryption. ");
         // mM threshold
         // mN node count
         // mPartyIdx this node's ID
+
+
+        // partyidx of encryptor is 0. I query node 1 - node t-1.
 
         // Send the OPRF input to the next m-1 parties
         auto end = mPartyIdx + mM;

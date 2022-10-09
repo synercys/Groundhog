@@ -15,6 +15,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
+#include <chrono>
    
 
 #include "Dprf.h"
@@ -154,6 +155,11 @@ namespace dEnc {
          */
         virtual void close()override;
 
+        /**
+         * Calculate which bucket the Asynceval comes in
+         */
+        virtual int calcBucket();
+
 
     private:
         /**
@@ -199,6 +205,9 @@ namespace dEnc {
 	    struct sockaddr_in servaddr;
 
         socklen_t ret, value;
+
+        //start time tracking
+        std::chrono::time_point<std::chrono::high_resolution_clock> start_time;
 
     };
 
