@@ -158,7 +158,7 @@ namespace dEnc {
         /**
          * Calculate which bucket the Asynceval comes in
          */
-        virtual int calcBucket();
+        virtual int calcBucket(std::vector<int>& up_nodes, std::vector<int>& down_node);
 
 
     private:
