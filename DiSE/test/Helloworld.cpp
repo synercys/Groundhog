@@ -66,14 +66,15 @@ u64 batch, bool lat, bool isClient)
     // every 30 seconds we reboot something. So lets say we want to run for 3 mins. 
 
     std::string state_file = "state.txt";
-    std::vector<char> cur_state{};
+    std::vector<float> times;
+    std::vector<std::string> states;
     std::ifstream state_file_handle(state_file);
 
-    char ch;
-    while(!state_file_handle.eof()){
-        state_file_handle>>ch;
-        cur_state.push_back(ch);
-    }
+    // char ch;
+    // while(!state_file_handle.eof()){
+    //     state_file_handle>>ch;
+    //     cur_state.push_back(ch);
+    // }
 
     // set up the networking
     IOService ios;
@@ -107,7 +108,7 @@ u64 batch, bool lat, bool isClient)
     // initialize the DPRF and the encrypters
     // ASHISH TODO: In init pass the sequence vector. Fix compilation issue. 
     try{
-    dprf.init(cur_state, gc.current_node, m, n, gc.mRequestChls, gc.mListenChls, prng.get<block>(),
+    dprf.init(times, states, gc.current_node, m, n, gc.mRequestChls, gc.mListenChls, prng.get<block>(),
         mk.keyStructure, mk.getSubkey(gc.current_node));
     }catch(const std::exception& e){ std::cout<<"T1"<<std::endl; }
     try{

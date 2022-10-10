@@ -86,7 +86,8 @@ void AmmrSymClient_encDec_test()
 	u64 m = 2;
 	u64 trials = 4;
 
-    std::vector<char> placeholder{};
+    std::vector<float> times;
+    std::vector<std::string> states;
 	oc::IOService ios;
 	std::vector<GroupChannel> eps(n);
 	std::vector<AmmrClient<Npr03SymDprf>> encs(n);
@@ -108,7 +109,7 @@ void AmmrSymClient_encDec_test()
 	{
 		auto& e = eps[i];
 
-        dprfs[i].init(placeholder, i, m, n, e.mRequestChls, e.mListenChls, prng.get<block>(), mk.keyStructure, mk.getSubkey(i));
+        dprfs[i].init(times, states, i, m, n, e.mRequestChls, e.mListenChls, prng.get<block>(), mk.keyStructure, mk.getSubkey(i));
 		encs[i].init(i, prng.get<block>(), &dprfs[i]);
 	}
 

@@ -25,7 +25,7 @@ namespace dEnc {
             mServerDone.get();
     }
 
-
+    void processStateFile(std::string filename, std::vector<float>& times, std::vector<std::string>& states);
 
     void Npr03SymDprf::MasterKey::KeyGen(u64 n, u64 m, PRNG & prng)
     {
@@ -105,7 +105,8 @@ namespace dEnc {
 
      // ASHISH TODO: In init initialize the sequence vector.
     void Npr03SymDprf::init(
-        std::vector<char> cur_state,
+        std::vector<float>& times, 
+        std::vector<std::string>& states,
         u64 partyIdx,
         u64 m,
         u64 n,
@@ -127,7 +128,11 @@ namespace dEnc {
         //
         mN = n;
          // ASHISH TODO: copy the sequence vector.
-        std::vector<char> mX = cur_state;
+        
+        //process state.txt file that was populated by uptime_server.py - TODO HARD-CODING FOR NOW
+        processStateFile("state.txt", times, states);
+
+        std::vector<std::string> mX = states;
 
         // Each subKey k_i will be distributed to subsetSize-out-of-n of the parties.
         auto subsetSize = mN - mM + 1;
@@ -236,7 +241,40 @@ namespace dEnc {
         return {listenChl, requestChl};
     }
 
-    std::string bucket(const std::vector<float>& times, const std::vector<std::string>& states, float cur_time){
+    void processStateFile(std::string filename, std::vector<float>& times, std::vector<std::string>& states){
+        
+        std::ifstream file_handle(filename);
+        float number_read;
+        std::string string_read;
+
+        while(file_handle >> number_read >> string_read){
+            times.push_back(number_read);
+            states.push_back(string_read);
+        }
+    }
+
+    void Npr03SymDprf::return_up_down_nodes(std::vector<int>& up_nodes, std::vector<int>& down_nodes, float cur_time){
+
+        std::string result{""};
+        int i;
+
+        for (i = 0; i < (times.size()-1); i++){
+                if((times[i] <= cur_time) && (times[i+1] > cur_time)){
+                        result.assign(states[i]);
+                        break;
+                }
+        }
+
+        for (int i = 0; i != result.size(); i++){
+            //std::cout<<"Node "<<i<<" is "<<result[i]<<std::endl;
+            if(result[i] == 'u')
+                    up_nodes.push_back(i);
+            else if (result[i] == 'd')
+                    down_nodes.push_back(i);
+        }
+    }
+
+    /* std::string bucket(const std::vector<float>& times, const std::vector<std::string>& states, float cur_time){
 
         std::string result{""};
         int i;
@@ -273,13 +311,11 @@ namespace dEnc {
                     down_nodes.push_back(i);
         }
         return 0;
-    }
+    } */
 
     AsyncEval Npr03SymDprf::asyncEval(block input) // TODO: fix
     {
         // ASHISH TODO: find the current live node
-        for (auto& ch: cur_state)
-            std::cout<<ch<<" ";
 
         //ASHISH TODO: exact opposite of the python script. 
         // prev_time, curr_time. Use that to find our bucket. 
@@ -296,6 +332,11 @@ namespace dEnc {
         // mN node count
         // mPartyIdx this node's ID
 
+        std::vector<int> up_nodes, down_nodes;
+        return_up_down_nodes(up_nodes, down_nodes, time_delta_ns);
+
+        for (auto& ch: up_nodes)
+            std::cout<<ch<<" ";
 
         // partyidx of encryptor is 0. I query node 1 - node t-1.
 
