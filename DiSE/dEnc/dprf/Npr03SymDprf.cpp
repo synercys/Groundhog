@@ -247,11 +247,10 @@ namespace dEnc {
                         break;
                 }
         }
-        //std::cout<<i<<std::endl;
         return result;
     }
 
-    int Npr03SymDprf::calcBucket(std::vector<int>& up_nodes, std::vector<int>& down_nodes)
+    int Npr03SymDprf::calcBucket(std::vector<int>& up_nodes, std::vector<int>& down_nodes){
         std::ifstream file_name("state.txt");
         float number_read;
         std::string string_read;
@@ -266,9 +265,6 @@ namespace dEnc {
 
         auto result = bucket(times, states, 50.0);
 
-        std::vector<int> up_nodes{};
-        std::vector<int> down_nodes{};
-
         for (int i = 0; i != result.size(); i++){
             //std::cout<<"Node "<<i<<" is "<<result[i]<<std::endl;
             if(result[i] == 'u')
@@ -276,15 +272,7 @@ namespace dEnc {
             else if (result[i] == 'd')
                     down_nodes.push_back(i);
         }
-
-        for (auto& up:up_nodes)
-                std::cout<<up<<" ";
-        std::cout<<std::endl;
-
-        for (auto& down:down_nodes)
-                std::cout<<down<<" ";
-        std::cout<<std::endl;
-
+        return 0;
     }
 
     AsyncEval Npr03SymDprf::asyncEval(block input) // TODO: fix
