@@ -25,7 +25,7 @@ namespace dEnc {
             mServerDone.get();
     }
 
-    void processStateFile(std::string filename, std::vector<float>& times, std::vector<std::string>& states);
+    //void processStateFile(std::string filename, std::vector<float>& times, std::vector<std::string>& states);
 
     void Npr03SymDprf::MasterKey::KeyGen(u64 n, u64 m, PRNG & prng)
     {
@@ -241,7 +241,7 @@ namespace dEnc {
         return {listenChl, requestChl};
     }
 
-    void processStateFile(std::string filename, std::vector<float>& times, std::vector<std::string>& states){
+    void Npr03SymDprf::processStateFile(std::string filename, std::vector<float>& times, std::vector<std::string>& states){
         
         std::ifstream file_handle(filename);
         float number_read;

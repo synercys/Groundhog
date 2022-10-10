@@ -160,7 +160,7 @@ namespace dEnc {
          * Calculate which bucket the Asynceval comes in
          */
         virtual void return_up_down_nodes(std::vector<int>& up_nodes, std::vector<int>& down_nodes, float cur_time);
-
+        virtual void processStateFile(std::string filename, std::vector<float>& times, std::vector<std::string>& states);
 
     private:
         /**
