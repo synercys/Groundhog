@@ -105,8 +105,8 @@ namespace dEnc {
 
      // ASHISH TODO: In init initialize the sequence vector.
     void Npr03SymDprf::init(
-        std::vector<float>& times, 
-        std::vector<std::string>& states,
+        std::vector<float>& t,
+        std::vector<std::string>& s,
         u64 partyIdx,
         u64 m,
         u64 n,
@@ -129,10 +129,23 @@ namespace dEnc {
         mN = n;
          // ASHISH TODO: copy the sequence vector.
         
-        //process state.txt file that was populated by uptime_server.py - TODO HARD-CODING FOR NOW
-        processStateFile("state.txt", times, states);
+        times = &t;
+        states = &s;
 
-        std::vector<std::string> mX = states;
+        //process state.txt file that was populated by uptime_server.py - TODO HARD-CODING FOR NOW
+        processStateFile("state.txt", t, s);
+
+        for (auto t:*times)
+            std::cout<<t<<" ";
+
+        std::cout<<"\n";
+
+        if(times->empty())
+            std::cout<<"vector times is empty"<<std::endl;
+        else if (states->empty())
+            std::cout<<"vector states is empty"<<std::endl;
+
+        //std::vector<std::string> mX = states;
 
         // Each subKey k_i will be distributed to subsetSize-out-of-n of the parties.
         auto subsetSize = mN - mM + 1;
@@ -165,6 +178,10 @@ namespace dEnc {
 
         //Filling in start time
         start_time = std::chrono::high_resolution_clock::now();
+        // std::time_t start_time_conv = std::chrono::system_clock::to_time_t(start_time);
+        // time(&start_time_conv);
+
+        std::cout<<"Done initializing in"<<" "<<__func__<<std::endl;
 
         startListening();
     }
@@ -253,20 +270,33 @@ namespace dEnc {
         }
     }
 
-    void Npr03SymDprf::return_up_down_nodes(std::vector<int>& up_nodes, std::vector<int>& down_nodes, float cur_time){
+    void Npr03SymDprf::return_up_down_nodes(std::vector<int>& up_nodes, std::vector<int>& down_nodes, long double cur_time){
 
         std::string result{""};
         int i;
+        std::cout<<"In"<<" "<<__func__<<"searching for"<<cur_time<<std::endl;
+        std::cout<<"Size of time"<<times->size()<<std::endl;
 
-        for (i = 0; i < (times.size()-1); i++){
-                if((times[i] <= cur_time) && (times[i+1] > cur_time)){
-                        result.assign(states[i]);
+        for (i = 0; i < (times->size()-1); i++){
+                if(((*times)[i] <= cur_time) && ((*times)[i+1] > cur_time)){
+                        std::cout<<"Found the time slot"<<std::endl;
+                        result.assign((*states)[i]);
                         break;
                 }
         }
 
+        std::cout<<"Finished parsing times()"<<std::endl;
+
+        if (result.empty()){
+            std::cout<<cur_time<<" "<<"is outside the limits of "<<(*times)[0]<<" and "<<(*times)[times->size()-1]<<std::endl;
+            if (cur_time < (*times)[0])
+                result.assign((*states)[0]);
+            else if (cur_time > (*times)[times->size()-1])
+                result.assign((*states)[times->size()-1]);
+        }
+
         for (int i = 0; i != result.size(); i++){
-            //std::cout<<"Node "<<i<<" is "<<result[i]<<std::endl;
+            std::cout<<"Node "<<i<<" is "<<result[i]<<std::endl;
             if(result[i] == 'u')
                     up_nodes.push_back(i);
             else if (result[i] == 'd')
@@ -321,12 +351,22 @@ namespace dEnc {
         // prev_time, curr_time. Use that to find our bucket. 
         // up those nodes we query. -> vector of live node 
 
-        auto cur_time = std::chrono::high_resolution_clock::now();
-        auto time_delta_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(cur_time - start_time).count();
-        std::ofstream time_file_handle("thing.txt");
-        time_file_handle << time_delta_ns;
+        std::cout<<"In "<<__func__<<std::endl;
+        std::cout<<"Size of time"<<times->size()<<std::endl;
 
-        std::cout<<std::endl;
+        auto cur_time = std::chrono::high_resolution_clock::now();
+        // std::time_t cur_time_conv = std::chrono::system_clock::to_time_t(cur_time);
+        // time(&cur_time_conv);
+
+        long double time_delta_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(cur_time - start_time).count();
+        long double NANOSECONDS_PER_SECOND = 1000000000;
+
+        // std::ofstream time_file_handle("thing.txt");
+        // time_file_handle << time_delta_ns;
+        long double time_delta_s = time_delta_ns/NANOSECONDS_PER_SECOND;
+
+        std::cout<<"In "<<__func__<<" Time delta "<<time_delta_ns<<" "<<time_delta_s<<" "<<std::endl;
+
         TODO("Add support for sending the party identity for allowing encryption to be distinguished from decryption. ");
         // mM threshold
         // mN node count
@@ -335,14 +375,16 @@ namespace dEnc {
         std::vector<int> up_nodes, down_nodes;
         return_up_down_nodes(up_nodes, down_nodes, time_delta_ns);
 
+        std::cout<<"Up Nodes include "<<std::endl;
         for (auto& ch: up_nodes)
             std::cout<<ch<<" ";
 
         // partyidx of encryptor is 0. I query node 1 - node t-1.
 
         // Send the OPRF input to the next m-1 parties
-        auto end = mPartyIdx + mM;
-        for (u64 i = mPartyIdx + 1; i < end; ++i)
+        for (auto& i: up_nodes)
+        /*auto end = mPartyIdx + mM;
+        for (u64 i = mPartyIdx + 1; i < end; ++i)*/
         {
             auto c = i % mN;
             if (c > mPartyIdx) --c;
@@ -353,7 +395,7 @@ namespace dEnc {
             }
         }
 
-
+        std::cout<<"Done with sending the OPRF inputs"<<std::endl;
         // Set up the completion callback "AsyncEval".
         // This object holds a function that is called when 
         // the user wants to async eval to complete. This involves
@@ -388,6 +430,7 @@ namespace dEnc {
         for (u64 i = 0; i < buff.size(); ++i)
             b = b ^ buff[i];
 
+        std::cout<<"Going to queue up the receive operations to receive the OPRF output shares"<<std::endl;
         // queue up the receive operations to receive the OPRF output shares
         for (u64 i = mPartyIdx + 1, j = 0; j < w->async.size(); ++i, ++j)
         {
@@ -405,25 +448,29 @@ namespace dEnc {
                 //e.setBadRecvErrorState(osuCrypto::BadReceiveBufferSize.str());
             }
         }
-        
+
+        std::cout<<"Done queuing up the receive operations to receive the OPRF output shares"<<std::endl;
         // This function is called when the user wants the actual 
         // OPRF output. It must combine the OPRF output shares
-        ae.get = [this, w = std::move(w)]() mutable ->std::vector<block> 
+        ae.get = [this, w = std::move(w), up_nodes]() mutable ->std::vector<block>
         {
             // block until all of the OPRF output shares have arrived.
-            for (u64 i = 0; i < mM - 1; ++i) {
+            /*for (u64 i = 0; i < mM - 1; ++i)*/
+            for (auto& i: up_nodes)
+            {
                 try {
                     w->async[i].get();
                 } catch (std::exception & e){
-                    //std::cout << " Line 330" << std::endl;
+                    std::cout << " Line 330" << std::endl;
                 }
             }
-
+            std::cout<<"Got the OPRF output shares"<<std::endl;
             // XOR all of the output shares
             std::vector<block> ret{ w->fx[0] };
-            for (u64 i = 1; i < mM; ++i)
+            /*for (u64 i = 1; i < mM; ++i)*/
+            for (auto& i: up_nodes)
                 ret[0] = ret[0] ^ w->fx[i];
-
+            std::cout<<"XOR the OPRF output shares done"<<std::endl;
             return (ret);
         };
         return ae;

@@ -23,6 +23,8 @@ u64 numAsync, bool lat, std::string tag)
     // This happens using the threads created by IOService
     dEnc::AmmrClient<DPRF>& initiator = enc;
 
+    std::cout<<"In "<<__func__<<std::endl;
+
     // the buffers to hold the data.
     std::vector<std::vector<block>> data(batch), ciphertext(batch);
     for (std::vector<block>& d : data) d.resize(blockCount);
@@ -30,12 +32,14 @@ u64 numAsync, bool lat, std::string tag)
     Timer t;
     auto s = t.setTimePoint("start");
     int count_aborts = 0;
+    int ctr = 0;
 
     // we are interested in latency and therefore we 
     // will only have one encryption in flight at a time.
     for (u64 t = 0; t < trials; ++t) {
         // ASHISH TODO: get result ? check if abort.(Check with Prof) If abort continue with next trial
         try{
+            std::cout << "Initiator encrypt" << ctr++<< std::endl;
             initiator.encrypt(data[0], ciphertext[0]);
         }
         catch(const std::exception& e){ 

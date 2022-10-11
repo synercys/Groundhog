@@ -159,7 +159,7 @@ namespace dEnc {
         /**
          * Calculate which bucket the Asynceval comes in
          */
-        virtual void return_up_down_nodes(std::vector<int>& up_nodes, std::vector<int>& down_nodes, float cur_time);
+        virtual void return_up_down_nodes(std::vector<int>& up_nodes, std::vector<int>& down_nodes, long double cur_time);
         virtual void processStateFile(std::string filename, std::vector<float>& times, std::vector<std::string>& states);
 
     private:
@@ -198,8 +198,8 @@ namespace dEnc {
         std::vector<Channel> mListenChls;
 
         // ASHISH TODO: create a sequence vector.
-        std::vector<float> times;
-        std::vector<std::string> states;
+        std::vector<float>* times;
+        std::vector<std::string>* states;
 
         //connection to server to find current live nodes
         int sockfd;
