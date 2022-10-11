@@ -23,7 +23,7 @@ u64 numAsync, bool lat, std::string tag)
     // This happens using the threads created by IOService
     dEnc::AmmrClient<DPRF>& initiator = enc;
 
-    std::cout<<"In "<<__func__<<std::endl;
+    //std::cout<<"In "<<__func__<<std::endl;
 
     // the buffers to hold the data.
     std::vector<std::vector<block>> data(batch), ciphertext(batch);
@@ -39,7 +39,7 @@ u64 numAsync, bool lat, std::string tag)
     for (u64 t = 0; t < trials; ++t) {
         // ASHISH TODO: get result ? check if abort.(Check with Prof) If abort continue with next trial
         try{
-            std::cout << "Initiator encrypt" << ctr++<< std::endl;
+            //std::cout << "Initiator encrypt" << ctr++<< std::endl;
             initiator.encrypt(data[0], ciphertext[0]);
         }
         catch(const std::exception& e){ 
