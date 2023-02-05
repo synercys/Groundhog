@@ -16,7 +16,7 @@ RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-d
 
 
 # Install HTDiSE, development mode (faster iteration)
-RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3
+RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
 # compile from GitHub to get some baseline .o files
 RUN echo initial git build \
  && git clone "https://github.com/disha-agarwal/dise" repo \
@@ -32,7 +32,6 @@ RUN echo incremental build \
  && cmake . -Wno-dev \
  && make -j `nproc` \
  && cp -r bin /usr/local
-
 
 
 # Install HTDiSE, release mode (smaller image)
@@ -61,4 +60,5 @@ RUN echo incremental build \
 WORKDIR /usr/local
 COPY restart.py uptime_server.py /usr/local/bin/
 COPY state.txt /usr/local
+COPY default.json /usr/local
 CMD ["/usr/local/bin/dEncFrontend", "-u"]

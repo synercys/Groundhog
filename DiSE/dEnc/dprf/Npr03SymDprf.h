@@ -64,7 +64,13 @@ namespace dEnc {
             oc::span<block> getSubkey(u64 partyIdx) { return subKeys[partyIdx]; }
         };
 
+        u64 total_count;
 
+        u64 send_Abort;
+
+        u64 receive_queue_Abort;
+
+        u64 receive_output_Abort;
 
         Npr03SymDprf()
             : mServerDone(mServerDoneProm.get_future())
@@ -161,7 +167,9 @@ namespace dEnc {
          */
         virtual void return_up_down_nodes(std::vector<int>& up_nodes, std::vector<int>& down_nodes, long double cur_time);
         virtual void processStateFile(std::string filename, std::vector<float>& times, std::vector<std::string>& states);
-
+        virtual void processTimes();
+        virtual void printStats(std::vector<long double>& v);
+        virtual void printAbortStats();
     private:
         /**
          * Starts the callback loop for listening for OPRF eval requests on the 
@@ -210,6 +218,10 @@ namespace dEnc {
 
         //start time tracking
         std::chrono::time_point<std::chrono::high_resolution_clock> start_time;
+
+        std::vector<long double> oprf_send_times;
+        std::vector<long double> oprf_receive_times;
+        std::vector<long double> oprf_combine_times;
 
     };
 

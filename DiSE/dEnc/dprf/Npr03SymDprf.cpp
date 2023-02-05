@@ -1,5 +1,6 @@
 #include "Npr03SymDprf.h"
 #include <boost/math/special_functions/binomial.hpp>
+#include <cryptoTools/Common/Timer.h>
 #include <cryptoTools/Network/Session.h>
 #include <cryptoTools/Network/IOService.h>
 #include <cryptoTools/Network/Channel.h>
@@ -7,6 +8,7 @@
 #include <cryptoTools/Common/MatrixView.h>
 #include <chrono>
 #include <fstream>
+#include <numeric>
 
 #define PORT  5000
 
@@ -102,8 +104,7 @@ namespace dEnc {
         go(0, subsetSize);
     }
 
-
-     // ASHISH TODO: In init initialize the sequence vector.
+    // ASHISH TODO: In init initialize the sequence vector.
     void Npr03SymDprf::init(
         std::vector<float>& t,
         std::vector<std::string>& s,
@@ -134,11 +135,12 @@ namespace dEnc {
 
         //process state.txt file that was populated by uptime_server.py - TODO HARD-CODING FOR NOW
         processStateFile("state.txt", t, s);
-
-        /*for (auto t:*times)
+        
+        /* Disable this prints to see the times initialized with
+        for (auto t:*times)
             std::cout<<t<<" ";
-
-        std::cout<<"\n";*/
+        */
+        std::cout<<"\n";
 
         if(times->empty())
             std::cout<<"vector times is empty"<<std::endl;
@@ -175,6 +177,13 @@ namespace dEnc {
         servaddr.sin_family = AF_INET;
         servaddr.sin_port = htons(PORT);
         servaddr.sin_addr.s_addr = inet_addr("10.0.0.254");
+
+        total_count = 0;
+
+        //Recording Abort Count
+        send_Abort = 0;
+        receive_queue_Abort = 0;
+        receive_output_Abort = 0;
 
         //Filling in start time
         start_time = std::chrono::high_resolution_clock::now();
@@ -244,7 +253,10 @@ namespace dEnc {
     block Npr03SymDprf::eval(block input)
     {
         // simply call the async version and then block for it to complete
-        return asyncEval(input).get()[0];
+        block output = asyncEval(input).get()[0];
+        //std::cout<<"Ashish Size of Output after asyncEval = "<<sizeof(output)<<std::endl;
+        //processTimes();
+        return output;
     }
 
     std::tuple<Channel, Channel> reconnectChannel(Channel& chl)
@@ -345,6 +357,45 @@ namespace dEnc {
         return 0;
     } */
 
+    void Npr03SymDprf::printStats(std::vector<long double>& v){
+
+        long double sum = std::accumulate(v.begin(), v.end(), 0.0);
+        long double mean = sum / v.size();
+
+        std::vector<long double> diff(v.size());
+        //std::transform(v.begin(), v.end(), diff.begin(),std::bind2nd(std::minus<double>(), mean));
+        std::transform(v.begin(), v.end(), diff.begin(), [mean](long double x) { return x - mean; });
+        long double sq_sum = std::inner_product(diff.begin(), diff.end(), diff.begin(), 0.0);
+        long double stdev = std::sqrt(sq_sum / v.size());
+
+        std::cout<<"Mean\t"<<mean<<"\t"<<"Std Deviation\t"<<stdev<<std::endl;
+
+    }
+
+    void Npr03SymDprf::printAbortStats(){
+        std::cout<<"============================="<<std::endl;
+        std::cout<<"Abort at the NPR03SYMDPRF.CPP"<<std::endl;
+        std::cout<<"============================="<<std::endl;
+        std::cout<<"Total Count:"<<total_count<<" "
+            <<"SendAbort:"<<send_Abort<<" "
+            <<"Receive Queue Abort:"<<receive_queue_Abort<<" "
+            <<"Receive Output Abort:"<<receive_output_Abort<<std::endl; 
+    }
+
+
+    void Npr03SymDprf::processTimes(){
+        
+        std::cout<<"OPRF Send Times\t";
+        printStats(oprf_send_times);
+
+        std::cout<<"OPRF Receive Times\t";
+        printStats(oprf_receive_times);
+
+        std::cout<<"OPRF Combine Times\t";
+        printStats(oprf_combine_times);
+
+    }
+
     AsyncEval Npr03SymDprf::asyncEval(block input) // TODO: fix
     {
         // ASHISH TODO: find the current live node
@@ -384,6 +435,7 @@ namespace dEnc {
         // partyidx of encryptor is 0. I query node 1 - node t-1.
 
         // Send the OPRF input to the next m-1 parties
+        std::chrono::time_point<std::chrono::high_resolution_clock> oprf_send_start = std::chrono::high_resolution_clock::now();
         for (auto& i: up_nodes)
         /*auto end = mPartyIdx + mM;
         for (u64 i = mPartyIdx + 1; i < end; ++i)*/
@@ -393,9 +445,18 @@ namespace dEnc {
             try {
                 mRequestChls[c].asyncSendCopy(&input, 1);
             } catch(const std::exception & e) {
+                send_Abort++;
                 //std::cout << "Line 270" << std::endl;
             }
         }
+
+        auto oprf_send_finish = std::chrono::high_resolution_clock::now();
+        long double oprf_send_duration_in_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(oprf_send_finish - oprf_send_start).count();
+        long double oprf_send_duration_in_s = oprf_send_duration_in_ns/NANOSECONDS_PER_SECOND;
+        oprf_send_times.push_back(oprf_send_duration_in_s);
+        //std::cout<<"In "<<"Send the OPRF input to the next m-1 parties"<<" Time delta "<<time_delta_ns_1<<" "<<time_delta_s_1<<" "<<std::endl;
+
+
 
         //std::cout<<"Done with sending the OPRF inputs"<<std::endl;
 
@@ -418,6 +479,7 @@ namespace dEnc {
         };
         // allocate space to store the OPRF output shares
         auto w = std::make_shared<State>(mM);
+        //std::cout<<"Ashish Space Allocated for Output Share = "<<sizeof(w)<<" "<<"Number of parties = "<<mM<<std::endl;
 
         // Futures which allow us to block until the repsonces have 
         // been received
@@ -436,6 +498,7 @@ namespace dEnc {
         //std::cout<<"Going to queue up the receive operations to receive the OPRF output shares"<<std::endl;
         // queue up the receive operations to receive the OPRF output shares
         int j = 0;
+        std::chrono::time_point<std::chrono::high_resolution_clock> oprf_receive_start = std::chrono::high_resolution_clock::now();
         for (auto& i: up_nodes){
             if (j < w->async.size()){
                 auto c = i % mN;
@@ -447,6 +510,7 @@ namespace dEnc {
                 catch(osuCrypto::BadReceiveBufferSize & e)
                 {
                     std::cout<<"Line 443"<<std::endl;
+                    receive_queue_Abort++;
                     /*std::cout << "received only header from node " << c << std::endl;
                     // std::cout << "received: " << w->async[j].get() << std::endl;
                     std::cout << "trying to move on... " << i << std::endl;
@@ -455,6 +519,12 @@ namespace dEnc {
                 j++;
             }
         }
+        auto oprf_receive_finish = std::chrono::high_resolution_clock::now();
+        long double oprf_receive_duration_in_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(oprf_receive_finish - oprf_receive_start).count();
+        long double oprf_receive_duration_in_s = oprf_receive_duration_in_ns/NANOSECONDS_PER_SECOND;
+        oprf_receive_times.push_back(oprf_receive_duration_in_s);
+        //std::cout<<"In "<<"Going to queue up the receive operations to receive the OPRF output shares"<<" Time delta "<<time_delta_ns_2<<" "<<time_delta_s_2<<" "<<std::endl;
+
         
         /*for (u64 i = mPartyIdx + 1, j = 0; j < w->async.size(); ++i, ++j)
         {
@@ -477,14 +547,18 @@ namespace dEnc {
         
         // This function is called when the user wants the actual 
         // OPRF output. It must combine the OPRF output shares
+        std::chrono::time_point<std::chrono::high_resolution_clock> oprf_combine_start = std::chrono::high_resolution_clock::now();
         ae.get = [this, w = std::move(w), up_nodes]() mutable ->std::vector<block>
         {
             // block until all of the OPRF output shares have arrived.
             for (u64 i = 0; i < mM - 1; ++i)
-            {
+            {   
+                total_count++;
                 try {
                     w->async[i].get();
                 } catch (std::exception & e){
+                    receive_output_Abort++;
+                    //std::cout <<count_abort++<<std::endl;
                     //std::cout << " Line 330" << std::endl;
                 }
             }
@@ -495,9 +569,17 @@ namespace dEnc {
             for (u64 i = 1; i < mM; ++i)
                 ret[0] = ret[0] ^ w->fx[i];
 
+            //std::cout<<"Ashish Size of Output After XOR = "<<ret.size()<<" "<<"Size of block = "<<sizeof(block)<<std::endl;
             //std::cout<<"XOR the OPRF output shares done"<<std::endl;
             return (ret);
         };
+
+        auto oprf_combine_finish = std::chrono::high_resolution_clock::now();
+        long double oprf_combine_duration_in_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(oprf_combine_finish - oprf_combine_start).count();
+        long double oprf_combine_duration_in_s = oprf_combine_duration_in_ns/NANOSECONDS_PER_SECOND;
+        oprf_combine_times.push_back(oprf_combine_duration_in_s);
+        //std::cout<<"In "<<"combine the OPRF output shares"<<" Time delta "<<time_delta_ns_3<<" "<<time_delta_s_3<<" "<<std::endl;
+
         return ae;
     }
 

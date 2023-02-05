@@ -32,10 +32,12 @@ u64 numAsync, bool lat, std::string tag)
     Timer t;
     auto s = t.setTimePoint("start");
     int count_aborts = 0;
-    int ctr = 0;
 
     // we are interested in latency and therefore we 
     // will only have one encryption in flight at a time.
+    std::cout<<"Size of Plain Text = "<<sizeof(data[0])<<" "
+        <<"Number of Trials = "<<trials<<std::endl;
+
     for (u64 t = 0; t < trials; ++t) {
         // ASHISH TODO: get result ? check if abort.(Check with Prof) If abort continue with next trial
         try{
@@ -44,7 +46,7 @@ u64 numAsync, bool lat, std::string tag)
         }
         catch(const std::exception& e){ 
                 count_aborts++;
-                std::cout<<"Encryption Aborts"<<std::endl; 
+                std::cout<<"Encryption Aborts in HelloWorld"<<std::endl; 
         }
     }
 
@@ -58,7 +60,8 @@ u64 numAsync, bool lat, std::string tag)
     // ASHISH TODO: Print aborts too.
     std::cout << tag <<"      n:" << n << "  m:" << m << "   t:" << trials
         << "     enc/s:" << 1000 * trials / online << "   ms/enc:" << online / trials << " \t "
-        << " Mbps:" << (trials * sizeof(block) * 2 * (m - 1) * 8 / (1 << 20)) / (online / 1000) << "Aborts = "<<count_aborts<<std::endl;
+        << " Mbps:" << (trials * sizeof(block) * 2 * (m - 1) * 8 / (1 << 20)) / (online / 1000)<<" "<<"Aborts = "<<count_aborts<<" "
+        <<"Time (ms) = "<<online<<std::endl;
 }
 
 
@@ -124,6 +127,8 @@ u64 batch, bool lat, bool isClient)
         std::cout << "Key exchange done. Starting  benchmark." << std::endl;
         eval(enc, n, m, blockCount, batch, trials, numAsync, lat, "Net      ");
     }
+    //dprf.processTimes();
+    dprf.printAbortStats();
 }
 
 /*

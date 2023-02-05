@@ -33,6 +33,7 @@ namespace dEnc
 
 		// eval DPRF(x)
 		block fx;
+		//std::cout<<"Ashish Size of Input : "<<sizeof(alpha)<<std::endl;
 		try {
 			fx = mDprf->eval(alpha);
 		}
@@ -60,6 +61,7 @@ namespace dEnc
 			++dest;
 			++src;
 		}
+
 	}
 
     template<typename DPRF>

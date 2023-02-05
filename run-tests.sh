@@ -1,8 +1,9 @@
 #!/bin/sh
 
-NODE_COUNT=8
-THRESHOLD_FRACTION=0.5
-TRIAL_SIZE=10000
+NODE_COUNT=24
+M=22
+THRESHOLD_FRACTION=`echo "(($M / $NODE_COUNT))" | bc -l`
+TRIAL_SIZE=100000
 
 SERVER_COUNT=$((NODE_COUNT-1)) # one is the client
 export SERVER_COUNT
@@ -28,5 +29,5 @@ else
 	docker-compose up 2>/dev/null | grep "enc/s:" | cut -d\| -f 2 | sed 's/^[[:space:]]*//'
 fi
 exit 1
-docker run --rm -it gabrielkulp/dise /usr/local/bin/dEncFrontend \
+docker run --privileged --rm -it --security-opt seccomp=/usr/local/default.json gabrielkulp/dise /usr/local/bin/dEncFrontend \
 	-ss -nStart "${NODE_COUNT}" -mf "${THRESHOLD_FRACTION}" -t "${TRIAL_SIZE}" -l
