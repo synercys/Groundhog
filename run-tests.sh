@@ -20,7 +20,7 @@ echo "" > schedule.log
 if [ "$1" = "--build" ]; then
 	docker-compose down
 	sleep 5
-	docker build . -t gabrielkulp/htdise:latest || exit 1
+	docker build . -t groundhog:latest || exit 1
 	sleep 5
 	docker-compose up --remove-orphans || exit 2 # show full log
 else

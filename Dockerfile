@@ -19,7 +19,7 @@ RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-d
 RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
 # compile from GitHub to get some baseline .o files
 RUN echo initial git build \
- && git clone "https://github.com/disha-agarwal/dise" repo \
+ && git clone "https://github.com/synercys/htdise" repo \
  && mv repo/DiSE . \
  && cd DiSE \
  && cmake . -Wno-dev \
@@ -59,6 +59,6 @@ RUN echo incremental build \
 # Test
 WORKDIR /usr/local
 COPY restart.py uptime_server.py /usr/local/bin/
-COPY state.txt /usr/local
+COPY node_power_status/state.txt /usr/local
 COPY default.json /usr/local
 CMD ["/usr/local/bin/dEncFrontend", "-u"]
