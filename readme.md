@@ -1,4 +1,4 @@
-# htDiSE
+# Groundhog
 
 ## Execution Instructions
 Simply run `docker-compose up` to start a swarm of containers.
