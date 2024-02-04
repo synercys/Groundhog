@@ -1,7 +1,9 @@
 FROM alpine:3.15
 WORKDIR /usr/local/src
 
+###############################################################################
 # Install cryptoTools
+###############################################################################
 COPY ./cryptoTools ./cryptoTools
 RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev \
  && cd cryptoTools \
@@ -15,7 +17,9 @@ RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-d
 
 
 
-# Install HTDiSE, development mode (faster iteration)
+###############################################################################
+# Install Groundhog, development mode (faster iteration)
+###############################################################################
 RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
 # compile from GitHub to get some baseline .o files
 RUN echo initial git build \
@@ -34,7 +38,9 @@ RUN echo incremental build \
  && cp -r bin /usr/local
 
 
-# Install HTDiSE, release mode (smaller image)
+###############################################################################
+# Install Groundhog, release mode (smaller image)
+###############################################################################
 #COPY ./DiSE ./DiSE
 #RUN apk add gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3
 # && cd DiSE \
@@ -44,9 +50,6 @@ RUN echo incremental build \
 # && cd .. \
 # && rm -rf DiSE \
 # && apk del gcc g++ make cmake openssl-dev boost1.77-static boost1.77-dev libc-utils
-
-
-
 #boost1.77-thread boost1.77-system
 # Minimize packages for runtime
 # Should leave: libstdc++, libgcc, musl, boost, relic, cryptotools
@@ -56,9 +59,15 @@ RUN echo incremental build \
 # && rm -rf /usr/local/include /usr/local/cmake /usr/local/lib/cmake /var/cache \
 # && rm -rf /lib/apk /etc/apk
 
-# Test
+###############################################################################
+# Install Groundhog-related files into /usr/local
+# restart.py : contains the reboot sequence related files
+# state.txt : contains liveness info of nodes as they come & down
+# default.json : sets up the environment
+# dEncFrontEnd : the DiSE executable
+###############################################################################
 WORKDIR /usr/local
 COPY restart.py uptime_server.py /usr/local/bin/
-COPY node_power_status/state.txt /usr/local
+COPY data/state.txt /usr/local
 COPY default.json /usr/local
 CMD ["/usr/local/bin/dEncFrontend", "-u"]
