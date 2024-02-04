@@ -1,0 +1,3250 @@
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Removing htdise_server_12 ... 
+Removing htdise_server_3  ... 
+Removing htdise_server_18 ... 
+Removing htdise_server_9  ... 
+Removing htdise_server_6  ... 
+Removing htdise_server_23 ... 
+Removing htdise_server_20 ... 
+Removing htdise_server_17 ... 
+Removing htdise_server_14 ... 
+Removing htdise_server_8  ... 
+Removing htdise_server_11 ... 
+Removing htdise_server_2  ... 
+Removing htdise_server_5  ... 
+Removing htdise_server_22 ... 
+Removing htdise_server_19 ... 
+Removing htdise_server_16 ... 
+Removing htdise_server_10 ... 
+Removing htdise_server_13 ... 
+Removing htdise_server_4  ... 
+Removing htdise_server_7  ... 
+Removing htdise_server_1  ... 
+Removing htdise_server_15 ... 
+Removing htdise_server_21 ... 
+Removing htdise_client_1  ... 
+Removing htdise_uptime_1  ... 
+Removing htdise_server_8  ... done
+Removing htdise_server_6  ... done
+Removing htdise_server_5  ... done
+Removing htdise_server_22 ... done
+Removing htdise_server_9  ... done
+Removing htdise_server_10 ... done
+Removing htdise_server_18 ... done
+Removing htdise_server_4  ... done
+Removing htdise_server_17 ... done
+Removing htdise_server_11 ... done
+Removing htdise_server_1  ... done
+Removing htdise_server_12 ... done
+Removing htdise_server_20 ... done
+Removing htdise_client_1  ... done
+Removing htdise_server_14 ... done
+Removing htdise_server_7  ... done
+Removing htdise_server_23 ... done
+Removing htdise_server_16 ... done
+Removing htdise_server_13 ... done
+Removing htdise_uptime_1  ... done
+Removing htdise_server_3  ... done
+Removing htdise_server_15 ... done
+Removing htdise_server_19 ... done
+Removing htdise_server_21 ... done
+Removing htdise_server_2  ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+cp: cannot stat 'data/reboot_sequence_logs/states_24_22_1M.txt': No such file or directory
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  12.31MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 6f6f695a2418
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> ee41285540f5
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> cc9b69bbb18f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> cd9aec11f710
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 20aa014a1eee
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 19439d883ab4
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 32761bceff87
+Successfully built 32761bceff87
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1  ... 
+Creating htdise_server_2  ... 
+Creating htdise_server_3  ... 
+Creating htdise_server_4  ... 
+Creating htdise_server_5  ... 
+Creating htdise_server_6  ... 
+Creating htdise_server_7  ... 
+Creating htdise_server_8  ... 
+Creating htdise_server_9  ... 
+Creating htdise_server_10 ... 
+Creating htdise_server_11 ... 
+Creating htdise_server_12 ... 
+Creating htdise_server_13 ... 
+Creating htdise_server_14 ... 
+Creating htdise_server_15 ... 
+Creating htdise_server_16 ... 
+Creating htdise_server_17 ... 
+Creating htdise_server_18 ... 
+Creating htdise_server_19 ... 
+Creating htdise_server_20 ... 
+Creating htdise_server_21 ... 
+Creating htdise_server_22 ... 
+Creating htdise_server_23 ... 
+Creating htdise_server_13 ... done
+Creating htdise_server_16 ... done
+Creating htdise_server_17 ... done
+Creating htdise_server_14 ... done
+Creating htdise_server_3  ... done
+Creating htdise_server_5  ... done
+Creating htdise_server_4  ... done
+Creating htdise_server_15 ... done
+Creating htdise_server_7  ... done
+Creating htdise_server_8  ... done
+Creating htdise_server_12 ... done
+Creating htdise_server_10 ... done
+Creating htdise_server_1  ... done
+Creating htdise_server_21 ... done
+Creating htdise_server_23 ... done
+Creating htdise_server_18 ... done
+Creating htdise_server_19 ... done
+Creating htdise_server_9  ... done
+Creating htdise_server_2  ... done
+Creating htdise_server_11 ... done
+Creating htdise_server_20 ... done
+Creating htdise_server_6  ... done
+Creating htdise_server_22 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_13, htdise_server_16, htdise_server_17, htdise_server_14, htdise_server_3, htdise_server_5, htdise_server_4, htdise_server_15, htdise_server_7, htdise_server_8, htdise_server_12, htdise_server_10, htdise_server_1, htdise_server_21, htdise_server_23, htdise_server_18, htdise_server_19, htdise_server_9, htdise_server_2, htdise_server_11, htdise_server_20, htdise_server_6, htdise_server_22
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[33mserver_1  |[0m My IP is 10.0.0.15, my idx is 13
+[33mserver_1  |[0m 
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m Size of Plain Text = 24 Number of Trials = 10000
+[32mserver_10 |[0m My IP is 10.0.0.14, my idx is 12
+[32mserver_10 |[0m 
+[32mserver_10 |[0m =============================
+[32mserver_10 |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_10 |[0m =============================
+[32mserver_10 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_11 |[0m My IP is 10.0.0.22, my idx is 20
+[35mserver_11 |[0m 
+[35mserver_11 |[0m =============================
+[35mserver_11 |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_11 |[0m =============================
+[35mserver_11 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34mserver_12 |[0m My IP is 10.0.0.13, my idx is 11
+[33;1mserver_14 |[0m My IP is 10.0.0.5, my idx is 3
+[36;1mserver_13 |[0m My IP is 10.0.0.3, my idx is 1
+[32;1mserver_15 |[0m My IP is 10.0.0.10, my idx is 8
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m =============================
+[32;1mserver_15 |[0m Abort at the NPR03SYMDPRF.CPP
+[32;1mserver_15 |[0m =============================
+[32;1mserver_15 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m =============================
+[33;1mserver_14 |[0m Abort at the NPR03SYMDPRF.CPP
+[33;1mserver_14 |[0m =============================
+[33;1mserver_14 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m =============================
+[36;1mserver_13 |[0m Abort at the NPR03SYMDPRF.CPP
+[36;1mserver_13 |[0m =============================
+[36;1mserver_13 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34mserver_12 |[0m 
+[34mserver_12 |[0m =============================
+[34mserver_12 |[0m Abort at the NPR03SYMDPRF.CPP
+[34mserver_12 |[0m =============================
+[34mserver_12 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35;1mserver_16 |[0m My IP is 10.0.0.4, my idx is 2
+[35;1mserver_16 |[0m 
+[35;1mserver_16 |[0m =============================
+[35;1mserver_16 |[0m Abort at the NPR03SYMDPRF.CPP
+[35;1mserver_16 |[0m =============================
+[35;1mserver_16 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mserver_18 |[0m My IP is 10.0.0.18, my idx is 16
+[34;1mserver_17 |[0m My IP is 10.0.0.6, my idx is 4
+[36mserver_18 |[0m 
+[36mserver_18 |[0m =============================
+[36mserver_18 |[0m Abort at the NPR03SYMDPRF.CPP
+[36mserver_18 |[0m =============================
+[36mserver_18 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34;1mserver_17 |[0m 
+[34;1mserver_17 |[0m =============================
+[34;1mserver_17 |[0m Abort at the NPR03SYMDPRF.CPP
+[34;1mserver_17 |[0m =============================
+[34;1mserver_17 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_19 |[0m My IP is 10.0.0.19, my idx is 17
+[33mserver_19 |[0m 
+[33mserver_19 |[0m =============================
+[33mserver_19 |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_19 |[0m =============================
+[33mserver_19 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_2  |[0m My IP is 10.0.0.21, my idx is 19
+[32mserver_2  |[0m 
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34mserver_21 |[0m My IP is 10.0.0.16, my idx is 14
+[35mserver_20 |[0m My IP is 10.0.0.23, my idx is 21
+[34mserver_21 |[0m 
+[34mserver_21 |[0m =============================
+[34mserver_21 |[0m Abort at the NPR03SYMDPRF.CPP
+[34mserver_21 |[0m =============================
+[34mserver_21 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_20 |[0m 
+[35mserver_20 |[0m =============================
+[35mserver_20 |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_20 |[0m =============================
+[35mserver_20 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36;1mserver_22 |[0m My IP is 10.0.0.25, my idx is 23
+[36;1mserver_22 |[0m 
+[36;1mserver_22 |[0m =============================
+[36;1mserver_22 |[0m Abort at the NPR03SYMDPRF.CPP
+[36;1mserver_22 |[0m =============================
+[36;1mserver_22 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33;1mserver_23 |[0m My IP is 10.0.0.17, my idx is 15
+[33;1mserver_23 |[0m 
+[33;1mserver_23 |[0m =============================
+[33;1mserver_23 |[0m Abort at the NPR03SYMDPRF.CPP
+[33;1mserver_23 |[0m =============================
+[33;1mserver_23 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32;1mserver_3  |[0m My IP is 10.0.0.7, my idx is 5
+[32;1mserver_3  |[0m 
+[32;1mserver_3  |[0m =============================
+[32;1mserver_3  |[0m Abort at the NPR03SYMDPRF.CPP
+[32;1mserver_3  |[0m =============================
+[32;1mserver_3  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35;1mserver_4  |[0m My IP is 10.0.0.9, my idx is 7
+[35;1mserver_4  |[0m 
+[35;1mserver_4  |[0m =============================
+[35;1mserver_4  |[0m Abort at the NPR03SYMDPRF.CPP
+[35;1mserver_4  |[0m =============================
+[35;1mserver_4  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34;1mserver_5  |[0m My IP is 10.0.0.8, my idx is 6
+[34;1mserver_5  |[0m 
+[34;1mserver_5  |[0m =============================
+[34;1mserver_5  |[0m Abort at the NPR03SYMDPRF.CPP
+[34;1mserver_5  |[0m =============================
+[34;1mserver_5  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mserver_6  |[0m My IP is 10.0.0.24, my idx is 22
+[36mserver_6  |[0m 
+[36mserver_6  |[0m =============================
+[36mserver_6  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mserver_6  |[0m =============================
+[36mserver_6  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_7  |[0m My IP is 10.0.0.11, my idx is 9
+[33mserver_7  |[0m 
+[33mserver_7  |[0m =============================
+[33mserver_7  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_7  |[0m =============================
+[33mserver_7  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_8  |[0m My IP is 10.0.0.12, my idx is 10
+[32mserver_8  |[0m 
+[32mserver_8  |[0m =============================
+[32mserver_8  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_8  |[0m =============================
+[32mserver_8  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_9  |[0m My IP is 10.0.0.20, my idx is 18
+[35mserver_9  |[0m 
+[35mserver_9  |[0m =============================
+[35mserver_9  |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_9  |[0m =============================
+[35mserver_9  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m Net            n:24  m:22   t:10000     enc/s:1890.72   ms/enc:0.5289 	  Mbps:9.64265 Aborts = 0 Time (ms) = 5289
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Total Count:210000 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:90000
+[36;1mhtdise_server_22 exited with code 0
+[0m[32mhtdise_server_8 exited with code 0
+[0m[35mhtdise_server_9 exited with code 0
+[0m[33;1mhtdise_server_14 exited with code 0
+[0m[33mhtdise_server_1 exited with code 0
+[0m[33mhtdise_server_7 exited with code 0
+[0m[34mhtdise_server_21 exited with code 0
+[0m[34;1mhtdise_server_17 exited with code 0
+[0m[32mhtdise_server_2 exited with code 0
+[0m[35;1mhtdise_server_16 exited with code 0
+[0m[32mhtdise_server_10 exited with code 0
+[0m[36mhtdise_server_18 exited with code 0
+[0m[36mhtdise_client_1 exited with code 0
+[0m[36;1mhtdise_server_13 exited with code 0
+[0m[33mhtdise_server_19 exited with code 0
+[0m[36mhtdise_server_6 exited with code 0
+[0m[34mhtdise_server_12 exited with code 0
+[0m[34;1mhtdise_server_5 exited with code 0
+[0m[35;1mhtdise_server_4 exited with code 0
+[0m[35mhtdise_server_11 exited with code 0
+[0m[33;1mhtdise_server_23 exited with code 0
+[0m[32;1mhtdise_server_15 exited with code 0
+[0m[35mhtdise_server_20 exited with code 0
+[0m[32;1mhtdise_server_3 exited with code 0
+[0mStopping htdise_uptime_1  ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping htdise_uptime_1 ... done
+Removing htdise_server_23 ... 
+Removing htdise_server_3  ... 
+Removing htdise_server_6  ... 
+Removing htdise_server_17 ... 
+Removing htdise_server_20 ... 
+Removing htdise_server_14 ... 
+Removing htdise_server_2  ... 
+Removing htdise_server_5  ... 
+Removing htdise_server_16 ... 
+Removing htdise_server_11 ... 
+Removing htdise_server_8  ... 
+Removing htdise_server_19 ... 
+Removing htdise_server_10 ... 
+Removing htdise_server_22 ... 
+Removing htdise_server_7  ... 
+Removing htdise_server_13 ... 
+Removing htdise_server_12 ... 
+Removing htdise_server_4  ... 
+Removing htdise_server_15 ... 
+Removing htdise_server_21 ... 
+Removing htdise_server_18 ... 
+Removing htdise_server_1  ... 
+Removing htdise_server_9  ... 
+Removing htdise_client_1  ... 
+Removing htdise_uptime_1  ... 
+Removing htdise_server_16 ... done
+Removing htdise_server_4  ... done
+Removing htdise_server_18 ... done
+Removing htdise_server_10 ... done
+Removing htdise_server_6  ... done
+Removing htdise_server_3  ... done
+Removing htdise_server_12 ... done
+Removing htdise_server_20 ... done
+Removing htdise_server_17 ... done
+Removing htdise_uptime_1  ... done
+Removing htdise_server_22 ... done
+Removing htdise_server_8  ... done
+Removing htdise_server_21 ... done
+Removing htdise_server_5  ... done
+Removing htdise_server_14 ... done
+Removing htdise_server_11 ... done
+Removing htdise_server_19 ... done
+Removing htdise_server_7  ... done
+Removing htdise_server_13 ... done
+Removing htdise_server_9  ... done
+Removing htdise_server_1  ... done
+Removing htdise_server_15 ... done
+Removing htdise_server_2  ... done
+Removing htdise_server_23 ... done
+Removing htdise_client_1  ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+cp: cannot stat 'data/reboot_sequence_logs/states_24_22_1M.txt': No such file or directory
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  12.33MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 6f6f695a2418
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> ee41285540f5
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> cc9b69bbb18f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> cd9aec11f710
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 20aa014a1eee
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 19439d883ab4
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 32761bceff87
+Successfully built 32761bceff87
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1  ... 
+Creating htdise_server_2  ... 
+Creating htdise_server_3  ... 
+Creating htdise_server_4  ... 
+Creating htdise_server_5  ... 
+Creating htdise_server_6  ... 
+Creating htdise_server_7  ... 
+Creating htdise_server_8  ... 
+Creating htdise_server_9  ... 
+Creating htdise_server_10 ... 
+Creating htdise_server_11 ... 
+Creating htdise_server_12 ... 
+Creating htdise_server_13 ... 
+Creating htdise_server_14 ... 
+Creating htdise_server_15 ... 
+Creating htdise_server_16 ... 
+Creating htdise_server_17 ... 
+Creating htdise_server_18 ... 
+Creating htdise_server_19 ... 
+Creating htdise_server_20 ... 
+Creating htdise_server_21 ... 
+Creating htdise_server_22 ... 
+Creating htdise_server_23 ... 
+Creating htdise_server_16 ... done
+Creating htdise_server_15 ... done
+Creating htdise_server_21 ... done
+Creating htdise_server_3  ... done
+Creating htdise_server_6  ... done
+Creating htdise_server_4  ... done
+Creating htdise_server_7  ... done
+Creating htdise_server_19 ... done
+Creating htdise_server_5  ... done
+Creating htdise_server_11 ... done
+Creating htdise_server_17 ... done
+Creating htdise_server_20 ... done
+Creating htdise_server_12 ... done
+Creating htdise_server_2  ... done
+Creating htdise_server_13 ... done
+Creating htdise_server_18 ... done
+Creating htdise_server_14 ... done
+Creating htdise_server_23 ... done
+Creating htdise_server_1  ... done
+Creating htdise_server_10 ... done
+Creating htdise_server_9  ... done
+Creating htdise_server_22 ... done
+Creating htdise_server_8  ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_16, htdise_server_15, htdise_server_21, htdise_server_3, htdise_server_6, htdise_server_4, htdise_server_7, htdise_server_19, htdise_server_5, htdise_server_11, htdise_server_17, htdise_server_20, htdise_server_12, htdise_server_2, htdise_server_13, htdise_server_18, htdise_server_14, htdise_server_23, htdise_server_1, htdise_server_10, htdise_server_9, htdise_server_22, htdise_server_8
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m Size of Plain Text = 24 Number of Trials = 10000
+[33mserver_1  |[0m My IP is 10.0.0.20, my idx is 18
+[33mserver_1  |[0m 
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_11 |[0m My IP is 10.0.0.12, my idx is 10
+[35mserver_11 |[0m 
+[35mserver_11 |[0m =============================
+[35mserver_11 |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_11 |[0m =============================
+[35mserver_11 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_10 |[0m My IP is 10.0.0.22, my idx is 20
+[36;1mserver_13 |[0m My IP is 10.0.0.17, my idx is 15
+[34mserver_12 |[0m My IP is 10.0.0.15, my idx is 13
+[34mserver_12 |[0m 
+[34mserver_12 |[0m =============================
+[34mserver_12 |[0m Abort at the NPR03SYMDPRF.CPP
+[34mserver_12 |[0m =============================
+[34mserver_12 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_10 |[0m 
+[32mserver_10 |[0m =============================
+[32mserver_10 |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_10 |[0m =============================
+[32mserver_10 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m =============================
+[36;1mserver_13 |[0m Abort at the NPR03SYMDPRF.CPP
+[36;1mserver_13 |[0m =============================
+[36;1mserver_13 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33;1mserver_14 |[0m My IP is 10.0.0.18, my idx is 16
+[32;1mserver_15 |[0m My IP is 10.0.0.5, my idx is 3
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m =============================
+[33;1mserver_14 |[0m Abort at the NPR03SYMDPRF.CPP
+[33;1mserver_14 |[0m =============================
+[33;1mserver_14 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m =============================
+[32;1mserver_15 |[0m Abort at the NPR03SYMDPRF.CPP
+[32;1mserver_15 |[0m =============================
+[32;1mserver_15 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35;1mserver_16 |[0m My IP is 10.0.0.3, my idx is 1
+[35;1mserver_16 |[0m 
+[35;1mserver_16 |[0m =============================
+[35;1mserver_16 |[0m Abort at the NPR03SYMDPRF.CPP
+[35;1mserver_16 |[0m =============================
+[35;1mserver_16 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mserver_18 |[0m My IP is 10.0.0.19, my idx is 17
+[34;1mserver_17 |[0m My IP is 10.0.0.14, my idx is 12
+[36mserver_18 |[0m 
+[36mserver_18 |[0m =============================
+[36mserver_18 |[0m Abort at the NPR03SYMDPRF.CPP
+[36mserver_18 |[0m =============================
+[36mserver_18 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_2  |[0m My IP is 10.0.0.16, my idx is 14
+[33mserver_19 |[0m My IP is 10.0.0.10, my idx is 8
+[32mserver_2  |[0m 
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_19 |[0m 
+[33mserver_19 |[0m =============================
+[33mserver_19 |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_19 |[0m =============================
+[33mserver_19 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_20 |[0m My IP is 10.0.0.13, my idx is 11
+[34;1mserver_17 |[0m 
+[34;1mserver_17 |[0m =============================
+[34;1mserver_17 |[0m Abort at the NPR03SYMDPRF.CPP
+[34;1mserver_17 |[0m =============================
+[34;1mserver_17 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_20 |[0m 
+[35mserver_20 |[0m =============================
+[35mserver_20 |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_20 |[0m =============================
+[35mserver_20 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34mserver_21 |[0m My IP is 10.0.0.4, my idx is 2
+[34mserver_21 |[0m 
+[34mserver_21 |[0m =============================
+[34mserver_21 |[0m Abort at the NPR03SYMDPRF.CPP
+[34mserver_21 |[0m =============================
+[34mserver_21 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36;1mserver_22 |[0m My IP is 10.0.0.24, my idx is 22
+[36;1mserver_22 |[0m 
+[36;1mserver_22 |[0m =============================
+[36;1mserver_22 |[0m Abort at the NPR03SYMDPRF.CPP
+[36;1mserver_22 |[0m =============================
+[36;1mserver_22 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32;1mserver_3  |[0m My IP is 10.0.0.6, my idx is 4
+[33;1mserver_23 |[0m My IP is 10.0.0.21, my idx is 19
+[33;1mserver_23 |[0m 
+[33;1mserver_23 |[0m =============================
+[33;1mserver_23 |[0m Abort at the NPR03SYMDPRF.CPP
+[33;1mserver_23 |[0m =============================
+[33;1mserver_23 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32;1mserver_3  |[0m 
+[32;1mserver_3  |[0m =============================
+[32;1mserver_3  |[0m Abort at the NPR03SYMDPRF.CPP
+[32;1mserver_3  |[0m =============================
+[32;1mserver_3  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35;1mserver_4  |[0m My IP is 10.0.0.7, my idx is 5
+[35;1mserver_4  |[0m 
+[35;1mserver_4  |[0m =============================
+[35;1mserver_4  |[0m Abort at the NPR03SYMDPRF.CPP
+[35;1mserver_4  |[0m =============================
+[35;1mserver_4  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34;1mserver_5  |[0m My IP is 10.0.0.11, my idx is 9
+[34;1mserver_5  |[0m 
+[34;1mserver_5  |[0m =============================
+[34;1mserver_5  |[0m Abort at the NPR03SYMDPRF.CPP
+[34;1mserver_5  |[0m =============================
+[34;1mserver_5  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mserver_6  |[0m My IP is 10.0.0.8, my idx is 6
+[36mserver_6  |[0m 
+[36mserver_6  |[0m =============================
+[36mserver_6  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mserver_6  |[0m =============================
+[36mserver_6  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_8  |[0m My IP is 10.0.0.25, my idx is 23
+[35mserver_9  |[0m My IP is 10.0.0.23, my idx is 21
+[35mserver_9  |[0m 
+[35mserver_9  |[0m =============================
+[35mserver_9  |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_9  |[0m =============================
+[35mserver_9  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_8  |[0m 
+[32mserver_8  |[0m =============================
+[32mserver_8  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_8  |[0m =============================
+[32mserver_8  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_7  |[0m My IP is 10.0.0.9, my idx is 7
+[33mserver_7  |[0m 
+[33mserver_7  |[0m =============================
+[33mserver_7  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_7  |[0m =============================
+[33mserver_7  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m Net            n:24  m:22   t:10000     enc/s:1867.06   ms/enc:0.5356 	  Mbps:9.52203 Aborts = 0 Time (ms) = 5356
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Total Count:210000 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:90000
+[35;1mhtdise_server_4 exited with code 0
+[0m[33;1mhtdise_server_23 exited with code 0
+[0m[35;1mhtdise_server_16 exited with code 0
+[0m[33mhtdise_server_7 exited with code 0
+[0m[34mhtdise_server_21 exited with code 0
+[0m[35mhtdise_server_20 exited with code 0
+[0m[33mhtdise_server_19 exited with code 0
+[0m[32mhtdise_server_10 exited with code 0
+[0m[36mhtdise_server_18 exited with code 0
+[0m[36;1mhtdise_server_22 exited with code 0
+[0m[34;1mhtdise_server_5 exited with code 0
+[0m[32mhtdise_server_8 exited with code 0
+[0m[34mhtdise_server_12 exited with code 0
+[0m[33;1mhtdise_server_14 exited with code 0
+[0m[32;1mhtdise_server_3 exited with code 0
+[0m[33mhtdise_server_1 exited with code 0
+[0m[36;1mhtdise_server_13 exited with code 0
+[0m[34;1mhtdise_server_17 exited with code 0
+[0m[32;1mhtdise_server_15 exited with code 0
+[0m[35mhtdise_server_9 exited with code 0
+[0m[35mhtdise_server_11 exited with code 0
+[0m[32mhtdise_server_2 exited with code 0
+[0m[36mhtdise_client_1 exited with code 0
+[0m[36mhtdise_server_6 exited with code 0
+[0mStopping htdise_uptime_1  ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Stopping htdise_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing htdise_server_3  ... 
+Removing htdise_server_20 ... 
+Removing htdise_server_9  ... 
+Removing htdise_server_23 ... 
+Removing htdise_server_14 ... 
+Removing htdise_server_17 ... 
+Removing htdise_server_8  ... 
+Removing htdise_server_11 ... 
+Removing htdise_server_5  ... 
+Removing htdise_server_22 ... 
+Removing htdise_server_2  ... 
+Removing htdise_server_19 ... 
+Removing htdise_server_13 ... 
+Removing htdise_server_10 ... 
+Removing htdise_server_16 ... 
+Removing htdise_server_7  ... 
+Removing htdise_server_1  ... 
+Removing htdise_server_18 ... 
+Removing htdise_server_4  ... 
+Removing htdise_server_6  ... 
+Removing htdise_server_15 ... 
+Removing htdise_server_21 ... 
+Removing htdise_server_12 ... 
+Removing htdise_client_1  ... 
+Removing htdise_uptime_1  ... 
+Removing htdise_server_18 ... done
+Removing htdise_server_4  ... done
+Removing htdise_server_14 ... done
+Removing htdise_server_8  ... done
+Removing htdise_server_11 ... done
+Removing htdise_server_6  ... done
+Removing htdise_server_23 ... done
+Removing htdise_uptime_1  ... done
+Removing htdise_server_3  ... done
+Removing htdise_server_21 ... done
+Removing htdise_server_2  ... done
+Removing htdise_server_13 ... done
+Removing htdise_server_5  ... done
+Removing htdise_server_10 ... done
+Removing htdise_server_22 ... done
+Removing htdise_server_19 ... done
+Removing htdise_server_1  ... done
+Removing htdise_server_17 ... done
+Removing htdise_server_16 ... done
+Removing htdise_server_12 ... done
+Removing htdise_server_9  ... done
+Removing htdise_client_1  ... done
+Removing htdise_server_7  ... done
+Removing htdise_server_15 ... done
+Removing htdise_server_20 ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+cp: cannot stat 'data/reboot_sequence_logs/states_24_22_1M.txt': No such file or directory
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  12.34MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 6f6f695a2418
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> ee41285540f5
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> cc9b69bbb18f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> cd9aec11f710
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 20aa014a1eee
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 19439d883ab4
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 32761bceff87
+Successfully built 32761bceff87
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1  ... 
+Creating htdise_server_2  ... 
+Creating htdise_server_3  ... 
+Creating htdise_server_4  ... 
+Creating htdise_server_5  ... 
+Creating htdise_server_6  ... 
+Creating htdise_server_7  ... 
+Creating htdise_server_8  ... 
+Creating htdise_server_9  ... 
+Creating htdise_server_10 ... 
+Creating htdise_server_11 ... 
+Creating htdise_server_12 ... 
+Creating htdise_server_13 ... 
+Creating htdise_server_14 ... 
+Creating htdise_server_15 ... 
+Creating htdise_server_16 ... 
+Creating htdise_server_17 ... 
+Creating htdise_server_18 ... 
+Creating htdise_server_19 ... 
+Creating htdise_server_20 ... 
+Creating htdise_server_21 ... 
+Creating htdise_server_22 ... 
+Creating htdise_server_23 ... 
+Creating htdise_server_2  ... done
+Creating htdise_server_5  ... done
+Creating htdise_server_22 ... done
+Creating htdise_server_4  ... done
+Creating htdise_server_1  ... done
+Creating htdise_server_19 ... done
+Creating htdise_server_3  ... done
+Creating htdise_server_16 ... done
+Creating htdise_server_7  ... done
+Creating htdise_server_12 ... done
+Creating htdise_server_8  ... done
+Creating htdise_server_17 ... done
+Creating htdise_server_6  ... done
+Creating htdise_server_18 ... done
+Creating htdise_server_13 ... done
+Creating htdise_server_20 ... done
+Creating htdise_server_15 ... done
+Creating htdise_server_23 ... done
+Creating htdise_server_10 ... done
+Creating htdise_server_9  ... done
+Creating htdise_server_14 ... done
+Creating htdise_server_11 ... done
+Creating htdise_server_21 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_2, htdise_server_5, htdise_server_22, htdise_server_4, htdise_server_1, htdise_server_19, htdise_server_3, htdise_server_16, htdise_server_7, htdise_server_12, htdise_server_8, htdise_server_17, htdise_server_6, htdise_server_18, htdise_server_13, htdise_server_20, htdise_server_15, htdise_server_23, htdise_server_10, htdise_server_9, htdise_server_14, htdise_server_11, htdise_server_21
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[32mserver_10 |[0m My IP is 10.0.0.21, my idx is 19
+[32mserver_10 |[0m 
+[32mserver_10 |[0m =============================
+[32mserver_10 |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_10 |[0m =============================
+[32mserver_10 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_1  |[0m My IP is 10.0.0.7, my idx is 5
+[36mclient_1  |[0m Size of Plain Text = 24 Number of Trials = 10000
+[34mserver_12 |[0m My IP is 10.0.0.11, my idx is 9
+[36;1mserver_13 |[0m My IP is 10.0.0.17, my idx is 15
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m =============================
+[36;1mserver_13 |[0m Abort at the NPR03SYMDPRF.CPP
+[36;1mserver_13 |[0m =============================
+[36;1mserver_13 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_11 |[0m My IP is 10.0.0.24, my idx is 22
+[33mserver_1  |[0m 
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34mserver_12 |[0m 
+[34mserver_12 |[0m =============================
+[34mserver_12 |[0m Abort at the NPR03SYMDPRF.CPP
+[34mserver_12 |[0m =============================
+[34mserver_12 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_11 |[0m 
+[35mserver_11 |[0m =============================
+[35mserver_11 |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_11 |[0m =============================
+[35mserver_11 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33;1mserver_14 |[0m My IP is 10.0.0.23, my idx is 21
+[32;1mserver_15 |[0m My IP is 10.0.0.19, my idx is 17
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m =============================
+[33;1mserver_14 |[0m Abort at the NPR03SYMDPRF.CPP
+[33;1mserver_14 |[0m =============================
+[33;1mserver_14 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m =============================
+[32;1mserver_15 |[0m Abort at the NPR03SYMDPRF.CPP
+[32;1mserver_15 |[0m =============================
+[32;1mserver_15 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35;1mserver_16 |[0m My IP is 10.0.0.9, my idx is 7
+[35;1mserver_16 |[0m 
+[35;1mserver_16 |[0m =============================
+[35;1mserver_16 |[0m Abort at the NPR03SYMDPRF.CPP
+[35;1mserver_16 |[0m =============================
+[35;1mserver_16 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34;1mserver_17 |[0m My IP is 10.0.0.14, my idx is 12
+[34;1mserver_17 |[0m 
+[34;1mserver_17 |[0m =============================
+[34;1mserver_17 |[0m Abort at the NPR03SYMDPRF.CPP
+[34;1mserver_17 |[0m =============================
+[34;1mserver_17 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mserver_18 |[0m My IP is 10.0.0.16, my idx is 14
+[36mserver_18 |[0m 
+[36mserver_18 |[0m =============================
+[36mserver_18 |[0m Abort at the NPR03SYMDPRF.CPP
+[36mserver_18 |[0m =============================
+[36mserver_18 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_19 |[0m My IP is 10.0.0.8, my idx is 6
+[32mserver_2  |[0m My IP is 10.0.0.3, my idx is 1
+[33mserver_19 |[0m 
+[33mserver_19 |[0m =============================
+[33mserver_19 |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_19 |[0m =============================
+[33mserver_19 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36;1mserver_22 |[0m My IP is 10.0.0.5, my idx is 3
+[32mserver_2  |[0m 
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34mserver_21 |[0m My IP is 10.0.0.25, my idx is 23
+[34mserver_21 |[0m 
+[34mserver_21 |[0m =============================
+[34mserver_21 |[0m Abort at the NPR03SYMDPRF.CPP
+[34mserver_21 |[0m =============================
+[34mserver_21 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36;1mserver_22 |[0m 
+[36;1mserver_22 |[0m =============================
+[36;1mserver_22 |[0m Abort at the NPR03SYMDPRF.CPP
+[36;1mserver_22 |[0m =============================
+[36;1mserver_22 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_20 |[0m My IP is 10.0.0.18, my idx is 16
+[32;1mserver_3  |[0m My IP is 10.0.0.10, my idx is 8
+[32;1mserver_3  |[0m 
+[32;1mserver_3  |[0m =============================
+[32;1mserver_3  |[0m Abort at the NPR03SYMDPRF.CPP
+[32;1mserver_3  |[0m =============================
+[32;1mserver_3  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_20 |[0m 
+[35mserver_20 |[0m =============================
+[35mserver_20 |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_20 |[0m =============================
+[35mserver_20 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33;1mserver_23 |[0m My IP is 10.0.0.20, my idx is 18
+[35;1mserver_4  |[0m My IP is 10.0.0.6, my idx is 4
+[34;1mserver_5  |[0m My IP is 10.0.0.4, my idx is 2
+[33;1mserver_23 |[0m 
+[33;1mserver_23 |[0m =============================
+[33;1mserver_23 |[0m Abort at the NPR03SYMDPRF.CPP
+[33;1mserver_23 |[0m =============================
+[33;1mserver_23 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35;1mserver_4  |[0m 
+[35;1mserver_4  |[0m =============================
+[35;1mserver_4  |[0m Abort at the NPR03SYMDPRF.CPP
+[35;1mserver_4  |[0m =============================
+[35;1mserver_4  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34;1mserver_5  |[0m 
+[34;1mserver_5  |[0m =============================
+[34;1mserver_5  |[0m Abort at the NPR03SYMDPRF.CPP
+[34;1mserver_5  |[0m =============================
+[34;1mserver_5  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mserver_6  |[0m My IP is 10.0.0.15, my idx is 13
+[36mserver_6  |[0m 
+[36mserver_6  |[0m =============================
+[36mserver_6  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mserver_6  |[0m =============================
+[36mserver_6  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_7  |[0m My IP is 10.0.0.12, my idx is 10
+[33mserver_7  |[0m 
+[33mserver_7  |[0m =============================
+[33mserver_7  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_7  |[0m =============================
+[33mserver_7  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_8  |[0m My IP is 10.0.0.13, my idx is 11
+[35mserver_9  |[0m My IP is 10.0.0.22, my idx is 20
+[35mserver_9  |[0m 
+[35mserver_9  |[0m =============================
+[35mserver_9  |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_9  |[0m =============================
+[35mserver_9  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_8  |[0m 
+[32mserver_8  |[0m =============================
+[32mserver_8  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_8  |[0m =============================
+[32mserver_8  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m Net            n:24  m:22   t:10000     enc/s:1890.36   ms/enc:0.529 	  Mbps:9.64083 Aborts = 0 Time (ms) = 5290
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Total Count:210000 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:90000
+[32mhtdise_server_10 exited with code 0
+[0m[36mhtdise_server_18 exited with code 0
+[0m[35mhtdise_server_20 exited with code 0
+[0m[33;1mhtdise_server_23 exited with code 0
+[0m[36;1mhtdise_server_13 exited with code 0
+[0m[33mhtdise_server_1 exited with code 0
+[0m[34mhtdise_server_21 exited with code 0
+[0m[35mhtdise_server_11 exited with code 0
+[0m[35;1mhtdise_server_16 exited with code 0
+[0m[36mhtdise_server_6 exited with code 0
+[0m[33mhtdise_server_7 exited with code 0
+[0m[32;1mhtdise_server_3 exited with code 0
+[0m[32;1mhtdise_server_15 exited with code 0
+[0m[35mhtdise_server_9 exited with code 0
+[0m[32mhtdise_server_8 exited with code 0
+[0m[33mhtdise_server_19 exited with code 0
+[0m[33;1mhtdise_server_14 exited with code 0
+[0m[36;1mhtdise_server_22 exited with code 0
+[0m[34;1mhtdise_server_17 exited with code 0
+[0m[34;1mhtdise_server_5 exited with code 0
+[0m[32mhtdise_server_2 exited with code 0
+[0m[34mhtdise_server_12 exited with code 0
+[0m[36mhtdise_client_1 exited with code 0
+[0m[35;1mhtdise_server_4 exited with code 0
+[0mStopping htdise_uptime_1  ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Stopping htdise_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing htdise_server_10 ... 
+Removing htdise_server_4  ... 
+Removing htdise_server_1  ... 
+Removing htdise_server_7  ... 
+Removing htdise_server_12 ... 
+Removing htdise_server_21 ... 
+Removing htdise_server_9  ... 
+Removing htdise_server_15 ... 
+Removing htdise_server_18 ... 
+Removing htdise_server_6  ... 
+Removing htdise_server_23 ... 
+Removing htdise_server_3  ... 
+Removing htdise_server_20 ... 
+Removing htdise_server_17 ... 
+Removing htdise_server_11 ... 
+Removing htdise_server_14 ... 
+Removing htdise_server_5  ... 
+Removing htdise_server_8  ... 
+Removing htdise_server_2  ... 
+Removing htdise_server_13 ... 
+Removing htdise_server_16 ... 
+Removing htdise_server_22 ... 
+Removing htdise_server_19 ... 
+Removing htdise_client_1  ... 
+Removing htdise_uptime_1  ... 
+Removing htdise_server_22 ... done
+Removing htdise_server_16 ... done
+Removing htdise_server_20 ... done
+Removing htdise_server_11 ... done
+Removing htdise_server_5  ... done
+Removing htdise_server_15 ... done
+Removing htdise_server_7  ... done
+Removing htdise_server_12 ... done
+Removing htdise_server_14 ... done
+Removing htdise_server_18 ... done
+Removing htdise_server_17 ... done
+Removing htdise_server_6  ... done
+Removing htdise_server_4  ... done
+Removing htdise_server_3  ... done
+Removing htdise_server_10 ... done
+Removing htdise_server_8  ... done
+Removing htdise_client_1  ... done
+Removing htdise_server_23 ... done
+Removing htdise_server_1  ... done
+Removing htdise_server_21 ... done
+Removing htdise_server_9  ... done
+Removing htdise_uptime_1  ... done
+Removing htdise_server_2  ... done
+Removing htdise_server_13 ... done
+Removing htdise_server_19 ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+cp: cannot stat 'data/reboot_sequence_logs/states_24_22_1M.txt': No such file or directory
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  12.36MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 6f6f695a2418
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> ee41285540f5
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> cc9b69bbb18f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> cd9aec11f710
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 20aa014a1eee
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 19439d883ab4
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 32761bceff87
+Successfully built 32761bceff87
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1  ... 
+Creating htdise_server_2  ... 
+Creating htdise_server_3  ... 
+Creating htdise_server_4  ... 
+Creating htdise_server_5  ... 
+Creating htdise_server_6  ... 
+Creating htdise_server_7  ... 
+Creating htdise_server_8  ... 
+Creating htdise_server_9  ... 
+Creating htdise_server_10 ... 
+Creating htdise_server_11 ... 
+Creating htdise_server_12 ... 
+Creating htdise_server_13 ... 
+Creating htdise_server_14 ... 
+Creating htdise_server_15 ... 
+Creating htdise_server_16 ... 
+Creating htdise_server_17 ... 
+Creating htdise_server_18 ... 
+Creating htdise_server_19 ... 
+Creating htdise_server_20 ... 
+Creating htdise_server_21 ... 
+Creating htdise_server_22 ... 
+Creating htdise_server_23 ... 
+Creating htdise_server_19 ... done
+Creating htdise_server_8  ... done
+Creating htdise_server_15 ... done
+Creating htdise_server_17 ... done
+Creating htdise_server_3  ... done
+Creating htdise_server_12 ... done
+Creating htdise_server_20 ... done
+Creating htdise_server_22 ... done
+Creating htdise_server_7  ... done
+Creating htdise_server_13 ... done
+Creating htdise_server_21 ... done
+Creating htdise_server_16 ... done
+Creating htdise_server_23 ... done
+Creating htdise_server_10 ... done
+Creating htdise_server_1  ... done
+Creating htdise_server_2  ... done
+Creating htdise_server_5  ... done
+Creating htdise_server_6  ... done
+Creating htdise_server_18 ... done
+Creating htdise_server_14 ... done
+Creating htdise_server_9  ... done
+Creating htdise_server_11 ... done
+Creating htdise_server_4  ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_19, htdise_server_8, htdise_server_15, htdise_server_17, htdise_server_3, htdise_server_12, htdise_server_20, htdise_server_22, htdise_server_7, htdise_server_13, htdise_server_21, htdise_server_16, htdise_server_23, htdise_server_10, htdise_server_1, htdise_server_2, htdise_server_5, htdise_server_6, htdise_server_18, htdise_server_14, htdise_server_9, htdise_server_11, htdise_server_4
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[33mserver_1  |[0m My IP is 10.0.0.17, my idx is 15
+[33mserver_1  |[0m 
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[32mserver_10 |[0m My IP is 10.0.0.16, my idx is 14
+[36mclient_1  |[0m Size of Plain Text = 24 Number of Trials = 10000
+[32mserver_10 |[0m 
+[32mserver_10 |[0m =============================
+[32mserver_10 |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_10 |[0m =============================
+[32mserver_10 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_11 |[0m My IP is 10.0.0.24, my idx is 22
+[35mserver_11 |[0m 
+[35mserver_11 |[0m =============================
+[35mserver_11 |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_11 |[0m =============================
+[35mserver_11 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36;1mserver_13 |[0m My IP is 10.0.0.13, my idx is 11
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m =============================
+[36;1mserver_13 |[0m Abort at the NPR03SYMDPRF.CPP
+[36;1mserver_13 |[0m =============================
+[36;1mserver_13 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34mserver_12 |[0m My IP is 10.0.0.8, my idx is 6
+[35;1mserver_16 |[0m My IP is 10.0.0.14, my idx is 12
+[33;1mserver_14 |[0m My IP is 10.0.0.22, my idx is 20
+[35;1mserver_16 |[0m 
+[35;1mserver_16 |[0m =============================
+[35;1mserver_16 |[0m Abort at the NPR03SYMDPRF.CPP
+[35;1mserver_16 |[0m =============================
+[35;1mserver_16 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34mserver_12 |[0m 
+[34mserver_12 |[0m =============================
+[34mserver_12 |[0m Abort at the NPR03SYMDPRF.CPP
+[34mserver_12 |[0m =============================
+[34mserver_12 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32;1mserver_15 |[0m My IP is 10.0.0.5, my idx is 3
+[36mserver_18 |[0m My IP is 10.0.0.21, my idx is 19
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m =============================
+[33;1mserver_14 |[0m Abort at the NPR03SYMDPRF.CPP
+[33;1mserver_14 |[0m =============================
+[33;1mserver_14 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_19 |[0m My IP is 10.0.0.3, my idx is 1
+[34;1mserver_17 |[0m My IP is 10.0.0.6, my idx is 4
+[35mserver_20 |[0m My IP is 10.0.0.9, my idx is 7
+[36mserver_18 |[0m 
+[36mserver_18 |[0m =============================
+[36mserver_18 |[0m Abort at the NPR03SYMDPRF.CPP
+[36mserver_18 |[0m =============================
+[36mserver_18 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_2  |[0m My IP is 10.0.0.18, my idx is 16
+[32mserver_2  |[0m 
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m =============================
+[32;1mserver_15 |[0m Abort at the NPR03SYMDPRF.CPP
+[32;1mserver_15 |[0m =============================
+[32;1mserver_15 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_19 |[0m 
+[33mserver_19 |[0m =============================
+[33mserver_19 |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_19 |[0m =============================
+[33mserver_19 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34mserver_21 |[0m My IP is 10.0.0.12, my idx is 10
+[34;1mserver_17 |[0m 
+[34;1mserver_17 |[0m =============================
+[34;1mserver_17 |[0m Abort at the NPR03SYMDPRF.CPP
+[34;1mserver_17 |[0m =============================
+[34;1mserver_17 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_20 |[0m 
+[35mserver_20 |[0m =============================
+[35mserver_20 |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_20 |[0m =============================
+[35mserver_20 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36;1mserver_22 |[0m My IP is 10.0.0.10, my idx is 8
+[34mserver_21 |[0m 
+[34mserver_21 |[0m =============================
+[34mserver_21 |[0m Abort at the NPR03SYMDPRF.CPP
+[34mserver_21 |[0m =============================
+[34mserver_21 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33;1mserver_23 |[0m My IP is 10.0.0.15, my idx is 13
+[36;1mserver_22 |[0m 
+[36;1mserver_22 |[0m =============================
+[36;1mserver_22 |[0m Abort at the NPR03SYMDPRF.CPP
+[36;1mserver_22 |[0m =============================
+[36;1mserver_22 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33;1mserver_23 |[0m 
+[33;1mserver_23 |[0m =============================
+[33;1mserver_23 |[0m Abort at the NPR03SYMDPRF.CPP
+[33;1mserver_23 |[0m =============================
+[33;1mserver_23 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32;1mserver_3  |[0m My IP is 10.0.0.7, my idx is 5
+[32;1mserver_3  |[0m 
+[32;1mserver_3  |[0m =============================
+[32;1mserver_3  |[0m Abort at the NPR03SYMDPRF.CPP
+[32;1mserver_3  |[0m =============================
+[32;1mserver_3  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35;1mserver_4  |[0m My IP is 10.0.0.25, my idx is 23
+[36mserver_6  |[0m My IP is 10.0.0.20, my idx is 18
+[34;1mserver_5  |[0m My IP is 10.0.0.19, my idx is 17
+[35;1mserver_4  |[0m 
+[35;1mserver_4  |[0m =============================
+[35;1mserver_4  |[0m Abort at the NPR03SYMDPRF.CPP
+[35;1mserver_4  |[0m =============================
+[35;1mserver_4  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34;1mserver_5  |[0m 
+[34;1mserver_5  |[0m =============================
+[34;1mserver_5  |[0m Abort at the NPR03SYMDPRF.CPP
+[34;1mserver_5  |[0m =============================
+[34;1mserver_5  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mserver_6  |[0m 
+[36mserver_6  |[0m =============================
+[36mserver_6  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mserver_6  |[0m =============================
+[36mserver_6  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_7  |[0m My IP is 10.0.0.11, my idx is 9
+[32mserver_8  |[0m My IP is 10.0.0.4, my idx is 2
+[33mserver_7  |[0m 
+[33mserver_7  |[0m =============================
+[33mserver_7  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_7  |[0m =============================
+[33mserver_7  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_9  |[0m My IP is 10.0.0.23, my idx is 21
+[35mserver_9  |[0m 
+[35mserver_9  |[0m =============================
+[35mserver_9  |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_9  |[0m =============================
+[35mserver_9  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_8  |[0m 
+[32mserver_8  |[0m =============================
+[32mserver_8  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_8  |[0m =============================
+[32mserver_8  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m Net            n:24  m:22   t:10000     enc/s:1892.51   ms/enc:0.5284 	  Mbps:9.65178 Aborts = 0 Time (ms) = 5284
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Total Count:210000 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:90000
+[36mhtdise_server_18 exited with code 0
+[0m[35;1mhtdise_server_4 exited with code 0
+[0m[32mhtdise_server_8 exited with code 0
+[0m[35mhtdise_server_9 exited with code 0
+[0m[35mhtdise_server_11 exited with code 0
+[0m[33mhtdise_server_1 exited with code 0
+[0m[33;1mhtdise_server_23 exited with code 0
+[0m[35;1mhtdise_server_16 exited with code 0
+[0m[34;1mhtdise_server_17 exited with code 0
+[0m[36mhtdise_server_6 exited with code 0
+[0m[33;1mhtdise_server_14 exited with code 0
+[0m[32mhtdise_server_10 exited with code 0
+[0m[33mhtdise_server_19 exited with code 0
+[0m[32mhtdise_server_2 exited with code 0
+[0m[32;1mhtdise_server_3 exited with code 0
+[0m[33mhtdise_server_7 exited with code 0
+[0m[34mhtdise_server_21 exited with code 0
+[0m[36mhtdise_client_1 exited with code 0
+[0m[36;1mhtdise_server_13 exited with code 0
+[0m[34;1mhtdise_server_5 exited with code 0
+[0m[34mhtdise_server_12 exited with code 0
+[0m[36;1mhtdise_server_22 exited with code 0
+[0m[35mhtdise_server_20 exited with code 0
+[0m[32;1mhtdise_server_15 exited with code 0
+[0mStopping htdise_uptime_1  ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Stopping htdise_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing htdise_server_17 ... 
+Removing htdise_server_3  ... 
+Removing htdise_server_9  ... 
+Removing htdise_server_23 ... 
+Removing htdise_server_20 ... 
+Removing htdise_server_14 ... 
+Removing htdise_server_6  ... 
+Removing htdise_server_11 ... 
+Removing htdise_server_5  ... 
+Removing htdise_server_8  ... 
+Removing htdise_server_2  ... 
+Removing htdise_server_22 ... 
+Removing htdise_server_16 ... 
+Removing htdise_server_13 ... 
+Removing htdise_server_19 ... 
+Removing htdise_server_7  ... 
+Removing htdise_server_10 ... 
+Removing htdise_server_1  ... 
+Removing htdise_server_4  ... 
+Removing htdise_server_18 ... 
+Removing htdise_server_21 ... 
+Removing htdise_server_12 ... 
+Removing htdise_server_15 ... 
+Removing htdise_client_1  ... 
+Removing htdise_uptime_1  ... 
+Removing htdise_server_2  ... done
+Removing htdise_client_1  ... done
+Removing htdise_server_22 ... done
+Removing htdise_server_18 ... done
+Removing htdise_server_4  ... done
+Removing htdise_server_10 ... done
+Removing htdise_server_5  ... done
+Removing htdise_server_11 ... done
+Removing htdise_server_14 ... done
+Removing htdise_server_13 ... done
+Removing htdise_server_20 ... done
+Removing htdise_server_7  ... done
+Removing htdise_server_16 ... done
+Removing htdise_server_6  ... done
+Removing htdise_server_3  ... done
+Removing htdise_server_12 ... done
+Removing htdise_server_9  ... done
+Removing htdise_server_21 ... done
+Removing htdise_server_15 ... done
+Removing htdise_server_8  ... done
+Removing htdise_server_19 ... done
+Removing htdise_server_1  ... done
+Removing htdise_server_17 ... done
+Removing htdise_server_23 ... done
+Removing htdise_uptime_1  ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+cp: cannot stat 'data/reboot_sequence_logs/states_24_22_1M.txt': No such file or directory
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  12.37MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 6f6f695a2418
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> ee41285540f5
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> cc9b69bbb18f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> cd9aec11f710
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 20aa014a1eee
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 19439d883ab4
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 32761bceff87
+Successfully built 32761bceff87
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1  ... 
+Creating htdise_server_2  ... 
+Creating htdise_server_3  ... 
+Creating htdise_server_4  ... 
+Creating htdise_server_5  ... 
+Creating htdise_server_6  ... 
+Creating htdise_server_7  ... 
+Creating htdise_server_8  ... 
+Creating htdise_server_9  ... 
+Creating htdise_server_10 ... 
+Creating htdise_server_11 ... 
+Creating htdise_server_12 ... 
+Creating htdise_server_13 ... 
+Creating htdise_server_14 ... 
+Creating htdise_server_15 ... 
+Creating htdise_server_16 ... 
+Creating htdise_server_17 ... 
+Creating htdise_server_18 ... 
+Creating htdise_server_19 ... 
+Creating htdise_server_20 ... 
+Creating htdise_server_21 ... 
+Creating htdise_server_22 ... 
+Creating htdise_server_23 ... 
+Creating htdise_server_5  ... done
+Creating htdise_server_20 ... done
+Creating htdise_server_17 ... done
+Creating htdise_server_3  ... done
+Creating htdise_server_11 ... done
+Creating htdise_server_23 ... done
+Creating htdise_server_13 ... done
+Creating htdise_server_14 ... done
+Creating htdise_server_21 ... done
+Creating htdise_server_2  ... done
+Creating htdise_server_18 ... done
+Creating htdise_server_4  ... done
+Creating htdise_server_22 ... done
+Creating htdise_server_16 ... done
+Creating htdise_server_15 ... done
+Creating htdise_server_6  ... done
+Creating htdise_server_1  ... done
+Creating htdise_server_19 ... done
+Creating htdise_server_8  ... done
+Creating htdise_server_7  ... done
+Creating htdise_server_12 ... done
+Creating htdise_server_10 ... done
+Creating htdise_server_9  ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_5, htdise_server_20, htdise_server_17, htdise_server_3, htdise_server_11, htdise_server_23, htdise_server_13, htdise_server_14, htdise_server_21, htdise_server_2, htdise_server_18, htdise_server_4, htdise_server_22, htdise_server_16, htdise_server_15, htdise_server_6, htdise_server_1, htdise_server_19, htdise_server_8, htdise_server_7, htdise_server_12, htdise_server_10, htdise_server_9
+[33mserver_1  |[0m My IP is 10.0.0.19, my idx is 17
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[33mserver_1  |[0m 
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m Size of Plain Text = 24 Number of Trials = 10000
+[32mserver_10 |[0m My IP is 10.0.0.24, my idx is 22
+[34mserver_12 |[0m My IP is 10.0.0.23, my idx is 21
+[34mserver_12 |[0m 
+[34mserver_12 |[0m =============================
+[34mserver_12 |[0m Abort at the NPR03SYMDPRF.CPP
+[34mserver_12 |[0m =============================
+[34mserver_12 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_10 |[0m 
+[32mserver_10 |[0m =============================
+[32mserver_10 |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_10 |[0m =============================
+[32mserver_10 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_11 |[0m My IP is 10.0.0.7, my idx is 5
+[36;1mserver_13 |[0m My IP is 10.0.0.9, my idx is 7
+[35mserver_11 |[0m 
+[35mserver_11 |[0m =============================
+[35mserver_11 |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_11 |[0m =============================
+[35mserver_11 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32;1mserver_15 |[0m My IP is 10.0.0.17, my idx is 15
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m =============================
+[36;1mserver_13 |[0m Abort at the NPR03SYMDPRF.CPP
+[36;1mserver_13 |[0m =============================
+[36;1mserver_13 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33;1mserver_14 |[0m My IP is 10.0.0.10, my idx is 8
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m =============================
+[33;1mserver_14 |[0m Abort at the NPR03SYMDPRF.CPP
+[33;1mserver_14 |[0m =============================
+[33;1mserver_14 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m =============================
+[32;1mserver_15 |[0m Abort at the NPR03SYMDPRF.CPP
+[32;1mserver_15 |[0m =============================
+[32;1mserver_15 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35;1mserver_16 |[0m My IP is 10.0.0.16, my idx is 14
+[33mserver_19 |[0m My IP is 10.0.0.20, my idx is 18
+[34;1mserver_17 |[0m My IP is 10.0.0.5, my idx is 3
+[35;1mserver_16 |[0m 
+[35;1mserver_16 |[0m =============================
+[35;1mserver_16 |[0m Abort at the NPR03SYMDPRF.CPP
+[35;1mserver_16 |[0m =============================
+[35;1mserver_16 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mserver_18 |[0m My IP is 10.0.0.13, my idx is 11
+[33mserver_19 |[0m 
+[33mserver_19 |[0m =============================
+[33mserver_19 |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_19 |[0m =============================
+[33mserver_19 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_2  |[0m My IP is 10.0.0.12, my idx is 10
+[34;1mserver_17 |[0m 
+[34;1mserver_17 |[0m =============================
+[34;1mserver_17 |[0m Abort at the NPR03SYMDPRF.CPP
+[34;1mserver_17 |[0m =============================
+[34;1mserver_17 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_2  |[0m 
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mserver_18 |[0m 
+[36mserver_18 |[0m =============================
+[36mserver_18 |[0m Abort at the NPR03SYMDPRF.CPP
+[36mserver_18 |[0m =============================
+[36mserver_18 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_20 |[0m My IP is 10.0.0.4, my idx is 2
+[34mserver_21 |[0m My IP is 10.0.0.11, my idx is 9
+[32;1mserver_3  |[0m My IP is 10.0.0.6, my idx is 4
+[33;1mserver_23 |[0m My IP is 10.0.0.8, my idx is 6
+[36;1mserver_22 |[0m My IP is 10.0.0.15, my idx is 13
+[35mserver_20 |[0m 
+[35mserver_20 |[0m =============================
+[35mserver_20 |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_20 |[0m =============================
+[35mserver_20 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34mserver_21 |[0m 
+[34mserver_21 |[0m =============================
+[34mserver_21 |[0m Abort at the NPR03SYMDPRF.CPP
+[34mserver_21 |[0m =============================
+[34mserver_21 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33;1mserver_23 |[0m 
+[33;1mserver_23 |[0m =============================
+[33;1mserver_23 |[0m Abort at the NPR03SYMDPRF.CPP
+[33;1mserver_23 |[0m =============================
+[33;1mserver_23 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36;1mserver_22 |[0m 
+[36;1mserver_22 |[0m =============================
+[36;1mserver_22 |[0m Abort at the NPR03SYMDPRF.CPP
+[36;1mserver_22 |[0m =============================
+[36;1mserver_22 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35;1mserver_4  |[0m My IP is 10.0.0.14, my idx is 12
+[32;1mserver_3  |[0m 
+[32;1mserver_3  |[0m =============================
+[32;1mserver_3  |[0m Abort at the NPR03SYMDPRF.CPP
+[32;1mserver_3  |[0m =============================
+[32;1mserver_3  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34;1mserver_5  |[0m My IP is 10.0.0.3, my idx is 1
+[35;1mserver_4  |[0m 
+[35;1mserver_4  |[0m =============================
+[35;1mserver_4  |[0m Abort at the NPR03SYMDPRF.CPP
+[35;1mserver_4  |[0m =============================
+[35;1mserver_4  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_7  |[0m My IP is 10.0.0.22, my idx is 20
+[34;1mserver_5  |[0m 
+[34;1mserver_5  |[0m =============================
+[34;1mserver_5  |[0m Abort at the NPR03SYMDPRF.CPP
+[34;1mserver_5  |[0m =============================
+[34;1mserver_5  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mserver_6  |[0m My IP is 10.0.0.18, my idx is 16
+[36mserver_6  |[0m 
+[36mserver_6  |[0m =============================
+[36mserver_6  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mserver_6  |[0m =============================
+[36mserver_6  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_7  |[0m 
+[33mserver_7  |[0m =============================
+[33mserver_7  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_7  |[0m =============================
+[33mserver_7  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_9  |[0m My IP is 10.0.0.25, my idx is 23
+[35mserver_9  |[0m 
+[35mserver_9  |[0m =============================
+[35mserver_9  |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_9  |[0m =============================
+[35mserver_9  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_8  |[0m My IP is 10.0.0.21, my idx is 19
+[32mserver_8  |[0m 
+[32mserver_8  |[0m =============================
+[32mserver_8  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_8  |[0m =============================
+[32mserver_8  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m Net            n:24  m:22   t:10000     enc/s:1891.07   ms/enc:0.5288 	  Mbps:9.64448 Aborts = 0 Time (ms) = 5288
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Total Count:210000 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:90000
+[34;1mhtdise_server_5 exited with code 0
+[0m[33mhtdise_server_19 exited with code 0
+[0m[33mhtdise_server_7 exited with code 0
+[0m[35;1mhtdise_server_16 exited with code 0
+[0m[32;1mhtdise_server_3 exited with code 0
+[0m[32mhtdise_server_10 exited with code 0
+[0m[33mhtdise_server_1 exited with code 0
+[0m[34;1mhtdise_server_17 exited with code 0
+[0m[35;1mhtdise_server_4 exited with code 0
+[0m[35mhtdise_server_20 exited with code 0
+[0m[36mhtdise_client_1 exited with code 0
+[0m[36;1mhtdise_server_22 exited with code 0
+[0m[32mhtdise_server_8 exited with code 0
+[0m[34mhtdise_server_12 exited with code 0
+[0m[33;1mhtdise_server_23 exited with code 0
+[0m[32;1mhtdise_server_15 exited with code 0
+[0m[36;1mhtdise_server_13 exited with code 0
+[0m[32mhtdise_server_2 exited with code 0
+[0m[35mhtdise_server_11 exited with code 0
+[0m[36mhtdise_server_6 exited with code 0
+[0m[36mhtdise_server_18 exited with code 0
+[0m[35mhtdise_server_9 exited with code 0
+[0m[33;1mhtdise_server_14 exited with code 0
+[0m[34mhtdise_server_21 exited with code 0
+[0mStopping htdise_uptime_1  ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping htdise_uptime_1 ... done
+Removing htdise_server_21 ... 
+Removing htdise_server_16 ... 
+Removing htdise_server_13 ... 
+Removing htdise_server_19 ... 
+Removing htdise_server_22 ... 
+Removing htdise_server_1  ... 
+Removing htdise_server_4  ... 
+Removing htdise_server_7  ... 
+Removing htdise_server_18 ... 
+Removing htdise_server_10 ... 
+Removing htdise_server_12 ... 
+Removing htdise_server_9  ... 
+Removing htdise_server_15 ... 
+Removing htdise_server_6  ... 
+Removing htdise_server_23 ... 
+Removing htdise_server_3  ... 
+Removing htdise_server_17 ... 
+Removing htdise_server_20 ... 
+Removing htdise_server_14 ... 
+Removing htdise_server_11 ... 
+Removing htdise_server_5  ... 
+Removing htdise_server_8  ... 
+Removing htdise_server_2  ... 
+Removing htdise_client_1  ... 
+Removing htdise_uptime_1  ... 
+Removing htdise_server_13 ... done
+Removing htdise_server_6  ... done
+Removing htdise_server_22 ... done
+Removing htdise_server_1  ... done
+Removing htdise_server_4  ... done
+Removing htdise_server_14 ... done
+Removing htdise_server_7  ... done
+Removing htdise_server_21 ... done
+Removing htdise_server_23 ... done
+Removing htdise_uptime_1  ... done
+Removing htdise_server_19 ... done
+Removing htdise_server_15 ... done
+Removing htdise_server_10 ... done
+Removing htdise_server_3  ... done
+Removing htdise_server_16 ... done
+Removing htdise_server_2  ... done
+Removing htdise_server_12 ... done
+Removing htdise_server_18 ... done
+Removing htdise_server_17 ... done
+Removing htdise_server_5  ... done
+Removing htdise_server_20 ... done
+Removing htdise_server_11 ... done
+Removing htdise_client_1  ... done
+Removing htdise_server_8  ... done
+Removing htdise_server_9  ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+cp: cannot stat 'data/reboot_sequence_logs/states_24_22_1M.txt': No such file or directory
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  12.39MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 6f6f695a2418
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> ee41285540f5
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> cc9b69bbb18f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> cd9aec11f710
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 20aa014a1eee
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 19439d883ab4
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 32761bceff87
+Successfully built 32761bceff87
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1  ... 
+Creating htdise_server_2  ... 
+Creating htdise_server_3  ... 
+Creating htdise_server_4  ... 
+Creating htdise_server_5  ... 
+Creating htdise_server_6  ... 
+Creating htdise_server_7  ... 
+Creating htdise_server_8  ... 
+Creating htdise_server_9  ... 
+Creating htdise_server_10 ... 
+Creating htdise_server_11 ... 
+Creating htdise_server_12 ... 
+Creating htdise_server_13 ... 
+Creating htdise_server_14 ... 
+Creating htdise_server_15 ... 
+Creating htdise_server_16 ... 
+Creating htdise_server_17 ... 
+Creating htdise_server_18 ... 
+Creating htdise_server_19 ... 
+Creating htdise_server_20 ... 
+Creating htdise_server_21 ... 
+Creating htdise_server_22 ... 
+Creating htdise_server_23 ... 
+Creating htdise_server_8  ... done
+Creating htdise_server_4  ... done
+Creating htdise_server_13 ... done
+Creating htdise_server_19 ... done
+Creating htdise_server_12 ... done
+Creating htdise_server_7  ... done
+Creating htdise_server_23 ... done
+Creating htdise_server_10 ... done
+Creating htdise_server_22 ... done
+Creating htdise_server_18 ... done
+Creating htdise_server_14 ... done
+Creating htdise_server_5  ... done
+Creating htdise_server_1  ... done
+Creating htdise_server_17 ... done
+Creating htdise_server_9  ... done
+Creating htdise_server_16 ... done
+Creating htdise_server_6  ... done
+Creating htdise_server_2  ... done
+Creating htdise_server_15 ... done
+Creating htdise_server_20 ... done
+Creating htdise_server_21 ... done
+Creating htdise_server_11 ... done
+Creating htdise_server_3  ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_8, htdise_server_4, htdise_server_13, htdise_server_19, htdise_server_12, htdise_server_7, htdise_server_23, htdise_server_10, htdise_server_22, htdise_server_18, htdise_server_14, htdise_server_5, htdise_server_1, htdise_server_17, htdise_server_9, htdise_server_16, htdise_server_6, htdise_server_2, htdise_server_15, htdise_server_20, htdise_server_21, htdise_server_11, htdise_server_3
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m Size of Plain Text = 24 Number of Trials = 10000
+[33mserver_1  |[0m My IP is 10.0.0.15, my idx is 13
+[32mserver_10 |[0m My IP is 10.0.0.10, my idx is 8
+[32mserver_10 |[0m 
+[32mserver_10 |[0m =============================
+[32mserver_10 |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_10 |[0m =============================
+[32mserver_10 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34mserver_12 |[0m My IP is 10.0.0.7, my idx is 5
+[35mserver_11 |[0m My IP is 10.0.0.24, my idx is 22
+[33mserver_1  |[0m 
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_11 |[0m 
+[35mserver_11 |[0m =============================
+[35mserver_11 |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_11 |[0m =============================
+[35mserver_11 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34mserver_12 |[0m 
+[34mserver_12 |[0m =============================
+[34mserver_12 |[0m Abort at the NPR03SYMDPRF.CPP
+[34mserver_12 |[0m =============================
+[34mserver_12 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36;1mserver_13 |[0m My IP is 10.0.0.4, my idx is 2
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m =============================
+[36;1mserver_13 |[0m Abort at the NPR03SYMDPRF.CPP
+[36;1mserver_13 |[0m =============================
+[36;1mserver_13 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33;1mserver_14 |[0m My IP is 10.0.0.13, my idx is 11
+[35;1mserver_16 |[0m My IP is 10.0.0.18, my idx is 16
+[35;1mserver_16 |[0m 
+[35;1mserver_16 |[0m =============================
+[35;1mserver_16 |[0m Abort at the NPR03SYMDPRF.CPP
+[35;1mserver_16 |[0m =============================
+[35;1mserver_16 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32;1mserver_15 |[0m My IP is 10.0.0.21, my idx is 19
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m =============================
+[33;1mserver_14 |[0m Abort at the NPR03SYMDPRF.CPP
+[33;1mserver_14 |[0m =============================
+[33;1mserver_14 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_19 |[0m My IP is 10.0.0.6, my idx is 4
+[34;1mserver_17 |[0m My IP is 10.0.0.16, my idx is 14
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m =============================
+[32;1mserver_15 |[0m Abort at the NPR03SYMDPRF.CPP
+[32;1mserver_15 |[0m =============================
+[32;1mserver_15 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_19 |[0m 
+[33mserver_19 |[0m =============================
+[33mserver_19 |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_19 |[0m =============================
+[33mserver_19 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mserver_18 |[0m My IP is 10.0.0.12, my idx is 10
+[34;1mserver_17 |[0m 
+[34;1mserver_17 |[0m =============================
+[34;1mserver_17 |[0m Abort at the NPR03SYMDPRF.CPP
+[34;1mserver_17 |[0m =============================
+[34;1mserver_17 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_2  |[0m My IP is 10.0.0.20, my idx is 18
+[32mserver_2  |[0m 
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mserver_18 |[0m 
+[36mserver_18 |[0m =============================
+[36mserver_18 |[0m Abort at the NPR03SYMDPRF.CPP
+[36mserver_18 |[0m =============================
+[36mserver_18 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_20 |[0m My IP is 10.0.0.22, my idx is 20
+[34mserver_21 |[0m My IP is 10.0.0.23, my idx is 21
+[34mserver_21 |[0m 
+[34mserver_21 |[0m =============================
+[34mserver_21 |[0m Abort at the NPR03SYMDPRF.CPP
+[34mserver_21 |[0m =============================
+[34mserver_21 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_20 |[0m 
+[35mserver_20 |[0m =============================
+[35mserver_20 |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_20 |[0m =============================
+[35mserver_20 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36;1mserver_22 |[0m My IP is 10.0.0.11, my idx is 9
+[32;1mserver_3  |[0m My IP is 10.0.0.25, my idx is 23
+[32;1mserver_3  |[0m 
+[32;1mserver_3  |[0m =============================
+[32;1mserver_3  |[0m Abort at the NPR03SYMDPRF.CPP
+[32;1mserver_3  |[0m =============================
+[32;1mserver_3  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35;1mserver_4  |[0m My IP is 10.0.0.5, my idx is 3
+[36;1mserver_22 |[0m 
+[36;1mserver_22 |[0m =============================
+[36;1mserver_22 |[0m Abort at the NPR03SYMDPRF.CPP
+[36;1mserver_22 |[0m =============================
+[36;1mserver_22 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33;1mserver_23 |[0m My IP is 10.0.0.9, my idx is 7
+[35;1mserver_4  |[0m 
+[35;1mserver_4  |[0m =============================
+[35;1mserver_4  |[0m Abort at the NPR03SYMDPRF.CPP
+[35;1mserver_4  |[0m =============================
+[35;1mserver_4  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34;1mserver_5  |[0m My IP is 10.0.0.14, my idx is 12
+[33;1mserver_23 |[0m 
+[33;1mserver_23 |[0m =============================
+[33;1mserver_23 |[0m Abort at the NPR03SYMDPRF.CPP
+[33;1mserver_23 |[0m =============================
+[33;1mserver_23 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mserver_6  |[0m My IP is 10.0.0.19, my idx is 17
+[34;1mserver_5  |[0m 
+[34;1mserver_5  |[0m =============================
+[34;1mserver_5  |[0m Abort at the NPR03SYMDPRF.CPP
+[34;1mserver_5  |[0m =============================
+[34;1mserver_5  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mserver_6  |[0m 
+[36mserver_6  |[0m =============================
+[36mserver_6  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mserver_6  |[0m =============================
+[36mserver_6  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_8  |[0m My IP is 10.0.0.3, my idx is 1
+[32mserver_8  |[0m 
+[32mserver_8  |[0m =============================
+[32mserver_8  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_8  |[0m =============================
+[32mserver_8  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_7  |[0m My IP is 10.0.0.8, my idx is 6
+[33mserver_7  |[0m 
+[33mserver_7  |[0m =============================
+[33mserver_7  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_7  |[0m =============================
+[33mserver_7  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_9  |[0m My IP is 10.0.0.17, my idx is 15
+[35mserver_9  |[0m 
+[35mserver_9  |[0m =============================
+[35mserver_9  |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_9  |[0m =============================
+[35mserver_9  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m Net            n:24  m:22   t:10000     enc/s:2013.69   ms/enc:0.4966 	  Mbps:10.2698 Aborts = 0 Time (ms) = 4966
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Total Count:210000 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:90000
+[33mhtdise_server_7 exited with code 0
+[0m[34;1mhtdise_server_17 exited with code 0
+[0m[32;1mhtdise_server_15 exited with code 0
+[0m[36;1mhtdise_server_13 exited with code 0
+[0m[34mhtdise_server_12 exited with code 0
+[0m[32;1mhtdise_server_3 exited with code 0
+[0m[36;1mhtdise_server_22 exited with code 0
+[0m[32mhtdise_server_8 exited with code 0
+[0m[34mhtdise_server_21 exited with code 0
+[0m[36mhtdise_server_18 exited with code 0
+[0m[36mhtdise_client_1 exited with code 0
+[0m[35mhtdise_server_9 exited with code 0
+[0m[35;1mhtdise_server_4 exited with code 0
+[0m[33mhtdise_server_19 exited with code 0
+[0m[33mhtdise_server_1 exited with code 0
+[0m[33;1mhtdise_server_14 exited with code 0
+[0m[33;1mhtdise_server_23 exited with code 0
+[0m[32mhtdise_server_10 exited with code 0
+[0m[35mhtdise_server_11 exited with code 0
+[0m[32mhtdise_server_2 exited with code 0
+[0m[35mhtdise_server_20 exited with code 0
+[0m[36mhtdise_server_6 exited with code 0
+[0m[34;1mhtdise_server_5 exited with code 0
+[0m[35;1mhtdise_server_16 exited with code 0
+[0mStopping htdise_uptime_1  ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Stopping htdise_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing htdise_server_21 ... 
+Removing htdise_server_6  ... 
+Removing htdise_server_12 ... 
+Removing htdise_server_18 ... 
+Removing htdise_server_15 ... 
+Removing htdise_server_9  ... 
+Removing htdise_server_3  ... 
+Removing htdise_server_23 ... 
+Removing htdise_server_11 ... 
+Removing htdise_server_17 ... 
+Removing htdise_server_20 ... 
+Removing htdise_server_14 ... 
+Removing htdise_server_5  ... 
+Removing htdise_server_22 ... 
+Removing htdise_server_8  ... 
+Removing htdise_server_19 ... 
+Removing htdise_server_2  ... 
+Removing htdise_server_16 ... 
+Removing htdise_server_10 ... 
+Removing htdise_server_13 ... 
+Removing htdise_server_4  ... 
+Removing htdise_server_7  ... 
+Removing htdise_server_1  ... 
+Removing htdise_client_1  ... 
+Removing htdise_uptime_1  ... 
+Removing htdise_server_1  ... done
+Removing htdise_server_9  ... done
+Removing htdise_server_2  ... done
+Removing htdise_server_19 ... done
+Removing htdise_client_1  ... done
+Removing htdise_server_16 ... done
+Removing htdise_server_10 ... done
+Removing htdise_server_8  ... done
+Removing htdise_server_22 ... done
+Removing htdise_server_18 ... done
+Removing htdise_server_23 ... done
+Removing htdise_server_14 ... done
+Removing htdise_server_13 ... done
+Removing htdise_server_12 ... done
+Removing htdise_server_11 ... done
+Removing htdise_server_7  ... done
+Removing htdise_server_20 ... done
+Removing htdise_server_15 ... done
+Removing htdise_server_17 ... done
+Removing htdise_server_21 ... done
+Removing htdise_uptime_1  ... done
+Removing htdise_server_3  ... done
+Removing htdise_server_6  ... done
+Removing htdise_server_4  ... done
+Removing htdise_server_5  ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+cp: cannot stat 'data/reboot_sequence_logs/states_24_22_1M.txt': No such file or directory
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon   12.4MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 6f6f695a2418
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> ee41285540f5
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> cc9b69bbb18f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> cd9aec11f710
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 20aa014a1eee
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 19439d883ab4
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 32761bceff87
+Successfully built 32761bceff87
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1  ... 
+Creating htdise_server_2  ... 
+Creating htdise_server_3  ... 
+Creating htdise_server_4  ... 
+Creating htdise_server_5  ... 
+Creating htdise_server_6  ... 
+Creating htdise_server_7  ... 
+Creating htdise_server_8  ... 
+Creating htdise_server_9  ... 
+Creating htdise_server_10 ... 
+Creating htdise_server_11 ... 
+Creating htdise_server_12 ... 
+Creating htdise_server_13 ... 
+Creating htdise_server_14 ... 
+Creating htdise_server_15 ... 
+Creating htdise_server_16 ... 
+Creating htdise_server_17 ... 
+Creating htdise_server_18 ... 
+Creating htdise_server_19 ... 
+Creating htdise_server_20 ... 
+Creating htdise_server_21 ... 
+Creating htdise_server_22 ... 
+Creating htdise_server_23 ... 
+Creating htdise_server_16 ... done
+Creating htdise_server_8  ... done
+Creating htdise_server_19 ... done
+Creating htdise_server_7  ... done
+Creating htdise_server_18 ... done
+Creating htdise_server_3  ... done
+Creating htdise_server_1  ... done
+Creating htdise_server_17 ... done
+Creating htdise_server_4  ... done
+Creating htdise_server_21 ... done
+Creating htdise_server_20 ... done
+Creating htdise_server_10 ... done
+Creating htdise_server_15 ... done
+Creating htdise_server_5  ... done
+Creating htdise_server_9  ... done
+Creating htdise_server_23 ... done
+Creating htdise_server_22 ... done
+Creating htdise_server_6  ... done
+Creating htdise_server_2  ... done
+Creating htdise_server_14 ... done
+Creating htdise_server_12 ... done
+Creating htdise_server_11 ... done
+Creating htdise_server_13 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_16, htdise_server_8, htdise_server_19, htdise_server_7, htdise_server_18, htdise_server_3, htdise_server_1, htdise_server_17, htdise_server_4, htdise_server_21, htdise_server_20, htdise_server_10, htdise_server_15, htdise_server_5, htdise_server_9, htdise_server_23, htdise_server_22, htdise_server_6, htdise_server_2, htdise_server_14, htdise_server_12, htdise_server_11, htdise_server_13
+[33mserver_1  |[0m My IP is 10.0.0.9, my idx is 7
+[33mserver_1  |[0m 
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[35mserver_11 |[0m My IP is 10.0.0.24, my idx is 22
+[35mserver_11 |[0m 
+[35mserver_11 |[0m =============================
+[35mserver_11 |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_11 |[0m =============================
+[35mserver_11 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36;1mserver_13 |[0m My IP is 10.0.0.25, my idx is 23
+[34mserver_12 |[0m My IP is 10.0.0.23, my idx is 21
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m =============================
+[36;1mserver_13 |[0m Abort at the NPR03SYMDPRF.CPP
+[36;1mserver_13 |[0m =============================
+[36;1mserver_13 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34mserver_12 |[0m 
+[34mserver_12 |[0m =============================
+[34mserver_12 |[0m Abort at the NPR03SYMDPRF.CPP
+[34mserver_12 |[0m =============================
+[34mserver_12 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_10 |[0m My IP is 10.0.0.14, my idx is 12
+[32mserver_10 |[0m 
+[32mserver_10 |[0m =============================
+[32mserver_10 |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_10 |[0m =============================
+[32mserver_10 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m Size of Plain Text = 24 Number of Trials = 10000
+[33;1mserver_14 |[0m My IP is 10.0.0.22, my idx is 20
+[32;1mserver_15 |[0m My IP is 10.0.0.15, my idx is 13
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m =============================
+[33;1mserver_14 |[0m Abort at the NPR03SYMDPRF.CPP
+[33;1mserver_14 |[0m =============================
+[33;1mserver_14 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34;1mserver_17 |[0m My IP is 10.0.0.10, my idx is 8
+[35;1mserver_16 |[0m My IP is 10.0.0.3, my idx is 1
+[35;1mserver_16 |[0m 
+[35;1mserver_16 |[0m =============================
+[35;1mserver_16 |[0m Abort at the NPR03SYMDPRF.CPP
+[35;1mserver_16 |[0m =============================
+[35;1mserver_16 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mserver_18 |[0m My IP is 10.0.0.7, my idx is 5
+[33mserver_19 |[0m My IP is 10.0.0.5, my idx is 3
+[36mserver_18 |[0m 
+[36mserver_18 |[0m =============================
+[36mserver_18 |[0m Abort at the NPR03SYMDPRF.CPP
+[36mserver_18 |[0m =============================
+[36mserver_18 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34;1mserver_17 |[0m 
+[34;1mserver_17 |[0m =============================
+[34;1mserver_17 |[0m Abort at the NPR03SYMDPRF.CPP
+[34;1mserver_17 |[0m =============================
+[34;1mserver_17 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m =============================
+[32;1mserver_15 |[0m Abort at the NPR03SYMDPRF.CPP
+[32;1mserver_15 |[0m =============================
+[32;1mserver_15 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_2  |[0m My IP is 10.0.0.21, my idx is 19
+[35mserver_20 |[0m My IP is 10.0.0.13, my idx is 11
+[32mserver_2  |[0m 
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_19 |[0m 
+[33mserver_19 |[0m =============================
+[33mserver_19 |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_19 |[0m =============================
+[33mserver_19 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_20 |[0m 
+[35mserver_20 |[0m =============================
+[35mserver_20 |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_20 |[0m =============================
+[35mserver_20 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36;1mserver_22 |[0m My IP is 10.0.0.19, my idx is 17
+[36;1mserver_22 |[0m 
+[36;1mserver_22 |[0m =============================
+[36;1mserver_22 |[0m Abort at the NPR03SYMDPRF.CPP
+[36;1mserver_22 |[0m =============================
+[36;1mserver_22 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34mserver_21 |[0m My IP is 10.0.0.12, my idx is 10
+[34mserver_21 |[0m 
+[34mserver_21 |[0m =============================
+[34mserver_21 |[0m Abort at the NPR03SYMDPRF.CPP
+[34mserver_21 |[0m =============================
+[34mserver_21 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33;1mserver_23 |[0m My IP is 10.0.0.18, my idx is 16
+[33;1mserver_23 |[0m 
+[33;1mserver_23 |[0m =============================
+[33;1mserver_23 |[0m Abort at the NPR03SYMDPRF.CPP
+[33;1mserver_23 |[0m =============================
+[33;1mserver_23 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32;1mserver_3  |[0m My IP is 10.0.0.8, my idx is 6
+[32;1mserver_3  |[0m 
+[32;1mserver_3  |[0m =============================
+[32;1mserver_3  |[0m Abort at the NPR03SYMDPRF.CPP
+[32;1mserver_3  |[0m =============================
+[32;1mserver_3  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35;1mserver_4  |[0m My IP is 10.0.0.11, my idx is 9
+[34;1mserver_5  |[0m My IP is 10.0.0.16, my idx is 14
+[34;1mserver_5  |[0m 
+[34;1mserver_5  |[0m =============================
+[34;1mserver_5  |[0m Abort at the NPR03SYMDPRF.CPP
+[34;1mserver_5  |[0m =============================
+[34;1mserver_5  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mserver_6  |[0m My IP is 10.0.0.20, my idx is 18
+[35;1mserver_4  |[0m 
+[35;1mserver_4  |[0m =============================
+[35;1mserver_4  |[0m Abort at the NPR03SYMDPRF.CPP
+[35;1mserver_4  |[0m =============================
+[35;1mserver_4  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_7  |[0m My IP is 10.0.0.6, my idx is 4
+[32mserver_8  |[0m My IP is 10.0.0.4, my idx is 2
+[33mserver_7  |[0m 
+[33mserver_7  |[0m =============================
+[33mserver_7  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_7  |[0m =============================
+[33mserver_7  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mserver_6  |[0m 
+[36mserver_6  |[0m =============================
+[36mserver_6  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mserver_6  |[0m =============================
+[36mserver_6  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_9  |[0m My IP is 10.0.0.17, my idx is 15
+[35mserver_9  |[0m 
+[35mserver_9  |[0m =============================
+[35mserver_9  |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_9  |[0m =============================
+[35mserver_9  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_8  |[0m 
+[32mserver_8  |[0m =============================
+[32mserver_8  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_8  |[0m =============================
+[32mserver_8  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m Net            n:24  m:22   t:10000     enc/s:2002   ms/enc:0.4995 	  Mbps:10.2102 Aborts = 0 Time (ms) = 4995
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Total Count:210000 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:90000
+[35mhtdise_server_20 exited with code 0
+[0m[36;1mhtdise_server_22 exited with code 0
+[0m[32;1mhtdise_server_3 exited with code 0
+[0m[33;1mhtdise_server_23 exited with code 0
+[0m[36mhtdise_server_6 exited with code 0
+[0m[36mhtdise_client_1 exited with code 0
+[0m[35mhtdise_server_11 exited with code 0
+[0m[33;1mhtdise_server_14 exited with code 0
+[0m[35;1mhtdise_server_16 exited with code 0
+[0m[32mhtdise_server_2 exited with code 0
+[0m[33mhtdise_server_1 exited with code 0
+[0m[33mhtdise_server_19 exited with code 0
+[0m[32;1mhtdise_server_15 exited with code 0
+[0m[33mhtdise_server_7 exited with code 0
+[0m[34;1mhtdise_server_17 exited with code 0
+[0m[36mhtdise_server_18 exited with code 0
+[0m[34;1mhtdise_server_5 exited with code 0
+[0m[36;1mhtdise_server_13 exited with code 0
+[0m[34mhtdise_server_12 exited with code 0
+[0m[35;1mhtdise_server_4 exited with code 0
+[0m[34mhtdise_server_21 exited with code 0
+[0m[32mhtdise_server_10 exited with code 0
+[0m[35mhtdise_server_9 exited with code 0
+[0m[32mhtdise_server_8 exited with code 0
+[0mStopping htdise_uptime_1  ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Stopping htdise_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing htdise_server_19 ... 
+Removing htdise_server_22 ... 
+Removing htdise_server_13 ... 
+Removing htdise_server_5  ... 
+Removing htdise_server_16 ... 
+Removing htdise_server_10 ... 
+Removing htdise_server_4  ... 
+Removing htdise_server_7  ... 
+Removing htdise_server_1  ... 
+Removing htdise_server_15 ... 
+Removing htdise_server_21 ... 
+Removing htdise_server_18 ... 
+Removing htdise_server_9  ... 
+Removing htdise_server_23 ... 
+Removing htdise_server_3  ... 
+Removing htdise_server_20 ... 
+Removing htdise_server_6  ... 
+Removing htdise_server_14 ... 
+Removing htdise_server_12 ... 
+Removing htdise_server_11 ... 
+Removing htdise_server_8  ... 
+Removing htdise_server_17 ... 
+Removing htdise_server_2  ... 
+Removing htdise_client_1  ... 
+Removing htdise_uptime_1  ... 
+Removing htdise_server_22 ... done
+Removing htdise_server_6  ... done
+Removing htdise_server_11 ... done
+Removing htdise_server_14 ... done
+Removing htdise_server_12 ... done
+Removing htdise_client_1  ... done
+Removing htdise_server_23 ... done
+Removing htdise_server_1  ... done
+Removing htdise_server_3  ... done
+Removing htdise_server_10 ... done
+Removing htdise_server_19 ... done
+Removing htdise_uptime_1  ... done
+Removing htdise_server_9  ... done
+Removing htdise_server_7  ... done
+Removing htdise_server_20 ... done
+Removing htdise_server_18 ... done
+Removing htdise_server_15 ... done
+Removing htdise_server_17 ... done
+Removing htdise_server_8  ... done
+Removing htdise_server_13 ... done
+Removing htdise_server_16 ... done
+Removing htdise_server_21 ... done
+Removing htdise_server_2  ... done
+Removing htdise_server_4  ... done
+Removing htdise_server_5  ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+cp: cannot stat 'data/reboot_sequence_logs/states_24_22_1M.txt': No such file or directory
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  12.42MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 6f6f695a2418
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> ee41285540f5
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> cc9b69bbb18f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> cd9aec11f710
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 20aa014a1eee
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 19439d883ab4
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 32761bceff87
+Successfully built 32761bceff87
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1  ... 
+Creating htdise_server_2  ... 
+Creating htdise_server_3  ... 
+Creating htdise_server_4  ... 
+Creating htdise_server_5  ... 
+Creating htdise_server_6  ... 
+Creating htdise_server_7  ... 
+Creating htdise_server_8  ... 
+Creating htdise_server_9  ... 
+Creating htdise_server_10 ... 
+Creating htdise_server_11 ... 
+Creating htdise_server_12 ... 
+Creating htdise_server_13 ... 
+Creating htdise_server_14 ... 
+Creating htdise_server_15 ... 
+Creating htdise_server_16 ... 
+Creating htdise_server_17 ... 
+Creating htdise_server_18 ... 
+Creating htdise_server_19 ... 
+Creating htdise_server_20 ... 
+Creating htdise_server_21 ... 
+Creating htdise_server_22 ... 
+Creating htdise_server_23 ... 
+Creating htdise_server_4  ... done
+Creating htdise_server_1  ... done
+Creating htdise_server_19 ... done
+Creating htdise_server_22 ... done
+Creating htdise_server_11 ... done
+Creating htdise_server_15 ... done
+Creating htdise_server_23 ... done
+Creating htdise_server_8  ... done
+Creating htdise_server_17 ... done
+Creating htdise_server_10 ... done
+Creating htdise_server_6  ... done
+Creating htdise_server_20 ... done
+Creating htdise_server_18 ... done
+Creating htdise_server_12 ... done
+Creating htdise_server_21 ... done
+Creating htdise_server_14 ... done
+Creating htdise_server_9  ... done
+Creating htdise_server_2  ... done
+Creating htdise_server_5  ... done
+Creating htdise_server_7  ... done
+Creating htdise_server_16 ... done
+Creating htdise_server_13 ... done
+Creating htdise_server_3  ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_4, htdise_server_1, htdise_server_19, htdise_server_22, htdise_server_11, htdise_server_15, htdise_server_23, htdise_server_8, htdise_server_17, htdise_server_10, htdise_server_6, htdise_server_20, htdise_server_18, htdise_server_12, htdise_server_21, htdise_server_14, htdise_server_9, htdise_server_2, htdise_server_5, htdise_server_7, htdise_server_16, htdise_server_13, htdise_server_3
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m Size of Plain Text = 24 Number of Trials = 10000
+[33mserver_1  |[0m My IP is 10.0.0.4, my idx is 2
+[33mserver_1  |[0m 
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_10 |[0m My IP is 10.0.0.12, my idx is 10
+[32mserver_10 |[0m 
+[32mserver_10 |[0m =============================
+[32mserver_10 |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_10 |[0m =============================
+[32mserver_10 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_11 |[0m My IP is 10.0.0.7, my idx is 5
+[35mserver_11 |[0m 
+[35mserver_11 |[0m =============================
+[35mserver_11 |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_11 |[0m =============================
+[35mserver_11 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36;1mserver_13 |[0m My IP is 10.0.0.25, my idx is 23
+[34mserver_12 |[0m My IP is 10.0.0.16, my idx is 14
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m =============================
+[36;1mserver_13 |[0m Abort at the NPR03SYMDPRF.CPP
+[36;1mserver_13 |[0m =============================
+[36;1mserver_13 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33;1mserver_14 |[0m My IP is 10.0.0.18, my idx is 16
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m =============================
+[33;1mserver_14 |[0m Abort at the NPR03SYMDPRF.CPP
+[33;1mserver_14 |[0m =============================
+[33;1mserver_14 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34mserver_12 |[0m 
+[34mserver_12 |[0m =============================
+[34mserver_12 |[0m Abort at the NPR03SYMDPRF.CPP
+[34mserver_12 |[0m =============================
+[34mserver_12 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32;1mserver_15 |[0m My IP is 10.0.0.8, my idx is 6
+[35;1mserver_16 |[0m My IP is 10.0.0.23, my idx is 21
+[35;1mserver_16 |[0m 
+[35;1mserver_16 |[0m =============================
+[35;1mserver_16 |[0m Abort at the NPR03SYMDPRF.CPP
+[35;1mserver_16 |[0m =============================
+[35;1mserver_16 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34;1mserver_17 |[0m My IP is 10.0.0.11, my idx is 9
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m =============================
+[32;1mserver_15 |[0m Abort at the NPR03SYMDPRF.CPP
+[32;1mserver_15 |[0m =============================
+[32;1mserver_15 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34;1mserver_17 |[0m 
+[34;1mserver_17 |[0m =============================
+[34;1mserver_17 |[0m Abort at the NPR03SYMDPRF.CPP
+[34;1mserver_17 |[0m =============================
+[34;1mserver_17 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mserver_18 |[0m My IP is 10.0.0.15, my idx is 13
+[36mserver_18 |[0m 
+[36mserver_18 |[0m =============================
+[36mserver_18 |[0m Abort at the NPR03SYMDPRF.CPP
+[36mserver_18 |[0m =============================
+[36mserver_18 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_19 |[0m My IP is 10.0.0.5, my idx is 3
+[33mserver_19 |[0m 
+[33mserver_19 |[0m =============================
+[33mserver_19 |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_19 |[0m =============================
+[33mserver_19 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_2  |[0m My IP is 10.0.0.20, my idx is 18
+[32mserver_2  |[0m 
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34mserver_21 |[0m My IP is 10.0.0.17, my idx is 15
+[34mserver_21 |[0m 
+[34mserver_21 |[0m =============================
+[34mserver_21 |[0m Abort at the NPR03SYMDPRF.CPP
+[34mserver_21 |[0m =============================
+[34mserver_21 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33;1mserver_23 |[0m My IP is 10.0.0.9, my idx is 7
+[33;1mserver_23 |[0m 
+[33;1mserver_23 |[0m =============================
+[33;1mserver_23 |[0m Abort at the NPR03SYMDPRF.CPP
+[33;1mserver_23 |[0m =============================
+[33;1mserver_23 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_20 |[0m My IP is 10.0.0.14, my idx is 12
+[36;1mserver_22 |[0m My IP is 10.0.0.6, my idx is 4
+[36;1mserver_22 |[0m 
+[36;1mserver_22 |[0m =============================
+[36;1mserver_22 |[0m Abort at the NPR03SYMDPRF.CPP
+[36;1mserver_22 |[0m =============================
+[36;1mserver_22 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32;1mserver_3  |[0m My IP is 10.0.0.24, my idx is 22
+[32;1mserver_3  |[0m 
+[32;1mserver_3  |[0m =============================
+[32;1mserver_3  |[0m Abort at the NPR03SYMDPRF.CPP
+[32;1mserver_3  |[0m =============================
+[32;1mserver_3  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_20 |[0m 
+[35mserver_20 |[0m =============================
+[35mserver_20 |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_20 |[0m =============================
+[35mserver_20 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35;1mserver_4  |[0m My IP is 10.0.0.3, my idx is 1
+[35;1mserver_4  |[0m 
+[35;1mserver_4  |[0m =============================
+[35;1mserver_4  |[0m Abort at the NPR03SYMDPRF.CPP
+[35;1mserver_4  |[0m =============================
+[35;1mserver_4  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34;1mserver_5  |[0m My IP is 10.0.0.21, my idx is 19
+[34;1mserver_5  |[0m 
+[34;1mserver_5  |[0m =============================
+[34;1mserver_5  |[0m Abort at the NPR03SYMDPRF.CPP
+[34;1mserver_5  |[0m =============================
+[34;1mserver_5  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mserver_6  |[0m My IP is 10.0.0.13, my idx is 11
+[36mserver_6  |[0m 
+[36mserver_6  |[0m =============================
+[36mserver_6  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mserver_6  |[0m =============================
+[36mserver_6  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_7  |[0m My IP is 10.0.0.22, my idx is 20
+[33mserver_7  |[0m 
+[33mserver_7  |[0m =============================
+[33mserver_7  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_7  |[0m =============================
+[33mserver_7  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_8  |[0m My IP is 10.0.0.10, my idx is 8
+[32mserver_8  |[0m 
+[32mserver_8  |[0m =============================
+[32mserver_8  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_8  |[0m =============================
+[32mserver_8  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_9  |[0m My IP is 10.0.0.19, my idx is 17
+[35mserver_9  |[0m 
+[35mserver_9  |[0m =============================
+[35mserver_9  |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_9  |[0m =============================
+[35mserver_9  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m Net            n:24  m:22   t:10000     enc/s:1851.51   ms/enc:0.5401 	  Mbps:9.4427 Aborts = 0 Time (ms) = 5401
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Total Count:210000 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:90000
+[35;1mhtdise_server_16 exited with code 0
+[0m[35;1mhtdise_server_4 exited with code 0
+[0m[36;1mhtdise_server_13 exited with code 0
+[0m[32;1mhtdise_server_15 exited with code 0
+[0m[34;1mhtdise_server_17 exited with code 0
+[0m[33mhtdise_server_19 exited with code 0
+[0m[32mhtdise_server_8 exited with code 0
+[0m[33mhtdise_server_7 exited with code 0
+[0m[32mhtdise_server_10 exited with code 0
+[0m[33;1mhtdise_server_23 exited with code 0
+[0m[35mhtdise_server_9 exited with code 0
+[0m[34;1mhtdise_server_5 exited with code 0
+[0m[32;1mhtdise_server_3 exited with code 0
+[0m[35mhtdise_server_20 exited with code 0
+[0m[34mhtdise_server_12 exited with code 0
+[0m[35mhtdise_server_11 exited with code 0
+[0m[36;1mhtdise_server_22 exited with code 0
+[0m[32mhtdise_server_2 exited with code 0
+[0m[36mhtdise_server_6 exited with code 0
+[0m[36mhtdise_server_18 exited with code 0
+[0m[33;1mhtdise_server_14 exited with code 0
+[0m[36mhtdise_client_1 exited with code 0
+[0m[33mhtdise_server_1 exited with code 0
+[0m[34mhtdise_server_21 exited with code 0
+[0mStopping htdise_uptime_1  ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Stopping htdise_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing htdise_server_19 ... 
+Removing htdise_server_22 ... 
+Removing htdise_server_13 ... 
+Removing htdise_server_16 ... 
+Removing htdise_server_10 ... 
+Removing htdise_server_7  ... 
+Removing htdise_server_4  ... 
+Removing htdise_server_18 ... 
+Removing htdise_server_1  ... 
+Removing htdise_server_21 ... 
+Removing htdise_server_15 ... 
+Removing htdise_server_6  ... 
+Removing htdise_server_12 ... 
+Removing htdise_server_9  ... 
+Removing htdise_server_3  ... 
+Removing htdise_server_23 ... 
+Removing htdise_server_20 ... 
+Removing htdise_server_17 ... 
+Removing htdise_server_11 ... 
+Removing htdise_server_14 ... 
+Removing htdise_server_5  ... 
+Removing htdise_server_2  ... 
+Removing htdise_server_8  ... 
+Removing htdise_client_1  ... 
+Removing htdise_uptime_1  ... 
+Removing htdise_server_11 ... done
+Removing htdise_server_16 ... done
+Removing htdise_server_10 ... done
+Removing htdise_server_4  ... done
+Removing htdise_server_13 ... done
+Removing htdise_server_8  ... done
+Removing htdise_server_14 ... done
+Removing htdise_server_9  ... done
+Removing htdise_server_5  ... done
+Removing htdise_server_22 ... done
+Removing htdise_server_2  ... done
+Removing htdise_uptime_1  ... done
+Removing htdise_server_20 ... done
+Removing htdise_server_1  ... done
+Removing htdise_server_19 ... done
+Removing htdise_server_15 ... done
+Removing htdise_server_18 ... done
+Removing htdise_client_1  ... done
+Removing htdise_server_3  ... done
+Removing htdise_server_12 ... done
+Removing htdise_server_21 ... done
+Removing htdise_server_23 ... done
+Removing htdise_server_7  ... done
+Removing htdise_server_6  ... done
+Removing htdise_server_17 ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+cp: cannot stat 'data/reboot_sequence_logs/states_24_22_1M.txt': No such file or directory
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  12.43MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 6f6f695a2418
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> ee41285540f5
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> cc9b69bbb18f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> cd9aec11f710
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 20aa014a1eee
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 19439d883ab4
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 32761bceff87
+Successfully built 32761bceff87
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1  ... 
+Creating htdise_server_2  ... 
+Creating htdise_server_3  ... 
+Creating htdise_server_4  ... 
+Creating htdise_server_5  ... 
+Creating htdise_server_6  ... 
+Creating htdise_server_7  ... 
+Creating htdise_server_8  ... 
+Creating htdise_server_9  ... 
+Creating htdise_server_10 ... 
+Creating htdise_server_11 ... 
+Creating htdise_server_12 ... 
+Creating htdise_server_13 ... 
+Creating htdise_server_14 ... 
+Creating htdise_server_15 ... 
+Creating htdise_server_16 ... 
+Creating htdise_server_17 ... 
+Creating htdise_server_18 ... 
+Creating htdise_server_19 ... 
+Creating htdise_server_20 ... 
+Creating htdise_server_21 ... 
+Creating htdise_server_22 ... 
+Creating htdise_server_23 ... 
+Creating htdise_server_22 ... done
+Creating htdise_server_9  ... done
+Creating htdise_server_15 ... done
+Creating htdise_server_1  ... done
+Creating htdise_server_3  ... done
+Creating htdise_server_19 ... done
+Creating htdise_server_13 ... done
+Creating htdise_server_21 ... done
+Creating htdise_server_20 ... done
+Creating htdise_server_17 ... done
+Creating htdise_server_4  ... done
+Creating htdise_server_5  ... done
+Creating htdise_server_2  ... done
+Creating htdise_server_7  ... done
+Creating htdise_server_11 ... done
+Creating htdise_server_23 ... done
+Creating htdise_server_16 ... done
+Creating htdise_server_18 ... done
+Creating htdise_server_14 ... done
+Creating htdise_server_12 ... done
+Creating htdise_server_8  ... done
+Creating htdise_server_10 ... done
+Creating htdise_server_6  ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_22, htdise_server_9, htdise_server_15, htdise_server_1, htdise_server_3, htdise_server_19, htdise_server_13, htdise_server_21, htdise_server_20, htdise_server_17, htdise_server_4, htdise_server_5, htdise_server_2, htdise_server_7, htdise_server_11, htdise_server_23, htdise_server_16, htdise_server_18, htdise_server_14, htdise_server_12, htdise_server_8, htdise_server_10, htdise_server_6
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[33mserver_1  |[0m My IP is 10.0.0.6, my idx is 4
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[33mserver_1  |[0m 
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m Size of Plain Text = 24 Number of Trials = 10000
+[32mserver_10 |[0m My IP is 10.0.0.25, my idx is 23
+[32mserver_10 |[0m 
+[32mserver_10 |[0m =============================
+[32mserver_10 |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_10 |[0m =============================
+[32mserver_10 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34mserver_12 |[0m My IP is 10.0.0.22, my idx is 20
+[34mserver_12 |[0m 
+[34mserver_12 |[0m =============================
+[34mserver_12 |[0m Abort at the NPR03SYMDPRF.CPP
+[34mserver_12 |[0m =============================
+[34mserver_12 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_11 |[0m My IP is 10.0.0.18, my idx is 16
+[35mserver_11 |[0m 
+[35mserver_11 |[0m =============================
+[35mserver_11 |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_11 |[0m =============================
+[35mserver_11 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33;1mserver_14 |[0m My IP is 10.0.0.21, my idx is 19
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m =============================
+[33;1mserver_14 |[0m Abort at the NPR03SYMDPRF.CPP
+[33;1mserver_14 |[0m =============================
+[33;1mserver_14 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32;1mserver_15 |[0m My IP is 10.0.0.5, my idx is 3
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m =============================
+[32;1mserver_15 |[0m Abort at the NPR03SYMDPRF.CPP
+[32;1mserver_15 |[0m =============================
+[32;1mserver_15 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36;1mserver_13 |[0m My IP is 10.0.0.9, my idx is 7
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m =============================
+[36;1mserver_13 |[0m Abort at the NPR03SYMDPRF.CPP
+[36;1mserver_13 |[0m =============================
+[36;1mserver_13 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35;1mserver_16 |[0m My IP is 10.0.0.19, my idx is 17
+[35;1mserver_16 |[0m 
+[35;1mserver_16 |[0m =============================
+[35;1mserver_16 |[0m Abort at the NPR03SYMDPRF.CPP
+[35;1mserver_16 |[0m =============================
+[35;1mserver_16 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34;1mserver_17 |[0m My IP is 10.0.0.12, my idx is 10
+[36mserver_18 |[0m My IP is 10.0.0.20, my idx is 18
+[36mserver_18 |[0m 
+[36mserver_18 |[0m =============================
+[36mserver_18 |[0m Abort at the NPR03SYMDPRF.CPP
+[36mserver_18 |[0m =============================
+[36mserver_18 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34;1mserver_17 |[0m 
+[34;1mserver_17 |[0m =============================
+[34;1mserver_17 |[0m Abort at the NPR03SYMDPRF.CPP
+[34;1mserver_17 |[0m =============================
+[34;1mserver_17 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_2  |[0m My IP is 10.0.0.15, my idx is 13
+[33mserver_19 |[0m My IP is 10.0.0.8, my idx is 6
+[33mserver_19 |[0m 
+[33mserver_19 |[0m =============================
+[33mserver_19 |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_19 |[0m =============================
+[33mserver_19 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34mserver_21 |[0m My IP is 10.0.0.10, my idx is 8
+[36;1mserver_22 |[0m My IP is 10.0.0.3, my idx is 1
+[32mserver_2  |[0m 
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34mserver_21 |[0m 
+[34mserver_21 |[0m =============================
+[34mserver_21 |[0m Abort at the NPR03SYMDPRF.CPP
+[34mserver_21 |[0m =============================
+[34mserver_21 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33;1mserver_23 |[0m My IP is 10.0.0.17, my idx is 15
+[36;1mserver_22 |[0m 
+[36;1mserver_22 |[0m =============================
+[36;1mserver_22 |[0m Abort at the NPR03SYMDPRF.CPP
+[36;1mserver_22 |[0m =============================
+[36;1mserver_22 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_20 |[0m My IP is 10.0.0.11, my idx is 9
+[35mserver_20 |[0m 
+[35mserver_20 |[0m =============================
+[35mserver_20 |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_20 |[0m =============================
+[35mserver_20 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33;1mserver_23 |[0m 
+[33;1mserver_23 |[0m =============================
+[33;1mserver_23 |[0m Abort at the NPR03SYMDPRF.CPP
+[33;1mserver_23 |[0m =============================
+[33;1mserver_23 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35;1mserver_4  |[0m My IP is 10.0.0.13, my idx is 11
+[35;1mserver_4  |[0m 
+[35;1mserver_4  |[0m =============================
+[35;1mserver_4  |[0m Abort at the NPR03SYMDPRF.CPP
+[35;1mserver_4  |[0m =============================
+[35;1mserver_4  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32;1mserver_3  |[0m My IP is 10.0.0.7, my idx is 5
+[32;1mserver_3  |[0m 
+[32;1mserver_3  |[0m =============================
+[32;1mserver_3  |[0m Abort at the NPR03SYMDPRF.CPP
+[32;1mserver_3  |[0m =============================
+[32;1mserver_3  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34;1mserver_5  |[0m My IP is 10.0.0.14, my idx is 12
+[36mserver_6  |[0m My IP is 10.0.0.24, my idx is 22
+[33mserver_7  |[0m My IP is 10.0.0.16, my idx is 14
+[33mserver_7  |[0m 
+[33mserver_7  |[0m =============================
+[33mserver_7  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_7  |[0m =============================
+[33mserver_7  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34;1mserver_5  |[0m 
+[34;1mserver_5  |[0m =============================
+[34;1mserver_5  |[0m Abort at the NPR03SYMDPRF.CPP
+[34;1mserver_5  |[0m =============================
+[34;1mserver_5  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mserver_6  |[0m 
+[36mserver_6  |[0m =============================
+[36mserver_6  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mserver_6  |[0m =============================
+[36mserver_6  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_9  |[0m My IP is 10.0.0.4, my idx is 2
+[35mserver_9  |[0m 
+[35mserver_9  |[0m =============================
+[35mserver_9  |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_9  |[0m =============================
+[35mserver_9  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_8  |[0m My IP is 10.0.0.23, my idx is 21
+[32mserver_8  |[0m 
+[32mserver_8  |[0m =============================
+[32mserver_8  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_8  |[0m =============================
+[32mserver_8  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m Net            n:24  m:22   t:10000     enc/s:1854.6   ms/enc:0.5392 	  Mbps:9.45846 Aborts = 0 Time (ms) = 5392
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Total Count:210000 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:90000
+[33;1mhtdise_server_23 exited with code 0
+[0m[34;1mhtdise_server_5 exited with code 0
+[0m[33mhtdise_server_19 exited with code 0
+[0m[34mhtdise_server_12 exited with code 0
+[0m[33;1mhtdise_server_14 exited with code 0
+[0m[32mhtdise_server_8 exited with code 0
+[0m[36mhtdise_server_18 exited with code 0
+[0m[32mhtdise_server_10 exited with code 0
+[0m[36;1mhtdise_server_22 exited with code 0
+[0m[33mhtdise_server_1 exited with code 0
+[0m[36;1mhtdise_server_13 exited with code 0
+[0m[35mhtdise_server_20 exited with code 0
+[0m[34;1mhtdise_server_17 exited with code 0
+[0m[32;1mhtdise_server_3 exited with code 0
+[0m[32mhtdise_server_2 exited with code 0
+[0m[32;1mhtdise_server_15 exited with code 0
+[0m[34mhtdise_server_21 exited with code 0
+[0m[35;1mhtdise_server_4 exited with code 0
+[0m[35mhtdise_server_9 exited with code 0
+[0m[33mhtdise_server_7 exited with code 0
+[0m[36mhtdise_server_6 exited with code 0
+[0m[35;1mhtdise_server_16 exited with code 0
+[0m[36mhtdise_client_1 exited with code 0
+[0m[35mhtdise_server_11 exited with code 0
+[0mStopping htdise_uptime_1  ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Stopping htdise_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing htdise_server_5  ... 
+Removing htdise_server_8  ... 
+Removing htdise_server_17 ... 
+Removing htdise_server_11 ... 
+Removing htdise_server_19 ... 
+Removing htdise_server_14 ... 
+Removing htdise_server_22 ... 
+Removing htdise_server_16 ... 
+Removing htdise_server_13 ... 
+Removing htdise_server_2  ... 
+Removing htdise_server_10 ... 
+Removing htdise_server_7  ... 
+Removing htdise_server_4  ... 
+Removing htdise_server_1  ... 
+Removing htdise_server_18 ... 
+Removing htdise_server_21 ... 
+Removing htdise_server_12 ... 
+Removing htdise_server_15 ... 
+Removing htdise_server_6  ... 
+Removing htdise_server_3  ... 
+Removing htdise_server_23 ... 
+Removing htdise_server_9  ... 
+Removing htdise_server_20 ... 
+Removing htdise_client_1  ... 
+Removing htdise_uptime_1  ... 
+Removing htdise_server_18 ... done
+Removing htdise_server_21 ... done
+Removing htdise_server_23 ... done
+Removing htdise_server_15 ... done
+Removing htdise_client_1  ... done
+Removing htdise_server_19 ... done
+Removing htdise_uptime_1  ... done
+Removing htdise_server_20 ... done
+Removing htdise_server_8  ... done
+Removing htdise_server_11 ... done
+Removing htdise_server_5  ... done
+Removing htdise_server_16 ... done
+Removing htdise_server_6  ... done
+Removing htdise_server_12 ... done
+Removing htdise_server_1  ... done
+Removing htdise_server_9  ... done
+Removing htdise_server_2  ... done
+Removing htdise_server_13 ... done
+Removing htdise_server_17 ... done
+Removing htdise_server_4  ... done
+Removing htdise_server_3  ... done
+Removing htdise_server_22 ... done
+Removing htdise_server_7  ... done
+Removing htdise_server_14 ... done
+Removing htdise_server_10 ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+cp: cannot stat 'data/reboot_sequence_logs/states_24_22_1M.txt': No such file or directory
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  12.45MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 6f6f695a2418
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> ee41285540f5
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> cc9b69bbb18f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> cd9aec11f710
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 20aa014a1eee
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 19439d883ab4
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 32761bceff87
+Successfully built 32761bceff87
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1  ... 
+Creating htdise_server_2  ... 
+Creating htdise_server_3  ... 
+Creating htdise_server_4  ... 
+Creating htdise_server_5  ... 
+Creating htdise_server_6  ... 
+Creating htdise_server_7  ... 
+Creating htdise_server_8  ... 
+Creating htdise_server_9  ... 
+Creating htdise_server_10 ... 
+Creating htdise_server_11 ... 
+Creating htdise_server_12 ... 
+Creating htdise_server_13 ... 
+Creating htdise_server_14 ... 
+Creating htdise_server_15 ... 
+Creating htdise_server_16 ... 
+Creating htdise_server_17 ... 
+Creating htdise_server_18 ... 
+Creating htdise_server_19 ... 
+Creating htdise_server_20 ... 
+Creating htdise_server_21 ... 
+Creating htdise_server_22 ... 
+Creating htdise_server_23 ... 
+Creating htdise_server_19 ... done
+Creating htdise_server_18 ... done
+Creating htdise_server_14 ... done
+Creating htdise_server_16 ... done
+Creating htdise_server_15 ... done
+Creating htdise_server_22 ... done
+Creating htdise_server_20 ... done
+Creating htdise_server_21 ... done
+Creating htdise_server_12 ... done
+Creating htdise_server_8  ... done
+Creating htdise_server_9  ... done
+Creating htdise_server_1  ... done
+Creating htdise_server_13 ... done
+Creating htdise_server_4  ... done
+Creating htdise_server_5  ... done
+Creating htdise_server_7  ... done
+Creating htdise_server_2  ... done
+Creating htdise_server_6  ... done
+Creating htdise_server_17 ... done
+Creating htdise_server_10 ... done
+Creating htdise_server_23 ... done
+Creating htdise_server_11 ... done
+Creating htdise_server_3  ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_19, htdise_server_18, htdise_server_14, htdise_server_16, htdise_server_15, htdise_server_22, htdise_server_20, htdise_server_21, htdise_server_12, htdise_server_8, htdise_server_9, htdise_server_1, htdise_server_13, htdise_server_4, htdise_server_5, htdise_server_7, htdise_server_2, htdise_server_6, htdise_server_17, htdise_server_10, htdise_server_23, htdise_server_11, htdise_server_3
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m Size of Plain Text = 24 Number of Trials = 10000
+[33mserver_1  |[0m My IP is 10.0.0.15, my idx is 13
+[33mserver_1  |[0m 
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_10 |[0m My IP is 10.0.0.22, my idx is 20
+[32mserver_10 |[0m 
+[32mserver_10 |[0m =============================
+[32mserver_10 |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_10 |[0m =============================
+[32mserver_10 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_11 |[0m My IP is 10.0.0.23, my idx is 21
+[34mserver_12 |[0m My IP is 10.0.0.11, my idx is 9
+[35mserver_11 |[0m 
+[35mserver_11 |[0m =============================
+[35mserver_11 |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_11 |[0m =============================
+[35mserver_11 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34mserver_12 |[0m 
+[34mserver_12 |[0m =============================
+[34mserver_12 |[0m Abort at the NPR03SYMDPRF.CPP
+[34mserver_12 |[0m =============================
+[34mserver_12 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36;1mserver_13 |[0m My IP is 10.0.0.14, my idx is 12
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m =============================
+[36;1mserver_13 |[0m Abort at the NPR03SYMDPRF.CPP
+[36;1mserver_13 |[0m =============================
+[36;1mserver_13 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33;1mserver_14 |[0m My IP is 10.0.0.5, my idx is 3
+[32;1mserver_15 |[0m My IP is 10.0.0.7, my idx is 5
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m =============================
+[33;1mserver_14 |[0m Abort at the NPR03SYMDPRF.CPP
+[33;1mserver_14 |[0m =============================
+[33;1mserver_14 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m =============================
+[32;1mserver_15 |[0m Abort at the NPR03SYMDPRF.CPP
+[32;1mserver_15 |[0m =============================
+[32;1mserver_15 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35;1mserver_16 |[0m My IP is 10.0.0.6, my idx is 4
+[36mserver_18 |[0m My IP is 10.0.0.4, my idx is 2
+[36mserver_18 |[0m 
+[36mserver_18 |[0m =============================
+[36mserver_18 |[0m Abort at the NPR03SYMDPRF.CPP
+[36mserver_18 |[0m =============================
+[36mserver_18 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35;1mserver_16 |[0m 
+[35;1mserver_16 |[0m =============================
+[35;1mserver_16 |[0m Abort at the NPR03SYMDPRF.CPP
+[35;1mserver_16 |[0m =============================
+[35;1mserver_16 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34;1mserver_17 |[0m My IP is 10.0.0.21, my idx is 19
+[34;1mserver_17 |[0m 
+[34;1mserver_17 |[0m =============================
+[34;1mserver_17 |[0m Abort at the NPR03SYMDPRF.CPP
+[34;1mserver_17 |[0m =============================
+[34;1mserver_17 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_19 |[0m My IP is 10.0.0.3, my idx is 1
+[32mserver_2  |[0m My IP is 10.0.0.19, my idx is 17
+[35mserver_20 |[0m My IP is 10.0.0.9, my idx is 7
+[35mserver_20 |[0m 
+[35mserver_20 |[0m =============================
+[35mserver_20 |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_20 |[0m =============================
+[35mserver_20 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_2  |[0m 
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_19 |[0m 
+[33mserver_19 |[0m =============================
+[33mserver_19 |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_19 |[0m =============================
+[33mserver_19 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34mserver_21 |[0m My IP is 10.0.0.10, my idx is 8
+[33;1mserver_23 |[0m My IP is 10.0.0.24, my idx is 22
+[36;1mserver_22 |[0m My IP is 10.0.0.8, my idx is 6
+[33;1mserver_23 |[0m 
+[33;1mserver_23 |[0m =============================
+[33;1mserver_23 |[0m Abort at the NPR03SYMDPRF.CPP
+[33;1mserver_23 |[0m =============================
+[33;1mserver_23 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[34mserver_21 |[0m 
+[34mserver_21 |[0m =============================
+[34mserver_21 |[0m Abort at the NPR03SYMDPRF.CPP
+[34mserver_21 |[0m =============================
+[34mserver_21 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32;1mserver_3  |[0m My IP is 10.0.0.25, my idx is 23
+[32;1mserver_3  |[0m 
+[32;1mserver_3  |[0m =============================
+[32;1mserver_3  |[0m Abort at the NPR03SYMDPRF.CPP
+[32;1mserver_3  |[0m =============================
+[32;1mserver_3  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36;1mserver_22 |[0m 
+[36;1mserver_22 |[0m =============================
+[36;1mserver_22 |[0m Abort at the NPR03SYMDPRF.CPP
+[36;1mserver_22 |[0m =============================
+[36;1mserver_22 |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35;1mserver_4  |[0m My IP is 10.0.0.16, my idx is 14
+[35;1mserver_4  |[0m 
+[35;1mserver_4  |[0m =============================
+[35;1mserver_4  |[0m Abort at the NPR03SYMDPRF.CPP
+[35;1mserver_4  |[0m =============================
+[35;1mserver_4  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_7  |[0m My IP is 10.0.0.18, my idx is 16
+[36mserver_6  |[0m My IP is 10.0.0.20, my idx is 18
+[34;1mserver_5  |[0m My IP is 10.0.0.17, my idx is 15
+[33mserver_7  |[0m 
+[33mserver_7  |[0m =============================
+[33mserver_7  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_7  |[0m =============================
+[33mserver_7  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_8  |[0m My IP is 10.0.0.13, my idx is 11
+[34;1mserver_5  |[0m 
+[34;1mserver_5  |[0m =============================
+[34;1mserver_5  |[0m Abort at the NPR03SYMDPRF.CPP
+[34;1mserver_5  |[0m =============================
+[34;1mserver_5  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mserver_6  |[0m 
+[36mserver_6  |[0m =============================
+[36mserver_6  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mserver_6  |[0m =============================
+[36mserver_6  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_9  |[0m My IP is 10.0.0.12, my idx is 10
+[32mserver_8  |[0m 
+[32mserver_8  |[0m =============================
+[32mserver_8  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_8  |[0m =============================
+[32mserver_8  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_9  |[0m 
+[35mserver_9  |[0m =============================
+[35mserver_9  |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_9  |[0m =============================
+[35mserver_9  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m Net            n:24  m:22   t:10000     enc/s:1847.06   ms/enc:0.5414 	  Mbps:9.42002 Aborts = 0 Time (ms) = 5414
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Total Count:210000 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:90000
+[32mhtdise_server_8 exited with code 0
+[0m[36;1mhtdise_server_22 exited with code 0
+[0m[32;1mhtdise_server_3 exited with code 0
+[0m[36;1mhtdise_server_13 exited with code 0
+[0m[35;1mhtdise_server_16 exited with code 0
+[0m[32mhtdise_server_10 exited with code 0
+[0m[32;1mhtdise_server_15 exited with code 0
+[0m[33;1mhtdise_server_23 exited with code 0
+[0m[36mhtdise_client_1 exited with code 0
+[0m[34;1mhtdise_server_5 exited with code 0
+[0m[33mhtdise_server_7 exited with code 0
+[0m[34;1mhtdise_server_17 exited with code 0
+[0m[33mhtdise_server_19 exited with code 0
+[0m[33;1mhtdise_server_14 exited with code 0
+[0m[34mhtdise_server_12 exited with code 0
+[0m[35;1mhtdise_server_4 exited with code 0
+[0m[36mhtdise_server_18 exited with code 0
+[0m[35mhtdise_server_9 exited with code 0
+[0m[35mhtdise_server_20 exited with code 0
+[0m[32mhtdise_server_2 exited with code 0
+[0m[36mhtdise_server_6 exited with code 0
+[0m[33mhtdise_server_1 exited with code 0
+[0m[35mhtdise_server_11 exited with code 0
+[0m[34mhtdise_server_21 exited with code 0
+[0mStopping htdise_uptime_1  ... 
+Stopping htdise_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)

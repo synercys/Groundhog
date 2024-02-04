@@ -15,6 +15,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
+#include <chrono>
    
 
 #include "Dprf.h"
@@ -63,7 +64,13 @@ namespace dEnc {
             oc::span<block> getSubkey(u64 partyIdx) { return subKeys[partyIdx]; }
         };
 
+        u64 total_count;
 
+        u64 send_Abort;
+
+        u64 receive_queue_Abort;
+
+        u64 receive_output_Abort;
 
         Npr03SymDprf()
             : mServerDone(mServerDoneProm.get_future())
@@ -108,7 +115,10 @@ namespace dEnc {
          * @param[in] keyStructure - A 2D array where row i lists they keys party i has.
          * @param[in] keys         - The keys that this party has
          */
+        // ASHISH TODO: In init initialize the sequence vector.
         void init(
+            std::vector<float>& times, 
+            std::vector<std::string>& states,
             u64 partyIdx,
             u64 m,
             u64 n,
@@ -152,7 +162,14 @@ namespace dEnc {
          */
         virtual void close()override;
 
-
+        /**
+         * Calculate which bucket the Asynceval comes in
+         */
+        virtual void return_up_down_nodes(std::vector<int>& up_nodes, std::vector<int>& down_nodes, long double cur_time);
+        virtual void processStateFile(std::string filename, std::vector<float>& times, std::vector<std::string>& states);
+        virtual void processTimes();
+        virtual void printStats(std::vector<long double>& v);
+        virtual void printAbortStats();
     private:
         /**
          * Starts the callback loop for listening for OPRF eval requests on the 
@@ -188,12 +205,23 @@ namespace dEnc {
         // Channels that the servers should listen to for DPRF requests.
         std::vector<Channel> mListenChls;
 
+        // ASHISH TODO: create a sequence vector.
+        std::vector<float>* times;
+        std::vector<std::string>* states;
+
         //connection to server to find current live nodes
         int sockfd;
 	    char buffer[MAXLINE];
 	    struct sockaddr_in servaddr;
 
         socklen_t ret, value;
+
+        //start time tracking
+        std::chrono::time_point<std::chrono::high_resolution_clock> start_time;
+
+        std::vector<long double> oprf_send_times;
+        std::vector<long double> oprf_receive_times;
+        std::vector<long double> oprf_combine_times;
 
     };
 

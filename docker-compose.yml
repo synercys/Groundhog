@@ -3,7 +3,7 @@ version: '2'
 services:
   client:
     build: .
-    image: gabrielkulp/htdise:latest
+    image: groundhog:latest
     command: bin/test -n "${SERVER_COUNT:-9}" -mf "${THRESHOLD_FRACTION:-0.7}" -t "${TRIAL_SIZE:-4096}" -client
     depends_on:
       - uptime
@@ -13,8 +13,9 @@ services:
 
   server:
     build: .
-    image: gabrielkulp/htdise:latest
+    image: groundhog:latest
     command: bin/restart.py "${SERVER_COUNT:-9}" "${THRESHOLD_FRACTION:-0.7}" 60 30
+    #command: bin/test -n "${SERVER_COUNT:-9}" -mf "${THRESHOLD_FRACTION:-0.7}" -t "${TRIAL_SIZE:-4096}"
     depends_on:
       - uptime
       - client # because of IP address assignment
@@ -25,7 +26,7 @@ services:
 
   uptime:
     build: .
-    image: gabrielkulp/htdise:latest
+    image: groundhog:latest
     command: bin/uptime_server.py "${SERVER_COUNT:-9}" 
     networks:
       dise-net:

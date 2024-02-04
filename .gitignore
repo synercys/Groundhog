@@ -213,3 +213,6 @@ testout.txt
 lib
 .vscode
 schedule.log
+out.txt
+temp*
+gprof2dot.py

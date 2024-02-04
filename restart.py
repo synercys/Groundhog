@@ -191,7 +191,8 @@ ips = []
 for i in range(node_count):
 	ips.append("10.0.0." + str(i+2))
 
-attackTime = int(sys.argv[3])
+# DARPA study 
+attackTime = int(sys.argv[3]) 
 rebootTime = int(sys.argv[4])
 t = int(node_count * float(sys.argv[2]))
 

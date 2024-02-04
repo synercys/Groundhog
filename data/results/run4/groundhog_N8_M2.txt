@@ -1,0 +1,1331 @@
+
+Removing htdise_server_15 ... 
+Removing htdise_server_8  ... 
+Removing htdise_server_5  ... 
+Removing htdise_server_2  ... 
+Removing htdise_server_12 ... 
+Removing htdise_server_6  ... 
+Removing htdise_server_9  ... 
+Removing htdise_server_3  ... 
+Removing htdise_server_10 ... 
+Removing htdise_server_13 ... 
+Removing htdise_server_7  ... 
+Removing htdise_server_4  ... 
+Removing htdise_server_1  ... 
+Removing htdise_server_14 ... 
+Removing htdise_server_11 ... 
+Removing htdise_client_1  ... 
+Removing htdise_uptime_1  ... 
+Removing htdise_server_7  ... done
+Removing htdise_server_9  ... done
+Removing htdise_uptime_1  ... done
+Removing htdise_server_8  ... done
+Removing htdise_server_15 ... done
+Removing htdise_server_3  ... done
+Removing htdise_client_1  ... done
+Removing htdise_server_1  ... done
+Removing htdise_server_4  ... done
+Removing htdise_server_10 ... done
+Removing htdise_server_11 ... done
+Removing htdise_server_13 ... done
+Removing htdise_server_12 ... done
+Removing htdise_server_5  ... done
+Removing htdise_server_14 ... done
+Removing htdise_server_2  ... done
+Removing htdise_server_6  ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+./run-tests.sh: line 24: [: missing `]'
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  25.94MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 2bc963fd4b8e
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 458fcf3ad9f0
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 54d46435529d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 9babb2b286da
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> f25ac3a8e666
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 4637884423b8
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 90d4ca6f180b
+Successfully built 90d4ca6f180b
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1 ... 
+Creating htdise_server_2 ... 
+Creating htdise_server_3 ... 
+Creating htdise_server_4 ... 
+Creating htdise_server_5 ... 
+Creating htdise_server_6 ... 
+Creating htdise_server_7 ... 
+Creating htdise_server_2 ... done
+Creating htdise_server_4 ... done
+Creating htdise_server_3 ... done
+Creating htdise_server_1 ... done
+Creating htdise_server_5 ... done
+Creating htdise_server_6 ... done
+Creating htdise_server_7 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_2, htdise_server_4, htdise_server_3, htdise_server_1, htdise_server_5, htdise_server_6, htdise_server_7
+[36mclient_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ----Size of Plain Text = 24 Number of Trials = 100000
+[36mclient_1  |[0m Net            n:8  m:2   t:100000     enc/s:9745.64   ms/enc:0.10261 	  Mbps:2.33895 Aborts = 0 Time (ms) = 10261
+[35mserver_3  |[0m Going up
+[32;1mserver_7  |[0m Going up
+[36;1mserver_5  |[0m Going up
+[34mserver_4  |[0m Going up
+[33;1mserver_6  |[0m Going up
+[33mserver_1  |[0m Going up
+[32mserver_2  |[0m Going up
+[36mhtdise_client_1 exited with code 0
+[0mStopping htdise_server_1 ... 
+Stopping htdise_server_7 ... 
+Stopping htdise_server_3 ... 
+Stopping htdise_server_6 ... 
+Stopping htdise_server_5 ... 
+Stopping htdise_server_2 ... 
+Stopping htdise_server_4 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_server_1 ... 
+Stopping htdise_server_7 ... 
+Stopping htdise_server_3 ... 
+Stopping htdise_server_6 ... 
+Stopping htdise_server_5 ... 
+Stopping htdise_server_2 ... 
+Stopping htdise_server_4 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_server_4 ... done
+Stopping htdise_server_4 ... done
+Stopping htdise_server_3 ... done
+Stopping htdise_server_3 ... done
+Stopping htdise_server_6 ... done
+Stopping htdise_server_2 ... done
+Stopping htdise_server_2 ... done
+Stopping htdise_server_6 ... done
+Stopping htdise_server_1 ... done
+Stopping htdise_server_1 ... done
+Stopping htdise_server_5 ... done
+Stopping htdise_server_7 ... done
+Stopping htdise_server_5 ... done
+Stopping htdise_server_7 ... done
+Stopping htdise_uptime_1 ... done
+Stopping htdise_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing htdise_server_1 ... 
+Removing htdise_server_7 ... 
+Removing htdise_server_3 ... 
+Removing htdise_server_6 ... 
+Removing htdise_server_5 ... 
+Removing htdise_server_2 ... 
+Removing htdise_server_4 ... 
+Removing htdise_client_1 ... 
+Removing htdise_uptime_1 ... 
+Removing htdise_server_1 ... done
+Removing htdise_client_1 ... done
+Removing htdise_server_2 ... done
+Removing htdise_server_5 ... done
+Removing htdise_uptime_1 ... done
+Removing htdise_server_3 ... done
+Removing htdise_server_6 ... done
+Removing htdise_server_4 ... done
+Removing htdise_server_7 ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+./run-tests.sh: line 24: [: missing `]'
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  25.95MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 2bc963fd4b8e
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 458fcf3ad9f0
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 54d46435529d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 9babb2b286da
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> f25ac3a8e666
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 4637884423b8
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 90d4ca6f180b
+Successfully built 90d4ca6f180b
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1 ... 
+Creating htdise_server_2 ... 
+Creating htdise_server_3 ... 
+Creating htdise_server_4 ... 
+Creating htdise_server_5 ... 
+Creating htdise_server_6 ... 
+Creating htdise_server_7 ... 
+Creating htdise_server_6 ... done
+Creating htdise_server_5 ... done
+Creating htdise_server_7 ... done
+Creating htdise_server_3 ... done
+Creating htdise_server_4 ... done
+Creating htdise_server_2 ... done
+Creating htdise_server_1 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_6, htdise_server_5, htdise_server_7, htdise_server_3, htdise_server_4, htdise_server_2, htdise_server_1
+[36mclient_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ----Size of Plain Text = 24 Number of Trials = 100000
+[36mclient_1  |[0m Net            n:8  m:2   t:100000     enc/s:8976.66   ms/enc:0.1114 	  Mbps:2.1544 Aborts = 0 Time (ms) = 11140
+[35mserver_3  |[0m Going up
+[32mserver_2  |[0m Going up
+[32;1mserver_7  |[0m Going up
+[33mserver_1  |[0m Going up
+[33;1mserver_6  |[0m Going up
+[36;1mserver_5  |[0m Going up
+[34mserver_4  |[0m Going up
+[36mhtdise_client_1 exited with code 0
+[0mStopping htdise_server_7 ... 
+Stopping htdise_server_1 ... 
+Stopping htdise_server_5 ... 
+Stopping htdise_server_3 ... 
+Stopping htdise_server_6 ... 
+Stopping htdise_server_2 ... 
+Stopping htdise_server_4 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_server_7 ... 
+Stopping htdise_server_1 ... 
+Stopping htdise_server_5 ... 
+Stopping htdise_server_3 ... 
+Stopping htdise_server_6 ... 
+Stopping htdise_server_2 ... 
+Stopping htdise_server_4 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_server_6 ... done
+Stopping htdise_server_6 ... done
+Stopping htdise_server_4 ... done
+Stopping htdise_server_4 ... done
+Stopping htdise_server_3 ... done
+Stopping htdise_server_3 ... done
+Stopping htdise_server_2 ... done
+Stopping htdise_server_5 ... done
+Stopping htdise_server_2 ... done
+Stopping htdise_server_1 ... done
+Stopping htdise_server_5 ... done
+Stopping htdise_server_7 ... done
+Stopping htdise_server_1 ... done
+Stopping htdise_server_7 ... done
+Stopping htdise_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping htdise_uptime_1 ... done
+Removing htdise_server_7 ... 
+Removing htdise_server_1 ... 
+Removing htdise_server_5 ... 
+Removing htdise_server_3 ... 
+Removing htdise_server_6 ... 
+Removing htdise_server_2 ... 
+Removing htdise_server_4 ... 
+Removing htdise_client_1 ... 
+Removing htdise_uptime_1 ... 
+Removing htdise_server_4 ... done
+Removing htdise_server_1 ... done
+Removing htdise_client_1 ... done
+Removing htdise_server_6 ... done
+Removing htdise_server_7 ... done
+Removing htdise_uptime_1 ... done
+Removing htdise_server_3 ... done
+Removing htdise_server_5 ... done
+Removing htdise_server_2 ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+./run-tests.sh: line 24: [: missing `]'
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  25.95MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 2bc963fd4b8e
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 458fcf3ad9f0
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 54d46435529d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 9babb2b286da
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> f25ac3a8e666
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 4637884423b8
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 90d4ca6f180b
+Successfully built 90d4ca6f180b
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1 ... 
+Creating htdise_server_2 ... 
+Creating htdise_server_3 ... 
+Creating htdise_server_4 ... 
+Creating htdise_server_5 ... 
+Creating htdise_server_6 ... 
+Creating htdise_server_7 ... 
+Creating htdise_server_3 ... done
+Creating htdise_server_6 ... done
+Creating htdise_server_4 ... done
+Creating htdise_server_7 ... done
+Creating htdise_server_5 ... done
+Creating htdise_server_2 ... done
+Creating htdise_server_1 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_3, htdise_server_6, htdise_server_4, htdise_server_7, htdise_server_5, htdise_server_2, htdise_server_1
+[36mclient_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ----Size of Plain Text = 24 Number of Trials = 100000
+[36mclient_1  |[0m Net            n:8  m:2   t:100000     enc/s:9160.86   ms/enc:0.10916 	  Mbps:2.19861 Aborts = 0 Time (ms) = 10916
+[33;1mserver_6  |[0m Going up
+[32;1mserver_7  |[0m Going up
+[34mserver_4  |[0m Going up
+[32mserver_2  |[0m Going up
+[35mserver_3  |[0m Going up
+[33mserver_1  |[0m Going up
+[36;1mserver_5  |[0m Going up
+[36mhtdise_client_1 exited with code 0
+[0mStopping htdise_server_2 ... 
+Stopping htdise_server_4 ... 
+Stopping htdise_server_7 ... 
+Stopping htdise_server_1 ... 
+Stopping htdise_server_6 ... 
+Stopping htdise_server_3 ... 
+Stopping htdise_server_5 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_server_2 ... 
+Stopping htdise_server_4 ... 
+Stopping htdise_server_7 ... 
+Stopping htdise_server_1 ... 
+Stopping htdise_server_6 ... 
+Stopping htdise_server_3 ... 
+Stopping htdise_server_5 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_server_6 ... done
+Stopping htdise_server_4 ... done
+Stopping htdise_server_4 ... done
+Stopping htdise_server_6 ... done
+Stopping htdise_server_1 ... done
+Stopping htdise_server_1 ... done
+Stopping htdise_server_5 ... done
+Stopping htdise_server_5 ... done
+Stopping htdise_server_3 ... done
+Stopping htdise_server_3 ... done
+Stopping htdise_server_2 ... done
+Stopping htdise_server_7 ... done
+Stopping htdise_server_2 ... done
+Stopping htdise_server_7 ... done
+Stopping htdise_uptime_1 ... done
+Stopping htdise_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing htdise_server_2 ... 
+Removing htdise_server_4 ... 
+Removing htdise_server_7 ... 
+Removing htdise_server_1 ... 
+Removing htdise_server_6 ... 
+Removing htdise_server_3 ... 
+Removing htdise_server_5 ... 
+Removing htdise_client_1 ... 
+Removing htdise_uptime_1 ... 
+Removing htdise_client_1 ... done
+Removing htdise_server_4 ... done
+Removing htdise_server_1 ... done
+Removing htdise_server_2 ... done
+Removing htdise_server_3 ... done
+Removing htdise_server_5 ... done
+Removing htdise_server_7 ... done
+Removing htdise_server_6 ... done
+Removing htdise_uptime_1 ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+./run-tests.sh: line 24: [: missing `]'
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  25.96MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 2bc963fd4b8e
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 458fcf3ad9f0
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 54d46435529d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 9babb2b286da
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> f25ac3a8e666
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 4637884423b8
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 90d4ca6f180b
+Successfully built 90d4ca6f180b
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1 ... 
+Creating htdise_server_2 ... 
+Creating htdise_server_3 ... 
+Creating htdise_server_4 ... 
+Creating htdise_server_5 ... 
+Creating htdise_server_6 ... 
+Creating htdise_server_7 ... 
+Creating htdise_server_2 ... done
+Creating htdise_server_5 ... done
+Creating htdise_server_1 ... done
+Creating htdise_server_7 ... done
+Creating htdise_server_4 ... done
+Creating htdise_server_6 ... done
+Creating htdise_server_3 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_2, htdise_server_5, htdise_server_1, htdise_server_7, htdise_server_4, htdise_server_6, htdise_server_3
+[36mclient_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ----Size of Plain Text = 24 Number of Trials = 100000
+[36mclient_1  |[0m Net            n:8  m:2   t:100000     enc/s:9821.25   ms/enc:0.10182 	  Mbps:2.3571 Aborts = 0 Time (ms) = 10182
+[32mserver_2  |[0m Going up
+[32;1mserver_7  |[0m Going up
+[34mserver_4  |[0m Going up
+[33;1mserver_6  |[0m Going up
+[36;1mserver_5  |[0m Going up
+[35mserver_3  |[0m Going up
+[33mserver_1  |[0m Going up
+[36mhtdise_client_1 exited with code 0
+[0mStopping htdise_server_5 ... 
+Stopping htdise_server_2 ... 
+Stopping htdise_server_6 ... 
+Stopping htdise_server_4 ... 
+Stopping htdise_server_7 ... 
+Stopping htdise_server_3 ... 
+Stopping htdise_server_1 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_server_5 ... 
+Stopping htdise_server_2 ... 
+Stopping htdise_server_6 ... 
+Stopping htdise_server_4 ... 
+Stopping htdise_server_7 ... 
+Stopping htdise_server_3 ... 
+Stopping htdise_server_1 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_server_2 ... done
+Stopping htdise_server_2 ... done
+Stopping htdise_server_5 ... done
+Stopping htdise_server_5 ... done
+Stopping htdise_server_1 ... done
+Stopping htdise_server_1 ... done
+Stopping htdise_server_7 ... done
+Stopping htdise_server_6 ... done
+Stopping htdise_server_4 ... done
+Stopping htdise_server_3 ... done
+Stopping htdise_server_4 ... done
+Stopping htdise_server_7 ... done
+Stopping htdise_server_6 ... done
+Stopping htdise_server_3 ... done
+Stopping htdise_uptime_1 ... done
+Stopping htdise_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing htdise_server_5 ... 
+Removing htdise_server_2 ... 
+Removing htdise_server_6 ... 
+Removing htdise_server_4 ... 
+Removing htdise_server_7 ... 
+Removing htdise_server_3 ... 
+Removing htdise_server_1 ... 
+Removing htdise_client_1 ... 
+Removing htdise_uptime_1 ... 
+Removing htdise_server_2 ... done
+Removing htdise_client_1 ... done
+Removing htdise_server_3 ... done
+Removing htdise_server_5 ... done
+Removing htdise_server_1 ... done
+Removing htdise_server_6 ... done
+Removing htdise_server_7 ... done
+Removing htdise_server_4 ... done
+Removing htdise_uptime_1 ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+./run-tests.sh: line 24: [: missing `]'
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  25.96MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 2bc963fd4b8e
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 458fcf3ad9f0
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 54d46435529d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 9babb2b286da
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> f25ac3a8e666
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 4637884423b8
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 90d4ca6f180b
+Successfully built 90d4ca6f180b
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1 ... 
+Creating htdise_server_2 ... 
+Creating htdise_server_3 ... 
+Creating htdise_server_4 ... 
+Creating htdise_server_5 ... 
+Creating htdise_server_6 ... 
+Creating htdise_server_7 ... 
+Creating htdise_server_4 ... done
+Creating htdise_server_2 ... done
+Creating htdise_server_6 ... done
+Creating htdise_server_5 ... done
+Creating htdise_server_7 ... done
+Creating htdise_server_1 ... done
+Creating htdise_server_3 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_4, htdise_server_2, htdise_server_6, htdise_server_5, htdise_server_7, htdise_server_1, htdise_server_3
+[36mclient_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ----Size of Plain Text = 24 Number of Trials = 100000
+[36mclient_1  |[0m Net            n:8  m:2   t:100000     enc/s:9434.85   ms/enc:0.10599 	  Mbps:2.26436 Aborts = 0 Time (ms) = 10599
+[32mserver_2  |[0m Going up
+[34mserver_4  |[0m Going up
+[35mserver_3  |[0m Going up
+[33;1mserver_6  |[0m Going up
+[32;1mserver_7  |[0m Going up
+[36;1mserver_5  |[0m Going up
+[33mserver_1  |[0m Going up
+[36mhtdise_client_1 exited with code 0
+[0mStopping htdise_server_3 ... 
+Stopping htdise_server_6 ... 
+Stopping htdise_server_1 ... 
+Stopping htdise_server_7 ... 
+Stopping htdise_server_5 ... 
+Stopping htdise_server_2 ... 
+Stopping htdise_server_4 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_server_3 ... 
+Stopping htdise_server_6 ... 
+Stopping htdise_server_1 ... 
+Stopping htdise_server_7 ... 
+Stopping htdise_server_5 ... 
+Stopping htdise_server_2 ... 
+Stopping htdise_server_4 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_server_7 ... done
+Stopping htdise_server_2 ... done
+Stopping htdise_server_4 ... done
+Stopping htdise_server_3 ... done
+Stopping htdise_server_7 ... done
+Stopping htdise_server_2 ... done
+Stopping htdise_server_4 ... done
+Stopping htdise_server_3 ... done
+Stopping htdise_server_6 ... done
+Stopping htdise_server_1 ... done
+Stopping htdise_server_5 ... done
+Stopping htdise_server_1 ... done
+Stopping htdise_server_6 ... done
+Stopping htdise_server_5 ... done
+Stopping htdise_uptime_1 ... done
+Stopping htdise_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing htdise_server_3 ... 
+Removing htdise_server_6 ... 
+Removing htdise_server_1 ... 
+Removing htdise_server_7 ... 
+Removing htdise_server_5 ... 
+Removing htdise_server_2 ... 
+Removing htdise_server_4 ... 
+Removing htdise_client_1 ... 
+Removing htdise_uptime_1 ... 
+Removing htdise_server_7 ... done
+Removing htdise_server_2 ... done
+Removing htdise_server_3 ... done
+Removing htdise_client_1 ... done
+Removing htdise_server_6 ... done
+Removing htdise_uptime_1 ... done
+Removing htdise_server_5 ... done
+Removing htdise_server_1 ... done
+Removing htdise_server_4 ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+./run-tests.sh: line 24: [: missing `]'
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  25.97MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 2bc963fd4b8e
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 458fcf3ad9f0
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 54d46435529d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 9babb2b286da
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> f25ac3a8e666
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 4637884423b8
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 90d4ca6f180b
+Successfully built 90d4ca6f180b
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1 ... 
+Creating htdise_server_2 ... 
+Creating htdise_server_3 ... 
+Creating htdise_server_4 ... 
+Creating htdise_server_5 ... 
+Creating htdise_server_6 ... 
+Creating htdise_server_7 ... 
+Creating htdise_server_4 ... done
+Creating htdise_server_1 ... done
+Creating htdise_server_5 ... done
+Creating htdise_server_7 ... done
+Creating htdise_server_3 ... done
+Creating htdise_server_2 ... done
+Creating htdise_server_6 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_4, htdise_server_1, htdise_server_5, htdise_server_7, htdise_server_3, htdise_server_2, htdise_server_6
+[36mclient_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ----Size of Plain Text = 24 Number of Trials = 100000
+[36mclient_1  |[0m Net            n:8  m:2   t:100000     enc/s:9909.82   ms/enc:0.10091 	  Mbps:2.37836 Aborts = 0 Time (ms) = 10091
+[33mserver_1  |[0m Going up
+[33;1mserver_6  |[0m Going up
+[35mserver_3  |[0m Going up
+[32mserver_2  |[0m Going up
+[34mserver_4  |[0m Going up
+[32;1mserver_7  |[0m Going up
+[36;1mserver_5  |[0m Going up
+[36mhtdise_client_1 exited with code 0
+[0mStopping htdise_server_2 ... 
+Stopping htdise_server_1 ... 
+Stopping htdise_server_4 ... 
+Stopping htdise_server_7 ... 
+Stopping htdise_server_6 ... 
+Stopping htdise_server_3 ... 
+Stopping htdise_server_5 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_server_2 ... 
+Stopping htdise_server_1 ... 
+Stopping htdise_server_4 ... 
+Stopping htdise_server_7 ... 
+Stopping htdise_server_6 ... 
+Stopping htdise_server_3 ... 
+Stopping htdise_server_5 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_server_6 ... done
+Stopping htdise_server_4 ... done
+Stopping htdise_server_4 ... done
+Stopping htdise_server_6 ... done
+Stopping htdise_server_2 ... done
+Stopping htdise_server_5 ... done
+Stopping htdise_server_2 ... done
+Stopping htdise_server_5 ... done
+Stopping htdise_server_3 ... done
+Stopping htdise_server_3 ... done
+Stopping htdise_server_7 ... done
+Stopping htdise_server_1 ... done
+Stopping htdise_server_7 ... done
+Stopping htdise_server_1 ... done
+Stopping htdise_uptime_1 ... done
+Stopping htdise_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing htdise_server_2 ... 
+Removing htdise_server_1 ... 
+Removing htdise_server_4 ... 
+Removing htdise_server_7 ... 
+Removing htdise_server_6 ... 
+Removing htdise_server_3 ... 
+Removing htdise_server_5 ... 
+Removing htdise_client_1 ... 
+Removing htdise_uptime_1 ... 
+Removing htdise_uptime_1 ... done
+Removing htdise_server_5 ... done
+Removing htdise_server_7 ... done
+Removing htdise_server_4 ... done
+Removing htdise_client_1 ... done
+Removing htdise_server_2 ... done
+Removing htdise_server_6 ... done
+Removing htdise_server_1 ... done
+Removing htdise_server_3 ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+./run-tests.sh: line 24: [: missing `]'
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  25.97MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 2bc963fd4b8e
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 458fcf3ad9f0
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 54d46435529d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 9babb2b286da
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> f25ac3a8e666
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 4637884423b8
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 90d4ca6f180b
+Successfully built 90d4ca6f180b
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1 ... 
+Creating htdise_server_2 ... 
+Creating htdise_server_3 ... 
+Creating htdise_server_4 ... 
+Creating htdise_server_5 ... 
+Creating htdise_server_6 ... 
+Creating htdise_server_7 ... 
+Creating htdise_server_4 ... done
+Creating htdise_server_7 ... done
+Creating htdise_server_3 ... done
+Creating htdise_server_2 ... done
+Creating htdise_server_5 ... done
+Creating htdise_server_6 ... done
+Creating htdise_server_1 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_4, htdise_server_7, htdise_server_3, htdise_server_2, htdise_server_5, htdise_server_6, htdise_server_1
+[36mclient_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ----Size of Plain Text = 24 Number of Trials = 100000
+[36mclient_1  |[0m Net            n:8  m:2   t:100000     enc/s:9224.24   ms/enc:0.10841 	  Mbps:2.21382 Aborts = 0 Time (ms) = 10841
+[33mserver_1  |[0m Going up
+[36;1mserver_5  |[0m Going up
+[35mserver_3  |[0m Going up
+[32mserver_2  |[0m Going up
+[34mserver_4  |[0m Going up
+[32;1mserver_7  |[0m Going up
+[33;1mserver_6  |[0m Going up
+[36mhtdise_client_1 exited with code 0
+[0mStopping htdise_server_1 ... 
+Stopping htdise_server_2 ... 
+Stopping htdise_server_3 ... 
+Stopping htdise_server_7 ... 
+Stopping htdise_server_4 ... 
+Stopping htdise_server_5 ... 
+Stopping htdise_server_6 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_server_1 ... 
+Stopping htdise_server_2 ... 
+Stopping htdise_server_3 ... 
+Stopping htdise_server_7 ... 
+Stopping htdise_server_4 ... 
+Stopping htdise_server_5 ... 
+Stopping htdise_server_6 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_server_5 ... done
+Stopping htdise_server_5 ... done
+Stopping htdise_server_3 ... done
+Stopping htdise_server_3 ... done
+Stopping htdise_server_2 ... done
+Stopping htdise_server_1 ... done
+Stopping htdise_server_2 ... done
+Stopping htdise_server_7 ... done
+Stopping htdise_server_4 ... done
+Stopping htdise_server_1 ... done
+Stopping htdise_server_6 ... done
+Stopping htdise_server_7 ... done
+Stopping htdise_server_4 ... done
+Stopping htdise_server_6 ... done
+Stopping htdise_uptime_1 ... done
+Stopping htdise_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing htdise_server_1 ... 
+Removing htdise_server_2 ... 
+Removing htdise_server_3 ... 
+Removing htdise_server_7 ... 
+Removing htdise_server_4 ... 
+Removing htdise_server_5 ... 
+Removing htdise_server_6 ... 
+Removing htdise_client_1 ... 
+Removing htdise_uptime_1 ... 
+Removing htdise_client_1 ... done
+Removing htdise_server_2 ... done
+Removing htdise_server_4 ... done
+Removing htdise_server_6 ... done
+Removing htdise_uptime_1 ... done
+Removing htdise_server_5 ... done
+Removing htdise_server_7 ... done
+Removing htdise_server_3 ... done
+Removing htdise_server_1 ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+./run-tests.sh: line 24: [: missing `]'
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  25.98MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 2bc963fd4b8e
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 458fcf3ad9f0
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 54d46435529d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 9babb2b286da
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> f25ac3a8e666
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 4637884423b8
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 90d4ca6f180b
+Successfully built 90d4ca6f180b
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1 ... 
+Creating htdise_server_2 ... 
+Creating htdise_server_3 ... 
+Creating htdise_server_4 ... 
+Creating htdise_server_5 ... 
+Creating htdise_server_6 ... 
+Creating htdise_server_7 ... 
+Creating htdise_server_1 ... done
+Creating htdise_server_3 ... done
+Creating htdise_server_5 ... done
+Creating htdise_server_6 ... done
+Creating htdise_server_4 ... done
+Creating htdise_server_2 ... done
+Creating htdise_server_7 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_1, htdise_server_3, htdise_server_5, htdise_server_6, htdise_server_4, htdise_server_2, htdise_server_7
+[36mclient_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ----Size of Plain Text = 24 Number of Trials = 100000
+[36mclient_1  |[0m Net            n:8  m:2   t:100000     enc/s:9672.12   ms/enc:0.10339 	  Mbps:2.32131 Aborts = 0 Time (ms) = 10339
+[33;1mserver_6  |[0m Going up
+[32;1mserver_7  |[0m Going up
+[35mserver_3  |[0m Going up
+[33mserver_1  |[0m Going up
+[34mserver_4  |[0m Going up
+[36;1mserver_5  |[0m Going up
+[32mserver_2  |[0m Going up
+[36mhtdise_client_1 exited with code 0
+[0mStopping htdise_server_5 ... 
+Stopping htdise_server_4 ... 
+Stopping htdise_server_2 ... 
+Stopping htdise_server_7 ... 
+Stopping htdise_server_1 ... 
+Stopping htdise_server_6 ... 
+Stopping htdise_server_3 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_server_5 ... 
+Stopping htdise_server_4 ... 
+Stopping htdise_server_2 ... 
+Stopping htdise_server_7 ... 
+Stopping htdise_server_1 ... 
+Stopping htdise_server_6 ... 
+Stopping htdise_server_3 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_server_4 ... done
+Stopping htdise_server_4 ... done
+Stopping htdise_server_1 ... done
+Stopping htdise_server_1 ... done
+Stopping htdise_server_7 ... done
+Stopping htdise_server_2 ... done
+Stopping htdise_server_7 ... done
+Stopping htdise_server_3 ... done
+Stopping htdise_server_2 ... done
+Stopping htdise_server_3 ... done
+Stopping htdise_server_6 ... done
+Stopping htdise_server_5 ... done
+Stopping htdise_server_6 ... done
+Stopping htdise_server_5 ... done
+Stopping htdise_uptime_1 ... done
+Stopping htdise_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing htdise_server_5 ... 
+Removing htdise_server_4 ... 
+Removing htdise_server_2 ... 
+Removing htdise_server_7 ... 
+Removing htdise_server_1 ... 
+Removing htdise_server_6 ... 
+Removing htdise_server_3 ... 
+Removing htdise_client_1 ... 
+Removing htdise_uptime_1 ... 
+Removing htdise_server_6 ... done
+Removing htdise_server_7 ... done
+Removing htdise_server_2 ... done
+Removing htdise_server_1 ... done
+Removing htdise_uptime_1 ... done
+Removing htdise_server_5 ... done
+Removing htdise_server_3 ... done
+Removing htdise_server_4 ... done
+Removing htdise_client_1 ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+./run-tests.sh: line 24: [: missing `]'
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  25.98MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 2bc963fd4b8e
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 458fcf3ad9f0
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 54d46435529d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 9babb2b286da
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> f25ac3a8e666
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 4637884423b8
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 90d4ca6f180b
+Successfully built 90d4ca6f180b
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1 ... 
+Creating htdise_server_2 ... 
+Creating htdise_server_3 ... 
+Creating htdise_server_4 ... 
+Creating htdise_server_5 ... 
+Creating htdise_server_6 ... 
+Creating htdise_server_7 ... 
+Creating htdise_server_3 ... done
+Creating htdise_server_7 ... done
+Creating htdise_server_6 ... done
+Creating htdise_server_4 ... done
+Creating htdise_server_2 ... done
+Creating htdise_server_5 ... done
+Creating htdise_server_1 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_3, htdise_server_7, htdise_server_6, htdise_server_4, htdise_server_2, htdise_server_5, htdise_server_1
+[36mclient_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ----Size of Plain Text = 24 Number of Trials = 100000
+[36mclient_1  |[0m Net            n:8  m:2   t:100000     enc/s:8977.47   ms/enc:0.11139 	  Mbps:2.15459 Aborts = 0 Time (ms) = 11139
+[36;1mserver_5  |[0m Going up
+[33;1mserver_6  |[0m Going up
+[32mserver_2  |[0m Going up
+[35mserver_3  |[0m Going up
+[32;1mserver_7  |[0m Going up
+[34mserver_4  |[0m Going up
+[33mserver_1  |[0m Going up
+[36mhtdise_client_1 exited with code 0
+[0mStopping htdise_server_7 ... 
+Stopping htdise_server_5 ... 
+Stopping htdise_server_2 ... 
+Stopping htdise_server_4 ... 
+Stopping htdise_server_3 ... 
+Stopping htdise_server_1 ... 
+Stopping htdise_server_6 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_server_7 ... 
+Stopping htdise_server_5 ... 
+Stopping htdise_server_2 ... 
+Stopping htdise_server_4 ... 
+Stopping htdise_server_3 ... 
+Stopping htdise_server_1 ... 
+Stopping htdise_server_6 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_server_5 ... done
+Stopping htdise_server_4 ... done
+Stopping htdise_server_5 ... done
+Stopping htdise_server_4 ... done
+Stopping htdise_server_6 ... done
+Stopping htdise_server_6 ... done
+Stopping htdise_server_2 ... done
+Stopping htdise_server_1 ... done
+Stopping htdise_server_2 ... done
+Stopping htdise_server_7 ... done
+Stopping htdise_server_3 ... done
+Stopping htdise_server_1 ... done
+Stopping htdise_server_7 ... done
+Stopping htdise_server_3 ... done
+Stopping htdise_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping htdise_uptime_1 ... done
+Removing htdise_server_7 ... 
+Removing htdise_server_5 ... 
+Removing htdise_server_2 ... 
+Removing htdise_server_4 ... 
+Removing htdise_server_3 ... 
+Removing htdise_server_1 ... 
+Removing htdise_server_6 ... 
+Removing htdise_client_1 ... 
+Removing htdise_uptime_1 ... 
+Removing htdise_server_5 ... done
+Removing htdise_server_3 ... done
+Removing htdise_server_4 ... done
+Removing htdise_server_7 ... done
+Removing htdise_uptime_1 ... done
+Removing htdise_client_1 ... done
+Removing htdise_server_2 ... done
+Removing htdise_server_6 ... done
+Removing htdise_server_1 ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+./run-tests.sh: line 24: [: missing `]'
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  25.99MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 2bc963fd4b8e
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 458fcf3ad9f0
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 54d46435529d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 9babb2b286da
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> f25ac3a8e666
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 4637884423b8
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 90d4ca6f180b
+Successfully built 90d4ca6f180b
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1 ... 
+Creating htdise_server_2 ... 
+Creating htdise_server_3 ... 
+Creating htdise_server_4 ... 
+Creating htdise_server_5 ... 
+Creating htdise_server_6 ... 
+Creating htdise_server_7 ... 
+Creating htdise_server_3 ... done
+Creating htdise_server_1 ... done
+Creating htdise_server_5 ... done
+Creating htdise_server_6 ... done
+Creating htdise_server_4 ... done
+Creating htdise_server_2 ... done
+Creating htdise_server_7 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_3, htdise_server_1, htdise_server_5, htdise_server_6, htdise_server_4, htdise_server_2, htdise_server_7
+[36mclient_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ----Size of Plain Text = 24 Number of Trials = 100000
+[36mclient_1  |[0m Net            n:8  m:2   t:100000     enc/s:9378.22   ms/enc:0.10663 	  Mbps:2.25077 Aborts = 0 Time (ms) = 10663
+[32;1mserver_7  |[0m Going up
+[35mserver_3  |[0m Going up
+[33mserver_1  |[0m Going up
+[34mserver_4  |[0m Going up
+[36;1mserver_5  |[0m Going up
+[33;1mserver_6  |[0m Going up
+[32mserver_2  |[0m Going up
+[36mhtdise_client_1 exited with code 0
+[0mStopping htdise_server_3 ... 
+Stopping htdise_server_1 ... 
+Stopping htdise_server_2 ... 
+Stopping htdise_server_6 ... 
+Stopping htdise_server_7 ... 
+Stopping htdise_server_5 ... 
+Stopping htdise_server_4 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_server_4 ... done
+Stopping htdise_server_3 ... done
+Stopping htdise_server_2 ... done
+Stopping htdise_server_7 ... done
+Stopping htdise_server_1 ... done
+Stopping htdise_server_6 ... done
+Stopping htdise_server_5 ... done
+Stopping htdise_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
