@@ -1,0 +1,1108 @@
+Removing htdise_server_2 ... 
+Removing htdise_server_1 ... 
+Removing htdise_server_3 ... 
+Removing htdise_client_1 ... 
+Removing htdise_uptime_1 ... 
+Removing htdise_uptime_1 ... done
+Removing htdise_client_1 ... done
+Removing htdise_server_2 ... done
+Removing htdise_server_1 ... done
+Removing htdise_server_3 ... done
+Removing network htdise_dise-net
+cp: cannot stat 'data/reboot_sequence_logs/states_4_3_1M.txt': No such file or directory
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  1.935MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 6f6f695a2418
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> ee41285540f5
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> cc9b69bbb18f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> cd9aec11f710
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 62d69c39ff26
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 136d05cabe89
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 0b2c5282e91e
+Successfully built 0b2c5282e91e
+Successfully tagged groundhog:latest
+Creating network "htdise_dise-net" with driver "bridge"
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1 ... 
+Creating htdise_server_2 ... 
+Creating htdise_server_3 ... 
+Creating htdise_server_2 ... done
+Creating htdise_server_3 ... done
+Creating htdise_server_1 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_2, htdise_server_3, htdise_server_1
+[33mserver_1  |[0m My IP is 10.0.0.5, my idx is 3
+[32mserver_2  |[0m My IP is 10.0.0.3, my idx is 1
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[32mserver_2  |[0m 
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_1  |[0m 
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m Size of Plain Text = 24 Number of Trials = 100000
+[35mserver_3  |[0m My IP is 10.0.0.4, my idx is 2
+[35mserver_3  |[0m 
+[35mserver_3  |[0m =============================
+[35mserver_3  |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_3  |[0m =============================
+[35mserver_3  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m Net            n:4  m:3   t:100000     enc/s:7407.96   ms/enc:0.13499 	  Mbps:3.55582 Aborts = 0 Time (ms) = 13499
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Total Count:200000 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_2  |[0m network send error: Connection reset by peer
+[32mserver_2  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[35mserver_3  |[0m network send error: Connection reset by peer
+[35mserver_3  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[33mserver_1  |[0m network send error: Connection reset by peer
+[33mserver_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mhtdise_client_1 exited with code 0
+[0m[35mhtdise_server_3 exited with code 139
+[0m[32mhtdise_server_2 exited with code 139
+[0m[33mhtdise_server_1 exited with code 139
+[0mStopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping htdise_uptime_1 ... done
+Removing htdise_server_3 ... 
+Removing htdise_server_2 ... 
+Removing htdise_server_1 ... 
+Removing htdise_client_1 ... 
+Removing htdise_uptime_1 ... 
+Removing htdise_client_1 ... done
+Removing htdise_server_2 ... done
+Removing htdise_server_1 ... done
+Removing htdise_server_3 ... done
+Removing htdise_uptime_1 ... done
+Removing network htdise_dise-net
+cp: cannot stat 'data/reboot_sequence_logs/states_4_3_1M.txt': No such file or directory
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon   1.94MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 6f6f695a2418
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> ee41285540f5
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> cc9b69bbb18f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> cd9aec11f710
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 62d69c39ff26
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 136d05cabe89
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 0b2c5282e91e
+Successfully built 0b2c5282e91e
+Successfully tagged groundhog:latest
+Creating network "htdise_dise-net" with driver "bridge"
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1 ... 
+Creating htdise_server_2 ... 
+Creating htdise_server_3 ... 
+Creating htdise_server_2 ... done
+Creating htdise_server_1 ... done
+Creating htdise_server_3 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_2, htdise_server_1, htdise_server_3
+[33mserver_1  |[0m My IP is 10.0.0.4, my idx is 2
+[33mserver_1  |[0m 
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[35mserver_3  |[0m My IP is 10.0.0.5, my idx is 3
+[32mserver_2  |[0m My IP is 10.0.0.3, my idx is 1
+[32mserver_2  |[0m 
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m Size of Plain Text = 24 Number of Trials = 100000
+[35mserver_3  |[0m 
+[35mserver_3  |[0m =============================
+[35mserver_3  |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_3  |[0m =============================
+[35mserver_3  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m Net            n:4  m:3   t:100000     enc/s:7694.68   ms/enc:0.12996 	  Mbps:3.69344 Aborts = 0 Time (ms) = 12996
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Total Count:200000 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_2  |[0m network send error: Connection reset by peer
+[32mserver_2  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[33mserver_1  |[0m network send error: Connection reset by peer
+[33mserver_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[35mserver_3  |[0m network send error: Connection reset by peer
+[35mserver_3  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mhtdise_client_1 exited with code 0
+[0m[32mhtdise_server_2 exited with code 139
+[0m[35mhtdise_server_3 exited with code 139
+[0m[33mhtdise_server_1 exited with code 139
+[0mStopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping htdise_uptime_1 ... done
+Removing htdise_server_1 ... 
+Removing htdise_server_2 ... 
+Removing htdise_server_3 ... 
+Removing htdise_client_1 ... 
+Removing htdise_uptime_1 ... 
+Removing htdise_server_1 ... done
+Removing htdise_client_1 ... done
+Removing htdise_server_2 ... done
+Removing htdise_uptime_1 ... done
+Removing htdise_server_3 ... done
+Removing network htdise_dise-net
+cp: cannot stat 'data/reboot_sequence_logs/states_4_3_1M.txt': No such file or directory
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  1.946MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 6f6f695a2418
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> ee41285540f5
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> cc9b69bbb18f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> cd9aec11f710
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 62d69c39ff26
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 136d05cabe89
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 0b2c5282e91e
+Successfully built 0b2c5282e91e
+Successfully tagged groundhog:latest
+Creating network "htdise_dise-net" with driver "bridge"
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1 ... 
+Creating htdise_server_2 ... 
+Creating htdise_server_3 ... 
+Creating htdise_server_3 ... done
+Creating htdise_server_1 ... done
+Creating htdise_server_2 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_3, htdise_server_1, htdise_server_2
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[33mserver_1  |[0m My IP is 10.0.0.4, my idx is 2
+[33mserver_1  |[0m 
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m Size of Plain Text = 24 Number of Trials = 100000
+[32mserver_2  |[0m My IP is 10.0.0.5, my idx is 3
+[32mserver_2  |[0m 
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_3  |[0m My IP is 10.0.0.3, my idx is 1
+[35mserver_3  |[0m 
+[35mserver_3  |[0m =============================
+[35mserver_3  |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_3  |[0m =============================
+[35mserver_3  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m Net            n:4  m:3   t:100000     enc/s:7476.08   ms/enc:0.13376 	  Mbps:3.58852 Aborts = 0 Time (ms) = 13376
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Total Count:200000 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_3  |[0m network send error: Connection reset by peer
+[35mserver_3  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[33mserver_1  |[0m network send error: Connection reset by peer
+[33mserver_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[32mserver_2  |[0m network send error: Connection reset by peer
+[32mserver_2  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mhtdise_client_1 exited with code 0
+[0m[35mhtdise_server_3 exited with code 139
+[0m[33mhtdise_server_1 exited with code 139
+[0m[32mhtdise_server_2 exited with code 139
+[0mStopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping htdise_uptime_1 ... done
+Removing htdise_server_3 ... 
+Removing htdise_server_2 ... 
+Removing htdise_server_1 ... 
+Removing htdise_client_1 ... 
+Removing htdise_uptime_1 ... 
+Removing htdise_server_2 ... done
+Removing htdise_server_1 ... done
+Removing htdise_client_1 ... done
+Removing htdise_uptime_1 ... done
+Removing htdise_server_3 ... done
+Removing network htdise_dise-net
+cp: cannot stat 'data/reboot_sequence_logs/states_4_3_1M.txt': No such file or directory
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  1.951MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 6f6f695a2418
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> ee41285540f5
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> cc9b69bbb18f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> cd9aec11f710
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 62d69c39ff26
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 136d05cabe89
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 0b2c5282e91e
+Successfully built 0b2c5282e91e
+Successfully tagged groundhog:latest
+Creating network "htdise_dise-net" with driver "bridge"
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1 ... 
+Creating htdise_server_2 ... 
+Creating htdise_server_3 ... 
+Creating htdise_server_2 ... done
+Creating htdise_server_1 ... done
+Creating htdise_server_3 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_2, htdise_server_1, htdise_server_3
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m Size of Plain Text = 24 Number of Trials = 100000
+[33mserver_1  |[0m My IP is 10.0.0.5, my idx is 3
+[32mserver_2  |[0m My IP is 10.0.0.3, my idx is 1
+[33mserver_1  |[0m 
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_2  |[0m 
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_3  |[0m My IP is 10.0.0.4, my idx is 2
+[35mserver_3  |[0m 
+[35mserver_3  |[0m =============================
+[35mserver_3  |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_3  |[0m =============================
+[35mserver_3  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m Net            n:4  m:3   t:100000     enc/s:8010.89   ms/enc:0.12483 	  Mbps:3.84523 Aborts = 0 Time (ms) = 12483
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Total Count:200000 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_2  |[0m network send error: Connection reset by peer
+[32mserver_2  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[33mserver_1  |[0m network send error: Connection reset by peer
+[33mserver_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[35mserver_3  |[0m network send error: Connection reset by peer
+[35mserver_3  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[33mhtdise_server_1 exited with code 139
+[0m[36mhtdise_client_1 exited with code 0
+[0m[32mhtdise_server_2 exited with code 139
+[0m[35mhtdise_server_3 exited with code 139
+[0mStopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping htdise_uptime_1 ... done
+Removing htdise_server_3 ... 
+Removing htdise_server_2 ... 
+Removing htdise_server_1 ... 
+Removing htdise_client_1 ... 
+Removing htdise_uptime_1 ... 
+Removing htdise_uptime_1 ... done
+Removing htdise_server_3 ... done
+Removing htdise_server_2 ... done
+Removing htdise_client_1 ... done
+Removing htdise_server_1 ... done
+Removing network htdise_dise-net
+cp: cannot stat 'data/reboot_sequence_logs/states_4_3_1M.txt': No such file or directory
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  1.956MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 6f6f695a2418
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> ee41285540f5
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> cc9b69bbb18f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> cd9aec11f710
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 62d69c39ff26
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 136d05cabe89
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 0b2c5282e91e
+Successfully built 0b2c5282e91e
+Successfully tagged groundhog:latest
+Creating network "htdise_dise-net" with driver "bridge"
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1 ... 
+Creating htdise_server_2 ... 
+Creating htdise_server_3 ... 
+Creating htdise_server_1 ... done
+Creating htdise_server_3 ... done
+Creating htdise_server_2 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_1, htdise_server_3, htdise_server_2
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m Size of Plain Text = 24 Number of Trials = 100000
+[33mserver_1  |[0m My IP is 10.0.0.3, my idx is 1
+[33mserver_1  |[0m 
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_2  |[0m My IP is 10.0.0.5, my idx is 3
+[32mserver_2  |[0m 
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_3  |[0m My IP is 10.0.0.4, my idx is 2
+[35mserver_3  |[0m 
+[35mserver_3  |[0m =============================
+[35mserver_3  |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_3  |[0m =============================
+[35mserver_3  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m Net            n:4  m:3   t:100000     enc/s:7462.13   ms/enc:0.13401 	  Mbps:3.58182 Aborts = 0 Time (ms) = 13401
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Total Count:200000 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_1  |[0m network send error: Connection reset by peer
+[33mserver_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[35mserver_3  |[0m network send error: Connection reset by peer
+[35mserver_3  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[32mserver_2  |[0m network send error: Connection reset by peer
+[32mserver_2  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mhtdise_client_1 exited with code 0
+[0m[32mhtdise_server_2 exited with code 139
+[0m[35mhtdise_server_3 exited with code 139
+[0m[33mhtdise_server_1 exited with code 139
+[0mStopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Stopping htdise_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing htdise_server_3 ... 
+Removing htdise_server_2 ... 
+Removing htdise_server_1 ... 
+Removing htdise_client_1 ... 
+Removing htdise_uptime_1 ... 
+Removing htdise_server_1 ... done
+Removing htdise_client_1 ... done
+Removing htdise_server_3 ... done
+Removing htdise_server_2 ... done
+Removing htdise_uptime_1 ... done
+Removing network htdise_dise-net
+cp: cannot stat 'data/reboot_sequence_logs/states_4_3_1M.txt': No such file or directory
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  1.962MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 6f6f695a2418
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> ee41285540f5
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> cc9b69bbb18f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> cd9aec11f710
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 62d69c39ff26
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 136d05cabe89
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 0b2c5282e91e
+Successfully built 0b2c5282e91e
+Successfully tagged groundhog:latest
+Creating network "htdise_dise-net" with driver "bridge"
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1 ... 
+Creating htdise_server_2 ... 
+Creating htdise_server_3 ... 
+Creating htdise_server_3 ... done
+Creating htdise_server_2 ... done
+Creating htdise_server_1 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_3, htdise_server_2, htdise_server_1
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[35mserver_3  |[0m My IP is 10.0.0.3, my idx is 1
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m Size of Plain Text = 24 Number of Trials = 100000
+[35mserver_3  |[0m 
+[35mserver_3  |[0m =============================
+[35mserver_3  |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_3  |[0m =============================
+[35mserver_3  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_2  |[0m My IP is 10.0.0.4, my idx is 2
+[32mserver_2  |[0m 
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_1  |[0m My IP is 10.0.0.5, my idx is 3
+[33mserver_1  |[0m 
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m Net            n:4  m:3   t:100000     enc/s:7543.75   ms/enc:0.13256 	  Mbps:3.621 Aborts = 0 Time (ms) = 13256
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Total Count:200000 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_3  |[0m network send error: Connection reset by peer
+[35mserver_3  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[32mserver_2  |[0m network send error: Connection reset by peer
+[32mserver_2  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[33mserver_1  |[0m network send error: Connection reset by peer
+[33mserver_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mhtdise_client_1 exited with code 0
+[0m[33mhtdise_server_1 exited with code 139
+[0m[32mhtdise_server_2 exited with code 139
+[0m[35mhtdise_server_3 exited with code 139
+[0mStopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping htdise_uptime_1 ... done
+Removing htdise_server_3 ... 
+Removing htdise_server_1 ... 
+Removing htdise_server_2 ... 
+Removing htdise_client_1 ... 
+Removing htdise_uptime_1 ... 
+Removing htdise_server_1 ... done
+Removing htdise_server_3 ... done
+Removing htdise_uptime_1 ... done
+Removing htdise_client_1 ... done
+Removing htdise_server_2 ... done
+Removing network htdise_dise-net
+cp: cannot stat 'data/reboot_sequence_logs/states_4_3_1M.txt': No such file or directory
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  1.967MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 6f6f695a2418
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> ee41285540f5
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> cc9b69bbb18f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> cd9aec11f710
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 62d69c39ff26
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 136d05cabe89
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 0b2c5282e91e
+Successfully built 0b2c5282e91e
+Successfully tagged groundhog:latest
+Creating network "htdise_dise-net" with driver "bridge"
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1 ... 
+Creating htdise_server_2 ... 
+Creating htdise_server_3 ... 
+Creating htdise_server_1 ... done
+Creating htdise_server_3 ... done
+Creating htdise_server_2 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_1, htdise_server_3, htdise_server_2
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m Size of Plain Text = 24 Number of Trials = 100000
+[32mserver_2  |[0m My IP is 10.0.0.5, my idx is 3
+[32mserver_2  |[0m 
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_1  |[0m My IP is 10.0.0.3, my idx is 1
+[33mserver_1  |[0m 
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_3  |[0m My IP is 10.0.0.4, my idx is 2
+[35mserver_3  |[0m 
+[35mserver_3  |[0m =============================
+[35mserver_3  |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_3  |[0m =============================
+[35mserver_3  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m Net            n:4  m:3   t:100000     enc/s:7621.95   ms/enc:0.1312 	  Mbps:3.65854 Aborts = 0 Time (ms) = 13120
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Total Count:200000 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_1  |[0m network send error: Connection reset by peer
+[33mserver_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[35mserver_3  |[0m network send error: Connection reset by peer
+[35mserver_3  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[32mserver_2  |[0m network send error: Connection reset by peer
+[32mserver_2  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mhtdise_client_1 exited with code 0
+[0m[32mhtdise_server_2 exited with code 139
+[0m[33mhtdise_server_1 exited with code 139
+[0m[35mhtdise_server_3 exited with code 139
+[0mStopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping htdise_uptime_1 ... done
+Removing htdise_server_2 ... 
+Removing htdise_server_3 ... 
+Removing htdise_server_1 ... 
+Removing htdise_client_1 ... 
+Removing htdise_uptime_1 ... 
+Removing htdise_server_1 ... done
+Removing htdise_server_3 ... done
+Removing htdise_client_1 ... done
+Removing htdise_server_2 ... done
+Removing htdise_uptime_1 ... done
+Removing network htdise_dise-net
+cp: cannot stat 'data/reboot_sequence_logs/states_4_3_1M.txt': No such file or directory
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  1.973MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 6f6f695a2418
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> ee41285540f5
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> cc9b69bbb18f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> cd9aec11f710
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 62d69c39ff26
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 136d05cabe89
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 0b2c5282e91e
+Successfully built 0b2c5282e91e
+Successfully tagged groundhog:latest
+Creating network "htdise_dise-net" with driver "bridge"
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1 ... 
+Creating htdise_server_2 ... 
+Creating htdise_server_3 ... 
+Creating htdise_server_3 ... done
+Creating htdise_server_1 ... done
+Creating htdise_server_2 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_3, htdise_server_1, htdise_server_2
+[33mserver_1  |[0m My IP is 10.0.0.4, my idx is 2
+[33mserver_1  |[0m 
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[32mserver_2  |[0m My IP is 10.0.0.5, my idx is 3
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[32mserver_2  |[0m 
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_3  |[0m My IP is 10.0.0.3, my idx is 1
+[35mserver_3  |[0m 
+[35mserver_3  |[0m =============================
+[35mserver_3  |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_3  |[0m =============================
+[35mserver_3  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m Size of Plain Text = 24 Number of Trials = 100000
+[36mclient_1  |[0m Net            n:4  m:3   t:100000     enc/s:7830.85   ms/enc:0.1277 	  Mbps:3.75881 Aborts = 0 Time (ms) = 12770
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Total Count:200000 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_3  |[0m network send error: Connection reset by peer
+[35mserver_3  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[32mserver_2  |[0m network send error: Connection reset by peer
+[32mserver_2  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[33mserver_1  |[0m network send error: Connection reset by peer
+[33mserver_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mhtdise_client_1 exited with code 0
+[0m[32mhtdise_server_2 exited with code 139
+[0m[35mhtdise_server_3 exited with code 139
+[0m[33mhtdise_server_1 exited with code 139
+[0mStopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping htdise_uptime_1 ... done
+Removing htdise_server_3 ... 
+Removing htdise_server_1 ... 
+Removing htdise_server_2 ... 
+Removing htdise_client_1 ... 
+Removing htdise_uptime_1 ... 
+Removing htdise_server_1 ... done
+Removing htdise_uptime_1 ... done
+Removing htdise_server_2 ... done
+Removing htdise_server_3 ... done
+Removing htdise_client_1 ... done
+Removing network htdise_dise-net
+cp: cannot stat 'data/reboot_sequence_logs/states_4_3_1M.txt': No such file or directory
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  1.978MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 6f6f695a2418
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> ee41285540f5
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> cc9b69bbb18f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> cd9aec11f710
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 62d69c39ff26
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 136d05cabe89
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 0b2c5282e91e
+Successfully built 0b2c5282e91e
+Successfully tagged groundhog:latest
+Creating network "htdise_dise-net" with driver "bridge"
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1 ... 
+Creating htdise_server_2 ... 
+Creating htdise_server_3 ... 
+Creating htdise_server_1 ... done
+Creating htdise_server_3 ... done
+Creating htdise_server_2 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_1, htdise_server_3, htdise_server_2
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m Size of Plain Text = 24 Number of Trials = 100000
+[32mserver_2  |[0m My IP is 10.0.0.5, my idx is 3
+[33mserver_1  |[0m My IP is 10.0.0.3, my idx is 1
+[32mserver_2  |[0m 
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_1  |[0m 
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_3  |[0m My IP is 10.0.0.4, my idx is 2
+[35mserver_3  |[0m 
+[35mserver_3  |[0m =============================
+[35mserver_3  |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_3  |[0m =============================
+[35mserver_3  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m Net            n:4  m:3   t:100000     enc/s:7065.14   ms/enc:0.14154 	  Mbps:3.39127 Aborts = 0 Time (ms) = 14154
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Total Count:200000 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_1  |[0m network send error: Connection reset by peer
+[33mserver_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[35mserver_3  |[0m network send error: Connection reset by peer
+[35mserver_3  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[32mserver_2  |[0m network send error: Connection reset by peer
+[32mserver_2  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mhtdise_client_1 exited with code 0
+[0m[35mhtdise_server_3 exited with code 139
+[0m[32mhtdise_server_2 exited with code 139
+[0m[33mhtdise_server_1 exited with code 139
+[0mStopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping htdise_uptime_1 ... done
+Removing htdise_server_1 ... 
+Removing htdise_server_3 ... 
+Removing htdise_server_2 ... 
+Removing htdise_client_1 ... 
+Removing htdise_uptime_1 ... 
+Removing htdise_server_3 ... done
+Removing htdise_server_2 ... done
+Removing htdise_server_1 ... done
+Removing htdise_uptime_1 ... done
+Removing htdise_client_1 ... done
+Removing network htdise_dise-net
+cp: cannot stat 'data/reboot_sequence_logs/states_4_3_1M.txt': No such file or directory
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  1.983MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 6f6f695a2418
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> ee41285540f5
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> cc9b69bbb18f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> cd9aec11f710
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 62d69c39ff26
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 136d05cabe89
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 0b2c5282e91e
+Successfully built 0b2c5282e91e
+Successfully tagged groundhog:latest
+Creating network "htdise_dise-net" with driver "bridge"
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1 ... 
+Creating htdise_server_2 ... 
+Creating htdise_server_3 ... 
+Creating htdise_server_3 ... done
+Creating htdise_server_1 ... done
+Creating htdise_server_2 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_3, htdise_server_1, htdise_server_2
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[32mserver_2  |[0m My IP is 10.0.0.5, my idx is 3
+[33mserver_1  |[0m My IP is 10.0.0.4, my idx is 2
+[32mserver_2  |[0m 
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Abort at the NPR03SYMDPRF.CPP
+[32mserver_2  |[0m =============================
+[32mserver_2  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[33mserver_1  |[0m 
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[33mserver_1  |[0m =============================
+[33mserver_1  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m Size of Plain Text = 24 Number of Trials = 100000
+[35mserver_3  |[0m My IP is 10.0.0.3, my idx is 1
+[35mserver_3  |[0m 
+[35mserver_3  |[0m =============================
+[35mserver_3  |[0m Abort at the NPR03SYMDPRF.CPP
+[35mserver_3  |[0m =============================
+[35mserver_3  |[0m Total Count:0 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[36mclient_1  |[0m Net            n:4  m:3   t:100000     enc/s:7824.11   ms/enc:0.12781 	  Mbps:3.75557 Aborts = 0 Time (ms) = 12781
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Abort at the NPR03SYMDPRF.CPP
+[36mclient_1  |[0m =============================
+[36mclient_1  |[0m Total Count:200000 SendAbort:0 Receive Queue Abort:0 Receive Output Abort:0
+[35mserver_3  |[0m network send error: Connection reset by peer
+[35mserver_3  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[33mserver_1  |[0m network send error: Connection reset by peer
+[33mserver_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[32mserver_2  |[0m network send error: Connection reset by peer
+[32mserver_2  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mhtdise_client_1 exited with code 0
+[0m[35mhtdise_server_3 exited with code 139
+[0m[32mhtdise_server_2 exited with code 139
+[0m[33mhtdise_server_1 exited with code 139
+[0mStopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)

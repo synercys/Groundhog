@@ -1,0 +1,2041 @@
+
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Removing htdise_server_2  ... 
+Removing htdise_server_5  ... 
+Removing htdise_server_15 ... 
+Removing htdise_server_9  ... 
+Removing htdise_server_13 ... 
+Removing htdise_server_12 ... 
+Removing htdise_server_6  ... 
+Removing htdise_server_3  ... 
+Removing htdise_server_7  ... 
+Removing htdise_server_10 ... 
+Removing htdise_server_1  ... 
+Removing htdise_server_4  ... 
+Removing htdise_server_8  ... 
+Removing htdise_server_14 ... 
+Removing htdise_server_11 ... 
+Removing htdise_client_1  ... 
+Removing htdise_uptime_1  ... 
+Removing htdise_client_1  ... done
+Removing htdise_server_15 ... done
+Removing htdise_server_6  ... done
+Removing htdise_server_10 ... done
+Removing htdise_server_5  ... done
+Removing htdise_server_11 ... done
+Removing htdise_server_13 ... done
+Removing htdise_server_9  ... done
+Removing htdise_server_1  ... done
+Removing htdise_server_3  ... done
+Removing htdise_server_12 ... done
+Removing htdise_uptime_1  ... done
+Removing htdise_server_14 ... done
+Removing htdise_server_4  ... done
+Removing htdise_server_7  ... done
+Removing htdise_server_8  ... done
+Removing htdise_server_2  ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon   26.2MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 2bc963fd4b8e
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 458fcf3ad9f0
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 54d46435529d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 9babb2b286da
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 7090d335b251
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 1e3e660f8633
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 1fddc63e0121
+Successfully built 1fddc63e0121
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1  ... 
+Creating htdise_server_2  ... 
+Creating htdise_server_3  ... 
+Creating htdise_server_4  ... 
+Creating htdise_server_5  ... 
+Creating htdise_server_6  ... 
+Creating htdise_server_7  ... 
+Creating htdise_server_8  ... 
+Creating htdise_server_9  ... 
+Creating htdise_server_10 ... 
+Creating htdise_server_11 ... 
+Creating htdise_server_12 ... 
+Creating htdise_server_13 ... 
+Creating htdise_server_14 ... 
+Creating htdise_server_15 ... 
+Creating htdise_server_8  ... done
+Creating htdise_server_12 ... done
+Creating htdise_server_10 ... done
+Creating htdise_server_1  ... done
+Creating htdise_server_14 ... done
+Creating htdise_server_4  ... done
+Creating htdise_server_3  ... done
+Creating htdise_server_11 ... done
+Creating htdise_server_13 ... done
+Creating htdise_server_5  ... done
+Creating htdise_server_2  ... done
+Creating htdise_server_6  ... done
+Creating htdise_server_15 ... done
+Creating htdise_server_9  ... done
+Creating htdise_server_7  ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_8, htdise_server_12, htdise_server_10, htdise_server_1, htdise_server_14, htdise_server_4, htdise_server_3, htdise_server_11, htdise_server_13, htdise_server_5, htdise_server_2, htdise_server_6, htdise_server_15, htdise_server_9, htdise_server_7
+[33mserver_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[33mserver_1  |[0m My IP is 10.0.0.5, my idx is 3
+[33mserver_1  |[0m 
+[33mserver_1  |[0m Done initializing in init
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[32mserver_10 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[35mserver_11 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35mserver_11 |[0m My IP is 10.0.0.10, my idx is 8
+[34mserver_12 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33;1mserver_14 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m ----Size of Plain Text = 24 Number of Trials = 100000
+[35mserver_11 |[0m 
+[35mserver_11 |[0m Done initializing in init
+[36;1mserver_13 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32mserver_10 |[0m My IP is 10.0.0.6, my idx is 4
+[36;1mserver_13 |[0m My IP is 10.0.0.11, my idx is 9
+[34mserver_12 |[0m My IP is 10.0.0.4, my idx is 2
+[33;1mserver_14 |[0m My IP is 10.0.0.7, my idx is 5
+[35;1mserver_2  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32;1mserver_15 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34mserver_12 |[0m 
+[34mserver_12 |[0m Done initializing in init
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m Done initializing in init
+[34;1mserver_3  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35;1mserver_2  |[0m My IP is 10.0.0.13, my idx is 11
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m Done initializing in init
+[32;1mserver_15 |[0m My IP is 10.0.0.15, my idx is 13
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m Done initializing in init
+[34;1mserver_3  |[0m My IP is 10.0.0.9, my idx is 7
+[34;1mserver_3  |[0m 
+[34;1mserver_3  |[0m Done initializing in init
+[32mserver_10 |[0m 
+[32mserver_10 |[0m Done initializing in init
+[35;1mserver_2  |[0m 
+[35;1mserver_2  |[0m Done initializing in init
+[36mserver_4  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32mserver_6  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33mserver_5  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32mserver_6  |[0m My IP is 10.0.0.14, my idx is 12
+[35mserver_7  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35mserver_7  |[0m My IP is 10.0.0.17, my idx is 15
+[33mserver_5  |[0m My IP is 10.0.0.12, my idx is 10
+[32mserver_6  |[0m 
+[32mserver_6  |[0m Done initializing in init
+[36mserver_4  |[0m My IP is 10.0.0.8, my idx is 6
+[35mserver_7  |[0m 
+[35mserver_7  |[0m Done initializing in init
+[36mserver_4  |[0m 
+[36mserver_4  |[0m Done initializing in init
+[33mserver_5  |[0m 
+[33mserver_5  |[0m Done initializing in init
+[34mserver_8  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36;1mserver_9  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36;1mserver_9  |[0m My IP is 10.0.0.16, my idx is 14
+[36;1mserver_9  |[0m 
+[36;1mserver_9  |[0m Done initializing in init
+[34mserver_8  |[0m My IP is 10.0.0.3, my idx is 1
+[34mserver_8  |[0m 
+[34mserver_8  |[0m Done initializing in init
+[36mclient_1  |[0m Net            n:16  m:14   t:100000     enc/s:2710.17   ms/enc:0.36898 	  Mbps:8.59125 Aborts = 0 Time (ms) = 36898
+[36;1mhtdise_server_9 exited with code 0
+[0m[32;1mhtdise_server_15 exited with code 0
+[0m[34mhtdise_server_12 exited with code 0
+[0m[34;1mhtdise_server_3 exited with code 0
+[0m[34mhtdise_server_8 exited with code 0
+[0m[32mhtdise_server_6 exited with code 0
+[0m[36mhtdise_client_1 exited with code 0
+[0m[35mhtdise_server_11 exited with code 0
+[0m[33;1mhtdise_server_14 exited with code 0
+[0m[35;1mhtdise_server_2 exited with code 0
+[0m[36mhtdise_server_4 exited with code 0
+[0m[32mhtdise_server_10 exited with code 0
+[0m[36;1mhtdise_server_13 exited with code 0
+[0m[33mhtdise_server_5 exited with code 0
+[0m[35mhtdise_server_7 exited with code 0
+[0m[33mhtdise_server_1 exited with code 0
+[0mStopping htdise_uptime_1  ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping htdise_uptime_1 ... done
+Removing htdise_server_12 ... 
+Removing htdise_server_15 ... 
+Removing htdise_server_2  ... 
+Removing htdise_server_3  ... 
+Removing htdise_server_9  ... 
+Removing htdise_server_6  ... 
+Removing htdise_server_13 ... 
+Removing htdise_server_10 ... 
+Removing htdise_server_4  ... 
+Removing htdise_server_7  ... 
+Removing htdise_server_1  ... 
+Removing htdise_server_8  ... 
+Removing htdise_server_11 ... 
+Removing htdise_server_14 ... 
+Removing htdise_server_5  ... 
+Removing htdise_client_1  ... 
+Removing htdise_uptime_1  ... 
+Removing htdise_server_12 ... done
+Removing htdise_server_1  ... done
+Removing htdise_server_3  ... done
+Removing htdise_server_13 ... done
+Removing htdise_client_1  ... done
+Removing htdise_server_5  ... done
+Removing htdise_server_2  ... done
+Removing htdise_server_15 ... done
+Removing htdise_server_11 ... done
+Removing htdise_server_8  ... done
+Removing htdise_server_9  ... done
+Removing htdise_server_10 ... done
+Removing htdise_uptime_1  ... done
+Removing htdise_server_7  ... done
+Removing htdise_server_4  ... done
+Removing htdise_server_6  ... done
+Removing htdise_server_14 ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  26.21MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 2bc963fd4b8e
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 458fcf3ad9f0
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 54d46435529d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 9babb2b286da
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 7090d335b251
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 1e3e660f8633
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 1fddc63e0121
+Successfully built 1fddc63e0121
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1  ... 
+Creating htdise_server_2  ... 
+Creating htdise_server_3  ... 
+Creating htdise_server_4  ... 
+Creating htdise_server_5  ... 
+Creating htdise_server_6  ... 
+Creating htdise_server_7  ... 
+Creating htdise_server_8  ... 
+Creating htdise_server_9  ... 
+Creating htdise_server_10 ... 
+Creating htdise_server_11 ... 
+Creating htdise_server_12 ... 
+Creating htdise_server_13 ... 
+Creating htdise_server_14 ... 
+Creating htdise_server_15 ... 
+Creating htdise_server_9  ... done
+Creating htdise_server_5  ... done
+Creating htdise_server_2  ... done
+Creating htdise_server_8  ... done
+Creating htdise_server_14 ... done
+Creating htdise_server_3  ... done
+Creating htdise_server_11 ... done
+Creating htdise_server_13 ... done
+Creating htdise_server_12 ... done
+Creating htdise_server_7  ... done
+Creating htdise_server_4  ... done
+Creating htdise_server_1  ... done
+Creating htdise_server_10 ... done
+Creating htdise_server_6  ... done
+Creating htdise_server_15 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_9, htdise_server_5, htdise_server_2, htdise_server_8, htdise_server_14, htdise_server_3, htdise_server_11, htdise_server_13, htdise_server_12, htdise_server_7, htdise_server_4, htdise_server_1, htdise_server_10, htdise_server_6, htdise_server_15
+[36mclient_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33mserver_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35mserver_11 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[33mserver_1  |[0m My IP is 10.0.0.14, my idx is 12
+[33mserver_1  |[0m 
+[33mserver_1  |[0m Done initializing in init
+[32mserver_10 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35mserver_11 |[0m My IP is 10.0.0.8, my idx is 6
+[32mserver_10 |[0m My IP is 10.0.0.15, my idx is 13
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[35mserver_11 |[0m 
+[35mserver_11 |[0m Done initializing in init
+[32mserver_10 |[0m 
+[32mserver_10 |[0m Done initializing in init
+[34mserver_12 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m ----Size of Plain Text = 24 Number of Trials = 100000
+[36;1mserver_13 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36;1mserver_13 |[0m My IP is 10.0.0.10, my idx is 8
+[34mserver_12 |[0m My IP is 10.0.0.11, my idx is 9
+[34mserver_12 |[0m 
+[34mserver_12 |[0m Done initializing in init
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m Done initializing in init
+[35;1mserver_2  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33;1mserver_14 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35;1mserver_2  |[0m My IP is 10.0.0.5, my idx is 3
+[34;1mserver_3  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32;1mserver_15 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mserver_4  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35;1mserver_2  |[0m 
+[35;1mserver_2  |[0m Done initializing in init
+[36mserver_4  |[0m My IP is 10.0.0.13, my idx is 11
+[34;1mserver_3  |[0m My IP is 10.0.0.9, my idx is 7
+[36mserver_4  |[0m 
+[36mserver_4  |[0m Done initializing in init
+[33mserver_5  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33;1mserver_14 |[0m My IP is 10.0.0.6, my idx is 4
+[33mserver_5  |[0m My IP is 10.0.0.4, my idx is 2
+[33mserver_5  |[0m 
+[33mserver_5  |[0m Done initializing in init
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m Done initializing in init
+[32;1mserver_15 |[0m My IP is 10.0.0.17, my idx is 15
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m Done initializing in init
+[35mserver_7  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32mserver_6  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35mserver_7  |[0m My IP is 10.0.0.12, my idx is 10
+[34;1mserver_3  |[0m 
+[34;1mserver_3  |[0m Done initializing in init
+[32mserver_6  |[0m My IP is 10.0.0.16, my idx is 14
+[32mserver_6  |[0m 
+[32mserver_6  |[0m Done initializing in init
+[35mserver_7  |[0m 
+[35mserver_7  |[0m Done initializing in init
+[34mserver_8  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36;1mserver_9  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34mserver_8  |[0m My IP is 10.0.0.7, my idx is 5
+[34mserver_8  |[0m 
+[34mserver_8  |[0m Done initializing in init
+[36;1mserver_9  |[0m My IP is 10.0.0.3, my idx is 1
+[36;1mserver_9  |[0m 
+[36;1mserver_9  |[0m Done initializing in init
+[36mclient_1  |[0m Net            n:16  m:14   t:100000     enc/s:2565.81   ms/enc:0.38974 	  Mbps:8.13363 Aborts = 0 Time (ms) = 38974
+[36mhtdise_server_4 exited with code 0
+[0m[34mhtdise_server_8 exited with code 0
+[0m[36;1mhtdise_server_13 exited with code 0
+[0m[35mhtdise_server_7 exited with code 0
+[0m[35;1mhtdise_server_2 exited with code 0
+[0m[35mhtdise_server_11 exited with code 0
+[0m[34mhtdise_server_12 exited with code 0
+[0m[32mhtdise_server_6 exited with code 0
+[0m[34;1mhtdise_server_3 exited with code 0
+[0m[33mhtdise_server_5 exited with code 0
+[0m[32;1mhtdise_server_15 exited with code 0
+[0m[36mhtdise_client_1 exited with code 0
+[0m[33mhtdise_server_1 exited with code 0
+[0m[32mhtdise_server_10 exited with code 0
+[0m[33;1mhtdise_server_14 exited with code 0
+[0m[36;1mhtdise_server_9 exited with code 0
+[0mStopping htdise_uptime_1  ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Stopping htdise_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing htdise_server_12 ... 
+Removing htdise_server_6  ... 
+Removing htdise_server_15 ... 
+Removing htdise_server_9  ... 
+Removing htdise_server_2  ... 
+Removing htdise_server_3  ... 
+Removing htdise_server_13 ... 
+Removing htdise_server_10 ... 
+Removing htdise_server_14 ... 
+Removing htdise_server_4  ... 
+Removing htdise_server_7  ... 
+Removing htdise_server_11 ... 
+Removing htdise_server_1  ... 
+Removing htdise_server_5  ... 
+Removing htdise_server_8  ... 
+Removing htdise_client_1  ... 
+Removing htdise_uptime_1  ... 
+Removing htdise_uptime_1  ... done
+Removing htdise_server_6  ... done
+Removing htdise_server_14 ... done
+Removing htdise_server_7  ... done
+Removing htdise_server_13 ... done
+Removing htdise_server_15 ... done
+Removing htdise_server_9  ... done
+Removing htdise_server_1  ... done
+Removing htdise_server_3  ... done
+Removing htdise_server_4  ... done
+Removing htdise_client_1  ... done
+Removing htdise_server_8  ... done
+Removing htdise_server_5  ... done
+Removing htdise_server_10 ... done
+Removing htdise_server_11 ... done
+Removing htdise_server_2  ... done
+Removing htdise_server_12 ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  26.22MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 2bc963fd4b8e
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 458fcf3ad9f0
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 54d46435529d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 9babb2b286da
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 7090d335b251
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 1e3e660f8633
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 1fddc63e0121
+Successfully built 1fddc63e0121
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1  ... 
+Creating htdise_server_2  ... 
+Creating htdise_server_3  ... 
+Creating htdise_server_4  ... 
+Creating htdise_server_5  ... 
+Creating htdise_server_6  ... 
+Creating htdise_server_7  ... 
+Creating htdise_server_8  ... 
+Creating htdise_server_9  ... 
+Creating htdise_server_10 ... 
+Creating htdise_server_11 ... 
+Creating htdise_server_12 ... 
+Creating htdise_server_13 ... 
+Creating htdise_server_14 ... 
+Creating htdise_server_15 ... 
+Creating htdise_server_8  ... done
+Creating htdise_server_4  ... done
+Creating htdise_server_7  ... done
+Creating htdise_server_1  ... done
+Creating htdise_server_3  ... done
+Creating htdise_server_6  ... done
+Creating htdise_server_13 ... done
+Creating htdise_server_2  ... done
+Creating htdise_server_14 ... done
+Creating htdise_server_10 ... done
+Creating htdise_server_12 ... done
+Creating htdise_server_11 ... done
+Creating htdise_server_15 ... done
+Creating htdise_server_5  ... done
+Creating htdise_server_9  ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_8, htdise_server_4, htdise_server_7, htdise_server_1, htdise_server_3, htdise_server_6, htdise_server_13, htdise_server_2, htdise_server_14, htdise_server_10, htdise_server_12, htdise_server_11, htdise_server_15, htdise_server_5, htdise_server_9
+[36mclient_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32mserver_10 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33mserver_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[32mserver_10 |[0m My IP is 10.0.0.12, my idx is 10
+[32mserver_10 |[0m 
+[32mserver_10 |[0m Done initializing in init
+[35mserver_11 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35mserver_11 |[0m My IP is 10.0.0.14, my idx is 12
+[35mserver_11 |[0m 
+[35mserver_11 |[0m Done initializing in init
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[34mserver_12 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ----Size of Plain Text = 24 Number of Trials = 100000
+[34mserver_12 |[0m My IP is 10.0.0.13, my idx is 11
+[34mserver_12 |[0m 
+[34mserver_12 |[0m Done initializing in init
+[36;1mserver_13 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33;1mserver_14 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36;1mserver_13 |[0m My IP is 10.0.0.8, my idx is 6
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m Done initializing in init
+[32;1mserver_15 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32;1mserver_15 |[0m My IP is 10.0.0.15, my idx is 13
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m Done initializing in init
+[35;1mserver_2  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34;1mserver_3  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33;1mserver_14 |[0m My IP is 10.0.0.11, my idx is 9
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m Done initializing in init
+[35;1mserver_2  |[0m My IP is 10.0.0.10, my idx is 8
+[33mserver_1  |[0m My IP is 10.0.0.5, my idx is 3
+[34;1mserver_3  |[0m My IP is 10.0.0.7, my idx is 5
+[33mserver_1  |[0m 
+[33mserver_1  |[0m Done initializing in init
+[34;1mserver_3  |[0m 
+[34;1mserver_3  |[0m Done initializing in init
+[35;1mserver_2  |[0m 
+[35;1mserver_2  |[0m Done initializing in init
+[36mserver_4  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mserver_4  |[0m My IP is 10.0.0.4, my idx is 2
+[36mserver_4  |[0m 
+[36mserver_4  |[0m Done initializing in init
+[32mserver_6  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32mserver_6  |[0m My IP is 10.0.0.9, my idx is 7
+[32mserver_6  |[0m 
+[32mserver_6  |[0m Done initializing in init
+[33mserver_5  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33mserver_5  |[0m My IP is 10.0.0.16, my idx is 14
+[33mserver_5  |[0m 
+[33mserver_5  |[0m Done initializing in init
+[34mserver_8  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34mserver_8  |[0m My IP is 10.0.0.3, my idx is 1
+[34mserver_8  |[0m 
+[34mserver_8  |[0m Done initializing in init
+[35mserver_7  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35mserver_7  |[0m My IP is 10.0.0.6, my idx is 4
+[35mserver_7  |[0m 
+[35mserver_7  |[0m Done initializing in init
+[36;1mserver_9  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36;1mserver_9  |[0m My IP is 10.0.0.17, my idx is 15
+[36;1mserver_9  |[0m 
+[36;1mserver_9  |[0m Done initializing in init
+[36mclient_1  |[0m Net            n:16  m:14   t:100000     enc/s:2862.54   ms/enc:0.34934 	  Mbps:9.07425 Aborts = 0 Time (ms) = 34934
+[35mhtdise_server_7 exited with code 0
+[0m[36mhtdise_server_4 exited with code 0
+[0m[34mhtdise_server_8 exited with code 0
+[0m[33mhtdise_server_1 exited with code 0
+[0m[32mhtdise_server_10 exited with code 0
+[0m[34mhtdise_server_12 exited with code 0
+[0m[36;1mhtdise_server_13 exited with code 0
+[0m[33;1mhtdise_server_14 exited with code 0
+[0m[32mhtdise_server_6 exited with code 0
+[0m[36;1mhtdise_server_9 exited with code 0
+[0m[33mhtdise_server_5 exited with code 0
+[0m[34;1mhtdise_server_3 exited with code 0
+[0m[35mhtdise_server_11 exited with code 0
+[0m[32;1mhtdise_server_15 exited with code 0
+[0m[36mhtdise_client_1 exited with code 0
+[0m[35;1mhtdise_server_2 exited with code 0
+[0mStopping htdise_uptime_1  ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Stopping htdise_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing htdise_server_3  ... 
+Removing htdise_server_9  ... 
+Removing htdise_server_1  ... 
+Removing htdise_server_10 ... 
+Removing htdise_server_13 ... 
+Removing htdise_server_7  ... 
+Removing htdise_server_14 ... 
+Removing htdise_server_8  ... 
+Removing htdise_server_15 ... 
+Removing htdise_server_4  ... 
+Removing htdise_server_11 ... 
+Removing htdise_server_5  ... 
+Removing htdise_server_2  ... 
+Removing htdise_server_12 ... 
+Removing htdise_server_6  ... 
+Removing htdise_client_1  ... 
+Removing htdise_uptime_1  ... 
+Removing htdise_server_3  ... done
+Removing htdise_uptime_1  ... done
+Removing htdise_server_11 ... done
+Removing htdise_server_10 ... done
+Removing htdise_server_12 ... done
+Removing htdise_server_2  ... done
+Removing htdise_server_13 ... done
+Removing htdise_server_14 ... done
+Removing htdise_client_1  ... done
+Removing htdise_server_8  ... done
+Removing htdise_server_9  ... done
+Removing htdise_server_1  ... done
+Removing htdise_server_7  ... done
+Removing htdise_server_5  ... done
+Removing htdise_server_15 ... done
+Removing htdise_server_4  ... done
+Removing htdise_server_6  ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  26.23MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 2bc963fd4b8e
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 458fcf3ad9f0
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 54d46435529d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 9babb2b286da
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 7090d335b251
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 1e3e660f8633
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 1fddc63e0121
+Successfully built 1fddc63e0121
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1  ... 
+Creating htdise_server_2  ... 
+Creating htdise_server_3  ... 
+Creating htdise_server_4  ... 
+Creating htdise_server_5  ... 
+Creating htdise_server_6  ... 
+Creating htdise_server_7  ... 
+Creating htdise_server_8  ... 
+Creating htdise_server_9  ... 
+Creating htdise_server_10 ... 
+Creating htdise_server_11 ... 
+Creating htdise_server_12 ... 
+Creating htdise_server_13 ... 
+Creating htdise_server_14 ... 
+Creating htdise_server_15 ... 
+Creating htdise_server_14 ... done
+Creating htdise_server_7  ... done
+Creating htdise_server_2  ... done
+Creating htdise_server_9  ... done
+Creating htdise_server_11 ... done
+Creating htdise_server_13 ... done
+Creating htdise_server_12 ... done
+Creating htdise_server_1  ... done
+Creating htdise_server_4  ... done
+Creating htdise_server_15 ... done
+Creating htdise_server_3  ... done
+Creating htdise_server_10 ... done
+Creating htdise_server_8  ... done
+Creating htdise_server_6  ... done
+Creating htdise_server_5  ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_14, htdise_server_7, htdise_server_2, htdise_server_9, htdise_server_11, htdise_server_13, htdise_server_12, htdise_server_1, htdise_server_4, htdise_server_15, htdise_server_3, htdise_server_10, htdise_server_8, htdise_server_6, htdise_server_5
+[36mclient_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33mserver_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33mserver_1  |[0m My IP is 10.0.0.11, my idx is 9
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[33mserver_1  |[0m 
+[33mserver_1  |[0m Done initializing in init
+[32mserver_10 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[32mserver_10 |[0m My IP is 10.0.0.14, my idx is 12
+[32mserver_10 |[0m 
+[32mserver_10 |[0m Done initializing in init
+[36mclient_1  |[0m ----Size of Plain Text = 24 Number of Trials = 100000
+[35mserver_11 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34mserver_12 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36;1mserver_13 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35mserver_11 |[0m My IP is 10.0.0.8, my idx is 6
+[35mserver_11 |[0m 
+[35mserver_11 |[0m Done initializing in init
+[32;1mserver_15 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34mserver_12 |[0m My IP is 10.0.0.9, my idx is 7
+[33;1mserver_14 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34mserver_12 |[0m 
+[34mserver_12 |[0m Done initializing in init
+[35;1mserver_2  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36;1mserver_13 |[0m My IP is 10.0.0.6, my idx is 4
+[32;1mserver_15 |[0m My IP is 10.0.0.12, my idx is 10
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m Done initializing in init
+[33mserver_5  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34;1mserver_3  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35;1mserver_2  |[0m My IP is 10.0.0.4, my idx is 2
+[35;1mserver_2  |[0m 
+[35;1mserver_2  |[0m Done initializing in init
+[33;1mserver_14 |[0m My IP is 10.0.0.3, my idx is 1
+[33mserver_5  |[0m My IP is 10.0.0.17, my idx is 15
+[34;1mserver_3  |[0m My IP is 10.0.0.13, my idx is 11
+[36mserver_4  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34;1mserver_3  |[0m 
+[34;1mserver_3  |[0m Done initializing in init
+[33mserver_5  |[0m 
+[33mserver_5  |[0m Done initializing in init
+[32mserver_6  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m Done initializing in init
+[32mserver_6  |[0m My IP is 10.0.0.15, my idx is 13
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m Done initializing in init
+[32mserver_6  |[0m 
+[32mserver_6  |[0m Done initializing in init
+[35mserver_7  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mserver_4  |[0m My IP is 10.0.0.10, my idx is 8
+[34mserver_8  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mserver_4  |[0m 
+[36mserver_4  |[0m Done initializing in init
+[35mserver_7  |[0m My IP is 10.0.0.5, my idx is 3
+[36;1mserver_9  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35mserver_7  |[0m 
+[35mserver_7  |[0m Done initializing in init
+[36;1mserver_9  |[0m My IP is 10.0.0.7, my idx is 5
+[34mserver_8  |[0m My IP is 10.0.0.16, my idx is 14
+[34mserver_8  |[0m 
+[34mserver_8  |[0m Done initializing in init
+[36;1mserver_9  |[0m 
+[36;1mserver_9  |[0m Done initializing in init
+[36mclient_1  |[0m Net            n:16  m:14   t:100000     enc/s:2698.98   ms/enc:0.37051 	  Mbps:8.55577 Aborts = 0 Time (ms) = 37051
+[36;1mhtdise_server_13 exited with code 0
+[0m[35mhtdise_server_11 exited with code 0
+[0m[36;1mhtdise_server_9 exited with code 0
+[0m[32mhtdise_server_10 exited with code 0
+[0m[33;1mhtdise_server_14 exited with code 0
+[0m[35mhtdise_server_7 exited with code 0
+[0m[32;1mhtdise_server_15 exited with code 0
+[0m[35;1mhtdise_server_2 exited with code 0
+[0m[32mhtdise_server_6 exited with code 0
+[0m[36mhtdise_client_1 exited with code 0
+[0m[34mhtdise_server_12 exited with code 0
+[0m[34;1mhtdise_server_3 exited with code 0
+[0m[34mhtdise_server_8 exited with code 0
+[0m[36mhtdise_server_4 exited with code 0
+[0m[33mhtdise_server_1 exited with code 0
+[0m[33mhtdise_server_5 exited with code 0
+[0mStopping htdise_uptime_1  ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping htdise_uptime_1 ... done
+Removing htdise_server_1  ... 
+Removing htdise_server_4  ... 
+Removing htdise_server_5  ... 
+Removing htdise_server_11 ... 
+Removing htdise_server_8  ... 
+Removing htdise_server_14 ... 
+Removing htdise_server_15 ... 
+Removing htdise_server_12 ... 
+Removing htdise_server_9  ... 
+Removing htdise_server_2  ... 
+Removing htdise_server_3  ... 
+Removing htdise_server_10 ... 
+Removing htdise_server_6  ... 
+Removing htdise_server_7  ... 
+Removing htdise_server_13 ... 
+Removing htdise_client_1  ... 
+Removing htdise_uptime_1  ... 
+Removing htdise_uptime_1  ... done
+Removing htdise_server_7  ... done
+Removing htdise_server_10 ... done
+Removing htdise_server_8  ... done
+Removing htdise_client_1  ... done
+Removing htdise_server_5  ... done
+Removing htdise_server_13 ... done
+Removing htdise_server_11 ... done
+Removing htdise_server_6  ... done
+Removing htdise_server_3  ... done
+Removing htdise_server_4  ... done
+Removing htdise_server_1  ... done
+Removing htdise_server_15 ... done
+Removing htdise_server_2  ... done
+Removing htdise_server_12 ... done
+Removing htdise_server_9  ... done
+Removing htdise_server_14 ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  26.24MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 2bc963fd4b8e
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 458fcf3ad9f0
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 54d46435529d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 9babb2b286da
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 7090d335b251
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 1e3e660f8633
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 1fddc63e0121
+Successfully built 1fddc63e0121
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1  ... 
+Creating htdise_server_2  ... 
+Creating htdise_server_3  ... 
+Creating htdise_server_4  ... 
+Creating htdise_server_5  ... 
+Creating htdise_server_6  ... 
+Creating htdise_server_7  ... 
+Creating htdise_server_8  ... 
+Creating htdise_server_9  ... 
+Creating htdise_server_10 ... 
+Creating htdise_server_11 ... 
+Creating htdise_server_12 ... 
+Creating htdise_server_13 ... 
+Creating htdise_server_14 ... 
+Creating htdise_server_15 ... 
+Creating htdise_server_8  ... done
+Creating htdise_server_11 ... done
+Creating htdise_server_3  ... done
+Creating htdise_server_5  ... done
+Creating htdise_server_14 ... done
+Creating htdise_server_1  ... done
+Creating htdise_server_15 ... done
+Creating htdise_server_10 ... done
+Creating htdise_server_2  ... done
+Creating htdise_server_13 ... done
+Creating htdise_server_7  ... done
+Creating htdise_server_9  ... done
+Creating htdise_server_4  ... done
+Creating htdise_server_12 ... done
+Creating htdise_server_6  ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_8, htdise_server_11, htdise_server_3, htdise_server_5, htdise_server_14, htdise_server_1, htdise_server_15, htdise_server_10, htdise_server_2, htdise_server_13, htdise_server_7, htdise_server_9, htdise_server_4, htdise_server_12, htdise_server_6
+[33mserver_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33mserver_1  |[0m My IP is 10.0.0.8, my idx is 6
+[32mserver_10 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35mserver_11 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34mserver_12 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36;1mserver_13 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[33mserver_1  |[0m 
+[33mserver_1  |[0m Done initializing in init
+[35mserver_11 |[0m My IP is 10.0.0.4, my idx is 2
+[36;1mserver_13 |[0m My IP is 10.0.0.12, my idx is 10
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m Done initializing in init
+[34mserver_12 |[0m My IP is 10.0.0.16, my idx is 14
+[35mserver_11 |[0m 
+[35mserver_11 |[0m Done initializing in init
+[33;1mserver_14 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[32mserver_10 |[0m My IP is 10.0.0.10, my idx is 8
+[33;1mserver_14 |[0m My IP is 10.0.0.7, my idx is 5
+[35;1mserver_2  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32;1mserver_15 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32;1mserver_15 |[0m My IP is 10.0.0.9, my idx is 7
+[35;1mserver_2  |[0m My IP is 10.0.0.11, my idx is 9
+[36mclient_1  |[0m ----Size of Plain Text = 24 Number of Trials = 100000
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m Done initializing in init
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m Done initializing in init
+[35;1mserver_2  |[0m 
+[35;1mserver_2  |[0m Done initializing in init
+[34mserver_12 |[0m 
+[34mserver_12 |[0m Done initializing in init
+[36mserver_4  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32mserver_6  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mserver_4  |[0m My IP is 10.0.0.15, my idx is 13
+[33mserver_5  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32mserver_10 |[0m 
+[32mserver_10 |[0m Done initializing in init
+[32mserver_6  |[0m My IP is 10.0.0.17, my idx is 15
+[35mserver_7  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33mserver_5  |[0m My IP is 10.0.0.6, my idx is 4
+[34mserver_8  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32mserver_6  |[0m 
+[32mserver_6  |[0m Done initializing in init
+[35mserver_7  |[0m My IP is 10.0.0.13, my idx is 11
+[33mserver_5  |[0m 
+[33mserver_5  |[0m Done initializing in init
+[36;1mserver_9  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mserver_4  |[0m 
+[36mserver_4  |[0m Done initializing in init
+[34;1mserver_3  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34mserver_8  |[0m My IP is 10.0.0.3, my idx is 1
+[34mserver_8  |[0m 
+[34mserver_8  |[0m Done initializing in init
+[36;1mserver_9  |[0m My IP is 10.0.0.14, my idx is 12
+[35mserver_7  |[0m 
+[35mserver_7  |[0m Done initializing in init
+[34;1mserver_3  |[0m My IP is 10.0.0.5, my idx is 3
+[34;1mserver_3  |[0m 
+[34;1mserver_3  |[0m Done initializing in init
+[36;1mserver_9  |[0m 
+[36;1mserver_9  |[0m Done initializing in init
+[36mclient_1  |[0m Net            n:16  m:14   t:100000     enc/s:2724.13   ms/enc:0.36709 	  Mbps:8.63548 Aborts = 0 Time (ms) = 36709
+[34mhtdise_server_12 exited with code 0
+[0m[33;1mhtdise_server_14 exited with code 0
+[0m[33mhtdise_server_1 exited with code 0
+[0m[35mhtdise_server_7 exited with code 0
+[0m[32mhtdise_server_6 exited with code 0
+[0m[33mhtdise_server_5 exited with code 0
+[0m[32mhtdise_server_10 exited with code 0
+[0m[32;1mhtdise_server_15 exited with code 0
+[0m[34mhtdise_server_8 exited with code 0
+[0m[35;1mhtdise_server_2 exited with code 0
+[0m[36;1mhtdise_server_9 exited with code 0
+[0m[36;1mhtdise_server_13 exited with code 0
+[0m[35mhtdise_server_11 exited with code 0
+[0m[36mhtdise_server_4 exited with code 0
+[0m[36mhtdise_client_1 exited with code 0
+[0m[34;1mhtdise_server_3 exited with code 0
+[0mStopping htdise_uptime_1  ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Stopping htdise_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing htdise_server_9  ... 
+Removing htdise_server_7  ... 
+Removing htdise_server_6  ... 
+Removing htdise_server_4  ... 
+Removing htdise_server_13 ... 
+Removing htdise_server_10 ... 
+Removing htdise_server_3  ... 
+Removing htdise_server_14 ... 
+Removing htdise_server_1  ... 
+Removing htdise_server_5  ... 
+Removing htdise_server_8  ... 
+Removing htdise_server_11 ... 
+Removing htdise_server_15 ... 
+Removing htdise_server_12 ... 
+Removing htdise_server_2  ... 
+Removing htdise_client_1  ... 
+Removing htdise_uptime_1  ... 
+Removing htdise_server_10 ... done
+Removing htdise_server_13 ... done
+Removing htdise_server_4  ... done
+Removing htdise_server_14 ... done
+Removing htdise_server_15 ... done
+Removing htdise_client_1  ... done
+Removing htdise_server_5  ... done
+Removing htdise_server_1  ... done
+Removing htdise_server_7  ... done
+Removing htdise_uptime_1  ... done
+Removing htdise_server_12 ... done
+Removing htdise_server_11 ... done
+Removing htdise_server_3  ... done
+Removing htdise_server_2  ... done
+Removing htdise_server_6  ... done
+Removing htdise_server_8  ... done
+Removing htdise_server_9  ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  26.25MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 2bc963fd4b8e
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 458fcf3ad9f0
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 54d46435529d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 9babb2b286da
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 7090d335b251
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 1e3e660f8633
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 1fddc63e0121
+Successfully built 1fddc63e0121
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1  ... 
+Creating htdise_server_2  ... 
+Creating htdise_server_3  ... 
+Creating htdise_server_4  ... 
+Creating htdise_server_5  ... 
+Creating htdise_server_6  ... 
+Creating htdise_server_7  ... 
+Creating htdise_server_8  ... 
+Creating htdise_server_9  ... 
+Creating htdise_server_10 ... 
+Creating htdise_server_11 ... 
+Creating htdise_server_12 ... 
+Creating htdise_server_13 ... 
+Creating htdise_server_14 ... 
+Creating htdise_server_15 ... 
+Creating htdise_server_15 ... done
+Creating htdise_server_13 ... done
+Creating htdise_server_6  ... done
+Creating htdise_server_9  ... done
+Creating htdise_server_3  ... done
+Creating htdise_server_10 ... done
+Creating htdise_server_5  ... done
+Creating htdise_server_4  ... done
+Creating htdise_server_11 ... done
+Creating htdise_server_12 ... done
+Creating htdise_server_14 ... done
+Creating htdise_server_7  ... done
+Creating htdise_server_2  ... done
+Creating htdise_server_8  ... done
+Creating htdise_server_1  ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_15, htdise_server_13, htdise_server_6, htdise_server_9, htdise_server_3, htdise_server_10, htdise_server_5, htdise_server_4, htdise_server_11, htdise_server_12, htdise_server_14, htdise_server_7, htdise_server_2, htdise_server_8, htdise_server_1
+[32mserver_10 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35mserver_11 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32mserver_10 |[0m My IP is 10.0.0.8, my idx is 6
+[35mserver_11 |[0m My IP is 10.0.0.11, my idx is 9
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[32mserver_10 |[0m 
+[32mserver_10 |[0m Done initializing in init
+[33mserver_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35mserver_11 |[0m 
+[35mserver_11 |[0m Done initializing in init
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ----Size of Plain Text = 24 Number of Trials = 100000
+[33mserver_1  |[0m My IP is 10.0.0.17, my idx is 15
+[33mserver_1  |[0m 
+[33mserver_1  |[0m Done initializing in init
+[34mserver_12 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36;1mserver_13 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36;1mserver_13 |[0m My IP is 10.0.0.4, my idx is 2
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m Done initializing in init
+[33;1mserver_14 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34mserver_12 |[0m My IP is 10.0.0.12, my idx is 10
+[33;1mserver_14 |[0m My IP is 10.0.0.13, my idx is 11
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m Done initializing in init
+[34mserver_12 |[0m 
+[34mserver_12 |[0m Done initializing in init
+[32;1mserver_15 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32;1mserver_15 |[0m My IP is 10.0.0.3, my idx is 1
+[35;1mserver_2  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34;1mserver_3  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m Done initializing in init
+[34;1mserver_3  |[0m My IP is 10.0.0.7, my idx is 5
+[35;1mserver_2  |[0m My IP is 10.0.0.15, my idx is 13
+[36mserver_4  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34;1mserver_3  |[0m 
+[34;1mserver_3  |[0m Done initializing in init
+[36mserver_4  |[0m My IP is 10.0.0.10, my idx is 8
+[36mserver_4  |[0m 
+[36mserver_4  |[0m Done initializing in init
+[35;1mserver_2  |[0m 
+[35;1mserver_2  |[0m Done initializing in init
+[33mserver_5  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33mserver_5  |[0m My IP is 10.0.0.9, my idx is 7
+[33mserver_5  |[0m 
+[33mserver_5  |[0m Done initializing in init
+[32mserver_6  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35mserver_7  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34mserver_8  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32mserver_6  |[0m My IP is 10.0.0.5, my idx is 3
+[36;1mserver_9  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35mserver_7  |[0m My IP is 10.0.0.14, my idx is 12
+[32mserver_6  |[0m 
+[32mserver_6  |[0m Done initializing in init
+[35mserver_7  |[0m 
+[35mserver_7  |[0m Done initializing in init
+[36;1mserver_9  |[0m My IP is 10.0.0.6, my idx is 4
+[36;1mserver_9  |[0m 
+[36;1mserver_9  |[0m Done initializing in init
+[34mserver_8  |[0m My IP is 10.0.0.16, my idx is 14
+[34mserver_8  |[0m 
+[34mserver_8  |[0m Done initializing in init
+[36mclient_1  |[0m Net            n:16  m:14   t:100000     enc/s:2805.29   ms/enc:0.35647 	  Mbps:8.89275 Aborts = 0 Time (ms) = 35647
+[35;1mhtdise_server_2 exited with code 0
+[0m[32mhtdise_server_6 exited with code 0
+[0m[36;1mhtdise_server_9 exited with code 0
+[0m[36;1mhtdise_server_13 exited with code 0
+[0m[34mhtdise_server_12 exited with code 0
+[0m[32mhtdise_server_10 exited with code 0
+[0m[33mhtdise_server_1 exited with code 0
+[0m[34mhtdise_server_8 exited with code 0
+[0m[36mhtdise_client_1 exited with code 0
+[0m[35mhtdise_server_11 exited with code 0
+[0m[34;1mhtdise_server_3 exited with code 0
+[0m[32;1mhtdise_server_15 exited with code 0
+[0m[33mhtdise_server_5 exited with code 0
+[0m[35mhtdise_server_7 exited with code 0
+[0m[36mhtdise_server_4 exited with code 0
+[0m[33;1mhtdise_server_14 exited with code 0
+[0mStopping htdise_uptime_1  ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Stopping htdise_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing htdise_server_3  ... 
+Removing htdise_server_15 ... 
+Removing htdise_server_13 ... 
+Removing htdise_server_9  ... 
+Removing htdise_server_2  ... 
+Removing htdise_server_12 ... 
+Removing htdise_server_6  ... 
+Removing htdise_server_10 ... 
+Removing htdise_server_7  ... 
+Removing htdise_server_1  ... 
+Removing htdise_server_4  ... 
+Removing htdise_server_14 ... 
+Removing htdise_server_11 ... 
+Removing htdise_server_8  ... 
+Removing htdise_server_5  ... 
+Removing htdise_client_1  ... 
+Removing htdise_uptime_1  ... 
+Removing htdise_client_1  ... done
+Removing htdise_server_4  ... done
+Removing htdise_server_5  ... done
+Removing htdise_server_2  ... done
+Removing htdise_server_1  ... done
+Removing htdise_server_12 ... done
+Removing htdise_server_13 ... done
+Removing htdise_server_10 ... done
+Removing htdise_server_15 ... done
+Removing htdise_server_7  ... done
+Removing htdise_server_9  ... done
+Removing htdise_server_6  ... done
+Removing htdise_server_14 ... done
+Removing htdise_server_8  ... done
+Removing htdise_server_11 ... done
+Removing htdise_server_3  ... done
+Removing htdise_uptime_1  ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  26.25MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 2bc963fd4b8e
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 458fcf3ad9f0
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 54d46435529d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 9babb2b286da
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 7090d335b251
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 1e3e660f8633
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 1fddc63e0121
+Successfully built 1fddc63e0121
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1  ... 
+Creating htdise_server_2  ... 
+Creating htdise_server_3  ... 
+Creating htdise_server_4  ... 
+Creating htdise_server_5  ... 
+Creating htdise_server_6  ... 
+Creating htdise_server_7  ... 
+Creating htdise_server_8  ... 
+Creating htdise_server_9  ... 
+Creating htdise_server_10 ... 
+Creating htdise_server_11 ... 
+Creating htdise_server_12 ... 
+Creating htdise_server_13 ... 
+Creating htdise_server_14 ... 
+Creating htdise_server_15 ... 
+Creating htdise_server_9  ... done
+Creating htdise_server_4  ... done
+Creating htdise_server_5  ... done
+Creating htdise_server_3  ... done
+Creating htdise_server_12 ... done
+Creating htdise_server_6  ... done
+Creating htdise_server_15 ... done
+Creating htdise_server_1  ... done
+Creating htdise_server_7  ... done
+Creating htdise_server_10 ... done
+Creating htdise_server_8  ... done
+Creating htdise_server_2  ... done
+Creating htdise_server_13 ... done
+Creating htdise_server_14 ... done
+Creating htdise_server_11 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_9, htdise_server_4, htdise_server_5, htdise_server_3, htdise_server_12, htdise_server_6, htdise_server_15, htdise_server_1, htdise_server_7, htdise_server_10, htdise_server_8, htdise_server_2, htdise_server_13, htdise_server_14, htdise_server_11
+[33mserver_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32mserver_10 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32mserver_10 |[0m My IP is 10.0.0.12, my idx is 10
+[33mserver_1  |[0m My IP is 10.0.0.10, my idx is 8
+[32mserver_10 |[0m 
+[32mserver_10 |[0m Done initializing in init
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[33mserver_1  |[0m 
+[33mserver_1  |[0m Done initializing in init
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[35mserver_11 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m ----Size of Plain Text = 24 Number of Trials = 100000
+[34mserver_12 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35mserver_11 |[0m My IP is 10.0.0.17, my idx is 15
+[36;1mserver_13 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34mserver_12 |[0m My IP is 10.0.0.7, my idx is 5
+[32;1mserver_15 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34mserver_12 |[0m 
+[34mserver_12 |[0m Done initializing in init
+[35mserver_11 |[0m 
+[35mserver_11 |[0m Done initializing in init
+[32;1mserver_15 |[0m My IP is 10.0.0.9, my idx is 7
+[36;1mserver_13 |[0m My IP is 10.0.0.15, my idx is 13
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m Done initializing in init
+[33;1mserver_14 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35;1mserver_2  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33;1mserver_14 |[0m My IP is 10.0.0.16, my idx is 14
+[35;1mserver_2  |[0m My IP is 10.0.0.14, my idx is 12
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m Done initializing in init
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m Done initializing in init
+[35;1mserver_2  |[0m 
+[35;1mserver_2  |[0m Done initializing in init
+[34;1mserver_3  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33mserver_5  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mserver_4  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33mserver_5  |[0m My IP is 10.0.0.5, my idx is 3
+[35mserver_7  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35mserver_7  |[0m My IP is 10.0.0.11, my idx is 9
+[32mserver_6  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32mserver_6  |[0m My IP is 10.0.0.8, my idx is 6
+[35mserver_7  |[0m 
+[35mserver_7  |[0m Done initializing in init
+[36;1mserver_9  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34;1mserver_3  |[0m My IP is 10.0.0.6, my idx is 4
+[33mserver_5  |[0m 
+[33mserver_5  |[0m Done initializing in init
+[32mserver_6  |[0m 
+[32mserver_6  |[0m Done initializing in init
+[34;1mserver_3  |[0m 
+[34;1mserver_3  |[0m Done initializing in init
+[36;1mserver_9  |[0m My IP is 10.0.0.3, my idx is 1
+[36;1mserver_9  |[0m 
+[36;1mserver_9  |[0m Done initializing in init
+[34mserver_8  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34mserver_8  |[0m My IP is 10.0.0.13, my idx is 11
+[34mserver_8  |[0m 
+[34mserver_8  |[0m Done initializing in init
+[36mserver_4  |[0m My IP is 10.0.0.4, my idx is 2
+[36mserver_4  |[0m 
+[36mserver_4  |[0m Done initializing in init
+[36mclient_1  |[0m Net            n:16  m:14   t:100000     enc/s:2842.36   ms/enc:0.35182 	  Mbps:9.01029 Aborts = 0 Time (ms) = 35182
+[35mhtdise_server_11 exited with code 0
+[0m[35mhtdise_server_7 exited with code 0
+[0m[34mhtdise_server_8 exited with code 0
+[0m[32;1mhtdise_server_15 exited with code 0
+[0m[36mhtdise_server_4 exited with code 0
+[0m[32mhtdise_server_6 exited with code 0
+[0m[32mhtdise_server_10 exited with code 0
+[0m[36mhtdise_client_1 exited with code 0
+[0m[36;1mhtdise_server_9 exited with code 0
+[0m[33;1mhtdise_server_14 exited with code 0
+[0m[34;1mhtdise_server_3 exited with code 0
+[0m[34mhtdise_server_12 exited with code 0
+[0m[35;1mhtdise_server_2 exited with code 0
+[0m[33mhtdise_server_1 exited with code 0
+[0m[33mhtdise_server_5 exited with code 0
+[0m[36;1mhtdise_server_13 exited with code 0
+[0mStopping htdise_uptime_1  ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Stopping htdise_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing htdise_server_13 ... 
+Removing htdise_server_3  ... 
+Removing htdise_server_4  ... 
+Removing htdise_server_7  ... 
+Removing htdise_server_10 ... 
+Removing htdise_server_1  ... 
+Removing htdise_server_14 ... 
+Removing htdise_server_11 ... 
+Removing htdise_server_8  ... 
+Removing htdise_server_2  ... 
+Removing htdise_server_5  ... 
+Removing htdise_server_15 ... 
+Removing htdise_server_12 ... 
+Removing htdise_server_9  ... 
+Removing htdise_server_6  ... 
+Removing htdise_client_1  ... 
+Removing htdise_uptime_1  ... 
+Removing htdise_server_6  ... done
+Removing htdise_server_13 ... done
+Removing htdise_server_10 ... done
+Removing htdise_uptime_1  ... done
+Removing htdise_server_11 ... done
+Removing htdise_server_2  ... done
+Removing htdise_server_14 ... done
+Removing htdise_server_3  ... done
+Removing htdise_server_1  ... done
+Removing htdise_server_7  ... done
+Removing htdise_client_1  ... done
+Removing htdise_server_4  ... done
+Removing htdise_server_5  ... done
+Removing htdise_server_12 ... done
+Removing htdise_server_9  ... done
+Removing htdise_server_15 ... done
+Removing htdise_server_8  ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  26.26MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 2bc963fd4b8e
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 458fcf3ad9f0
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 54d46435529d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 9babb2b286da
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 7090d335b251
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 1e3e660f8633
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 1fddc63e0121
+Successfully built 1fddc63e0121
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1  ... 
+Creating htdise_server_2  ... 
+Creating htdise_server_3  ... 
+Creating htdise_server_4  ... 
+Creating htdise_server_5  ... 
+Creating htdise_server_6  ... 
+Creating htdise_server_7  ... 
+Creating htdise_server_8  ... 
+Creating htdise_server_9  ... 
+Creating htdise_server_10 ... 
+Creating htdise_server_11 ... 
+Creating htdise_server_12 ... 
+Creating htdise_server_13 ... 
+Creating htdise_server_14 ... 
+Creating htdise_server_15 ... 
+Creating htdise_server_14 ... done
+Creating htdise_server_3  ... done
+Creating htdise_server_5  ... done
+Creating htdise_server_6  ... done
+Creating htdise_server_11 ... done
+Creating htdise_server_13 ... done
+Creating htdise_server_9  ... done
+Creating htdise_server_2  ... done
+Creating htdise_server_7  ... done
+Creating htdise_server_10 ... done
+Creating htdise_server_4  ... done
+Creating htdise_server_12 ... done
+Creating htdise_server_8  ... done
+Creating htdise_server_1  ... done
+Creating htdise_server_15 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_14, htdise_server_3, htdise_server_5, htdise_server_6, htdise_server_11, htdise_server_13, htdise_server_9, htdise_server_2, htdise_server_7, htdise_server_10, htdise_server_4, htdise_server_12, htdise_server_8, htdise_server_1, htdise_server_15
+[36mclient_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[33mserver_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35mserver_11 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[32mserver_10 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34mserver_12 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34mserver_12 |[0m My IP is 10.0.0.14, my idx is 12
+[34mserver_12 |[0m 
+[34mserver_12 |[0m Done initializing in init
+[33mserver_1  |[0m My IP is 10.0.0.16, my idx is 14
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[35mserver_11 |[0m My IP is 10.0.0.8, my idx is 6
+[35mserver_11 |[0m 
+[35mserver_11 |[0m Done initializing in init
+[36mclient_1  |[0m ----Size of Plain Text = 24 Number of Trials = 100000
+[32mserver_10 |[0m My IP is 10.0.0.12, my idx is 10
+[33mserver_1  |[0m 
+[33mserver_1  |[0m Done initializing in init
+[36;1mserver_13 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36;1mserver_13 |[0m My IP is 10.0.0.7, my idx is 5
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m Done initializing in init
+[32mserver_10 |[0m 
+[32mserver_10 |[0m Done initializing in init
+[33;1mserver_14 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32;1mserver_15 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33;1mserver_14 |[0m My IP is 10.0.0.3, my idx is 1
+[32;1mserver_15 |[0m My IP is 10.0.0.17, my idx is 15
+[35;1mserver_2  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m Done initializing in init
+[34;1mserver_3  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35;1mserver_2  |[0m My IP is 10.0.0.11, my idx is 9
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m Done initializing in init
+[34;1mserver_3  |[0m My IP is 10.0.0.4, my idx is 2
+[34;1mserver_3  |[0m 
+[34;1mserver_3  |[0m Done initializing in init
+[36mserver_4  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mserver_4  |[0m My IP is 10.0.0.13, my idx is 11
+[36mserver_4  |[0m 
+[36mserver_4  |[0m Done initializing in init
+[35;1mserver_2  |[0m 
+[35;1mserver_2  |[0m Done initializing in init
+[32mserver_6  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32mserver_6  |[0m My IP is 10.0.0.6, my idx is 4
+[32mserver_6  |[0m 
+[32mserver_6  |[0m Done initializing in init
+[33mserver_5  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33mserver_5  |[0m My IP is 10.0.0.5, my idx is 3
+[36;1mserver_9  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34mserver_8  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36;1mserver_9  |[0m My IP is 10.0.0.9, my idx is 7
+[34mserver_8  |[0m My IP is 10.0.0.15, my idx is 13
+[35mserver_7  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34mserver_8  |[0m 
+[34mserver_8  |[0m Done initializing in init
+[33mserver_5  |[0m 
+[33mserver_5  |[0m Done initializing in init
+[35mserver_7  |[0m My IP is 10.0.0.10, my idx is 8
+[35mserver_7  |[0m 
+[35mserver_7  |[0m Done initializing in init
+[36;1mserver_9  |[0m 
+[36;1mserver_9  |[0m Done initializing in init
+[36mclient_1  |[0m Net            n:16  m:14   t:100000     enc/s:2900.74   ms/enc:0.34474 	  Mbps:9.19534 Aborts = 0 Time (ms) = 34474
+[33;1mhtdise_server_14 exited with code 0
+[0m[35mhtdise_server_7 exited with code 0
+[0m[35mhtdise_server_11 exited with code 0
+[0m[34mhtdise_server_8 exited with code 0
+[0m[32;1mhtdise_server_15 exited with code 0
+[0m[36;1mhtdise_server_13 exited with code 0
+[0m[32mhtdise_server_6 exited with code 0
+[0m[33mhtdise_server_1 exited with code 0
+[0m[34mhtdise_server_12 exited with code 0
+[0m[36mhtdise_client_1 exited with code 0
+[0m[34;1mhtdise_server_3 exited with code 0
+[0m[35;1mhtdise_server_2 exited with code 0
+[0m[36mhtdise_server_4 exited with code 0
+[0m[32mhtdise_server_10 exited with code 0
+[0m[33mhtdise_server_5 exited with code 0
+[0m[36;1mhtdise_server_9 exited with code 0
+[0mStopping htdise_uptime_1  ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Stopping htdise_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing htdise_server_8  ... 
+Removing htdise_server_2  ... 
+Removing htdise_server_11 ... 
+Removing htdise_server_5  ... 
+Removing htdise_server_12 ... 
+Removing htdise_server_15 ... 
+Removing htdise_server_9  ... 
+Removing htdise_server_3  ... 
+Removing htdise_server_6  ... 
+Removing htdise_server_13 ... 
+Removing htdise_server_14 ... 
+Removing htdise_server_10 ... 
+Removing htdise_server_4  ... 
+Removing htdise_server_1  ... 
+Removing htdise_server_7  ... 
+Removing htdise_client_1  ... 
+Removing htdise_uptime_1  ... 
+Removing htdise_server_4  ... done
+Removing htdise_server_1  ... done
+Removing htdise_server_12 ... done
+Removing htdise_server_13 ... done
+Removing htdise_server_15 ... done
+Removing htdise_client_1  ... done
+Removing htdise_server_3  ... done
+Removing htdise_server_6  ... done
+Removing htdise_server_10 ... done
+Removing htdise_server_9  ... done
+Removing htdise_server_7  ... done
+Removing htdise_server_11 ... done
+Removing htdise_server_14 ... done
+Removing htdise_server_2  ... done
+Removing htdise_uptime_1  ... done
+Removing htdise_server_8  ... done
+Removing htdise_server_5  ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  26.27MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 2bc963fd4b8e
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 458fcf3ad9f0
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 54d46435529d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 9babb2b286da
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 7090d335b251
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 1e3e660f8633
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 1fddc63e0121
+Successfully built 1fddc63e0121
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1  ... 
+Creating htdise_server_2  ... 
+Creating htdise_server_3  ... 
+Creating htdise_server_4  ... 
+Creating htdise_server_5  ... 
+Creating htdise_server_6  ... 
+Creating htdise_server_7  ... 
+Creating htdise_server_8  ... 
+Creating htdise_server_9  ... 
+Creating htdise_server_10 ... 
+Creating htdise_server_11 ... 
+Creating htdise_server_12 ... 
+Creating htdise_server_13 ... 
+Creating htdise_server_14 ... 
+Creating htdise_server_15 ... 
+Creating htdise_server_3  ... done
+Creating htdise_server_2  ... done
+Creating htdise_server_5  ... done
+Creating htdise_server_9  ... done
+Creating htdise_server_11 ... done
+Creating htdise_server_12 ... done
+Creating htdise_server_4  ... done
+Creating htdise_server_15 ... done
+Creating htdise_server_6  ... done
+Creating htdise_server_14 ... done
+Creating htdise_server_1  ... done
+Creating htdise_server_7  ... done
+Creating htdise_server_13 ... done
+Creating htdise_server_8  ... done
+Creating htdise_server_10 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_3, htdise_server_2, htdise_server_5, htdise_server_9, htdise_server_11, htdise_server_12, htdise_server_4, htdise_server_15, htdise_server_6, htdise_server_14, htdise_server_1, htdise_server_7, htdise_server_13, htdise_server_8, htdise_server_10
+[36mclient_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[32mserver_10 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32mserver_10 |[0m My IP is 10.0.0.17, my idx is 15
+[32mserver_10 |[0m 
+[32mserver_10 |[0m Done initializing in init
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[35mserver_11 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33mserver_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m ----Size of Plain Text = 24 Number of Trials = 100000
+[34mserver_12 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33mserver_1  |[0m My IP is 10.0.0.14, my idx is 12
+[34mserver_12 |[0m My IP is 10.0.0.8, my idx is 6
+[33mserver_1  |[0m 
+[33mserver_1  |[0m Done initializing in init
+[33;1mserver_14 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35mserver_11 |[0m My IP is 10.0.0.7, my idx is 5
+[34mserver_12 |[0m 
+[34mserver_12 |[0m Done initializing in init
+[36;1mserver_13 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36;1mserver_13 |[0m My IP is 10.0.0.15, my idx is 13
+[35;1mserver_2  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35;1mserver_2  |[0m My IP is 10.0.0.3, my idx is 1
+[35;1mserver_2  |[0m 
+[35;1mserver_2  |[0m Done initializing in init
+[32;1mserver_15 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m Done initializing in init
+[32;1mserver_15 |[0m My IP is 10.0.0.10, my idx is 8
+[35mserver_11 |[0m 
+[35mserver_11 |[0m Done initializing in init
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m Done initializing in init
+[33;1mserver_14 |[0m My IP is 10.0.0.12, my idx is 10
+[36mserver_4  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33mserver_5  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34;1mserver_3  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m Done initializing in init
+[34;1mserver_3  |[0m My IP is 10.0.0.4, my idx is 2
+[32mserver_6  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33mserver_5  |[0m My IP is 10.0.0.6, my idx is 4
+[36mserver_4  |[0m My IP is 10.0.0.9, my idx is 7
+[33mserver_5  |[0m 
+[33mserver_5  |[0m Done initializing in init
+[36mserver_4  |[0m 
+[36mserver_4  |[0m Done initializing in init
+[32mserver_6  |[0m My IP is 10.0.0.11, my idx is 9
+[34;1mserver_3  |[0m 
+[34;1mserver_3  |[0m Done initializing in init
+[35mserver_7  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34mserver_8  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36;1mserver_9  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36;1mserver_9  |[0m My IP is 10.0.0.5, my idx is 3
+[32mserver_6  |[0m 
+[32mserver_6  |[0m Done initializing in init
+[35mserver_7  |[0m My IP is 10.0.0.13, my idx is 11
+[35mserver_7  |[0m 
+[35mserver_7  |[0m Done initializing in init
+[34mserver_8  |[0m My IP is 10.0.0.16, my idx is 14
+[34mserver_8  |[0m 
+[34mserver_8  |[0m Done initializing in init
+[36;1mserver_9  |[0m 
+[36;1mserver_9  |[0m Done initializing in init
+[36mclient_1  |[0m Net            n:16  m:14   t:100000     enc/s:2744.54   ms/enc:0.36436 	  Mbps:8.70019 Aborts = 0 Time (ms) = 36436
+[34;1mhtdise_server_3 exited with code 0
+[0m[36mhtdise_server_4 exited with code 0
+[0m[35;1mhtdise_server_2 exited with code 0
+[0m[34mhtdise_server_8 exited with code 0
+[0m[34mhtdise_server_12 exited with code 0
+[0m[35mhtdise_server_7 exited with code 0
+[0m[33;1mhtdise_server_14 exited with code 0
+[0m[32mhtdise_server_6 exited with code 0
+[0m[32;1mhtdise_server_15 exited with code 0
+[0m[36;1mhtdise_server_9 exited with code 0
+[0m[36;1mhtdise_server_13 exited with code 0
+[0m[33mhtdise_server_5 exited with code 0
+[0m[35mhtdise_server_11 exited with code 0
+[0m[32mhtdise_server_10 exited with code 0
+[0m[33mhtdise_server_1 exited with code 0
+[0m[36mhtdise_client_1 exited with code 0
+[0mStopping htdise_uptime_1  ... 
+Stopping htdise_uptime_1 ... 
+Stopping htdise_uptime_1 ... done
+Stopping htdise_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing htdise_server_8  ... 
+Removing htdise_server_12 ... 
+Removing htdise_server_15 ... 
+Removing htdise_server_2  ... 
+Removing htdise_server_6  ... 
+Removing htdise_server_9  ... 
+Removing htdise_server_10 ... 
+Removing htdise_server_3  ... 
+Removing htdise_server_7  ... 
+Removing htdise_server_14 ... 
+Removing htdise_server_13 ... 
+Removing htdise_server_4  ... 
+Removing htdise_server_11 ... 
+Removing htdise_server_1  ... 
+Removing htdise_server_5  ... 
+Removing htdise_client_1  ... 
+Removing htdise_uptime_1  ... 
+Removing htdise_server_4  ... done
+Removing htdise_server_14 ... done
+Removing htdise_server_9  ... done
+Removing htdise_server_2  ... done
+Removing htdise_server_10 ... done
+Removing htdise_server_5  ... done
+Removing htdise_server_15 ... done
+Removing htdise_uptime_1  ... done
+Removing htdise_server_7  ... done
+Removing htdise_server_3  ... done
+Removing htdise_server_13 ... done
+Removing htdise_server_11 ... done
+Removing htdise_server_12 ... done
+Removing htdise_server_1  ... done
+Removing htdise_server_6  ... done
+Removing htdise_server_8  ... done
+Removing htdise_client_1  ... done
+Removing network htdise_dise-net
+error while removing network: network htdise_dise-net id 9a88668d89eaa998147b4895bef3ee1c67f6344d5fb08afc555a658561f61ce2 has active endpoints
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  26.28MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 2bc963fd4b8e
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 458fcf3ad9f0
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 54d46435529d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 9babb2b286da
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 7090d335b251
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 1e3e660f8633
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 1fddc63e0121
+Successfully built 1fddc63e0121
+Successfully tagged groundhog:latest
+Creating htdise_uptime_1 ... 
+Creating htdise_uptime_1 ... done
+Creating htdise_client_1 ... 
+Creating htdise_client_1 ... done
+Creating htdise_server_1  ... 
+Creating htdise_server_2  ... 
+Creating htdise_server_3  ... 
+Creating htdise_server_4  ... 
+Creating htdise_server_5  ... 
+Creating htdise_server_6  ... 
+Creating htdise_server_7  ... 
+Creating htdise_server_8  ... 
+Creating htdise_server_9  ... 
+Creating htdise_server_10 ... 
+Creating htdise_server_11 ... 
+Creating htdise_server_12 ... 
+Creating htdise_server_13 ... 
+Creating htdise_server_14 ... 
+Creating htdise_server_15 ... 
+Creating htdise_server_10 ... done
+Creating htdise_server_9  ... done
+Creating htdise_server_7  ... done
+Creating htdise_server_13 ... done
+Creating htdise_server_11 ... done
+Creating htdise_server_3  ... done
+Creating htdise_server_2  ... done
+Creating htdise_server_6  ... done
+Creating htdise_server_4  ... done
+Creating htdise_server_8  ... done
+Creating htdise_server_1  ... done
+Creating htdise_server_14 ... done
+Creating htdise_server_12 ... done
+Creating htdise_server_5  ... done
+Creating htdise_server_15 ... done
+Attaching to htdise_uptime_1, htdise_client_1, htdise_server_10, htdise_server_9, htdise_server_7, htdise_server_13, htdise_server_11, htdise_server_3, htdise_server_2, htdise_server_6, htdise_server_4, htdise_server_8, htdise_server_1, htdise_server_14, htdise_server_12, htdise_server_5, htdise_server_15
+[36mclient_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[32mserver_10 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33mserver_1  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33mserver_1  |[0m My IP is 10.0.0.13, my idx is 11
+[32mserver_10 |[0m My IP is 10.0.0.3, my idx is 1
+[35mserver_11 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32mserver_10 |[0m 
+[32mserver_10 |[0m Done initializing in init
+[36mclient_1  |[0m ----Size of Plain Text = 24 Number of Trials = 100000
+[33mserver_1  |[0m 
+[33mserver_1  |[0m Done initializing in init
+[35mserver_11 |[0m My IP is 10.0.0.7, my idx is 5
+[34mserver_12 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34mserver_12 |[0m My IP is 10.0.0.15, my idx is 13
+[36;1mserver_13 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33;1mserver_14 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35mserver_11 |[0m 
+[35mserver_11 |[0m Done initializing in init
+[32;1mserver_15 |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36;1mserver_13 |[0m My IP is 10.0.0.6, my idx is 4
+[34mserver_12 |[0m 
+[34mserver_12 |[0m Done initializing in init
+[32;1mserver_15 |[0m My IP is 10.0.0.17, my idx is 15
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m Done initializing in init
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m Done initializing in init
+[33;1mserver_14 |[0m My IP is 10.0.0.14, my idx is 12
+[35;1mserver_2  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m Done initializing in init
+[34;1mserver_3  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[35;1mserver_2  |[0m My IP is 10.0.0.9, my idx is 7
+[35;1mserver_2  |[0m 
+[35;1mserver_2  |[0m Done initializing in init
+[34;1mserver_3  |[0m My IP is 10.0.0.8, my idx is 6
+[36mserver_4  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[34;1mserver_3  |[0m 
+[34;1mserver_3  |[0m Done initializing in init
+[33mserver_5  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[32mserver_6  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33mserver_5  |[0m My IP is 10.0.0.16, my idx is 14
+[32mserver_6  |[0m My IP is 10.0.0.10, my idx is 8
+[36mserver_4  |[0m My IP is 10.0.0.11, my idx is 9
+[35mserver_7  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[33mserver_5  |[0m 
+[33mserver_5  |[0m Done initializing in init
+[35mserver_7  |[0m My IP is 10.0.0.5, my idx is 3
+[32mserver_6  |[0m 
+[32mserver_6  |[0m Done initializing in init
+[36mserver_4  |[0m 
+[36mserver_4  |[0m Done initializing in init
+[35mserver_7  |[0m 
+[35mserver_7  |[0m Done initializing in init
+[34mserver_8  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36;1mserver_9  |[0m In here/usr/local/src/DiSE/test/Helloworld.cpp 179
+[36;1mserver_9  |[0m My IP is 10.0.0.4, my idx is 2
+[34mserver_8  |[0m My IP is 10.0.0.12, my idx is 10
+[34mserver_8  |[0m 
+[34mserver_8  |[0m Done initializing in init
+[36;1mserver_9  |[0m 
+[36;1mserver_9  |[0m Done initializing in init
+[36mclient_1  |[0m Net            n:16  m:14   t:100000     enc/s:2894.1   ms/enc:0.34553 	  Mbps:9.17431 Aborts = 0 Time (ms) = 34553
+[35mhtdise_server_11 exited with code 0
+[0m[33mhtdise_server_1 exited with code 0
+[0m[32mhtdise_server_10 exited with code 0
+[0m[36mhtdise_server_4 exited with code 0
+[0m[33;1mhtdise_server_14 exited with code 0
+[0m[36;1mhtdise_server_9 exited with code 0
+[0m[33mhtdise_server_5 exited with code 0
+[0m[34;1mhtdise_server_3 exited with code 0
+[0m[35mhtdise_server_7 exited with code 0
+[0m[35;1mhtdise_server_2 exited with code 0
+[0m[36mhtdise_client_1 exited with code 0
+[0m[32mhtdise_server_6 exited with code 0
+[0m[34mhtdise_server_8 exited with code 0
+[0m[34mhtdise_server_12 exited with code 0
+[0m[32;1mhtdise_server_15 exited with code 0
+[0m[36;1mhtdise_server_13 exited with code 0
+[0mStopping htdise_uptime_1  ... 
+Stopping htdise_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
