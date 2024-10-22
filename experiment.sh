@@ -1,6 +1,6 @@
 #!/bin/bash
 ##############################################################################
-# This script automates the run_tests.sh script by loopong through different
+# This script automates the run_tests.sh script by looping through different
 # $N$ and $M$. The argument 'default' or 'groundhog' depends on the scheme
 #
 # The timeout command is used to forcefully stop the tests after a 120 seconds

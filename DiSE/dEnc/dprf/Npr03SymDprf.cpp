@@ -254,8 +254,7 @@ namespace dEnc {
     {
         // simply call the async version and then block for it to complete
         block output = asyncEval(input).get()[0];
-        //std::cout<<"Ashish Size of Output after asyncEval = "<<sizeof(output)<<std::endl;
-        //processTimes();
+        //std::cout<<"Size of Output after asyncEval = "<<sizeof(output)<<std::endl;
         return output;
     }
 
@@ -502,12 +501,10 @@ namespace dEnc {
             if (j < w->async.size()){
                 auto c = i % mN;
                 if (c > mPartyIdx) --c;
-                try
-                {
+                try{
                     w->async[j] = mRequestChls[c].asyncRecv(&w->fx[j], 1);
                 }
-                catch(osuCrypto::BadReceiveBufferSize & e)
-                {
+                catch(osuCrypto::BadReceiveBufferSize & e)                {
                     std::cout<<"Line 443"<<std::endl;
                     receive_queue_Abort++;
                     /*std::cout << "received only header from node " << c << std::endl;
