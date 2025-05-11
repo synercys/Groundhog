@@ -1,9 +1,9 @@
 # Groundhog: A Restart-based Framework for Increased Availability in High-Threshold Cryptosystems
 
-Groundhog is a framework/mechanism to improve resiliency to node corruptions in threshold cryptosystems. This mechanism can be laid on top of various protocols used in threshold cryptosystem.
+Groundhog is a framework/mechanism to improve resiliency to node corruptions (either due to failures or attackers) in a threshold cryptosystems (TC). The Groundhog mechanism can be overlaid on any application running on a TC and functions by restarting a fraction of the nodes at strategic time intervals, thereby ensuring threshold number of nodes are available at anytime to perform the operations. A TC is specified by the 2-tuple (t, n), where t is the threshold and n is the size of the TC.
+
 We demonstrate Groundhog on 2 protocols used in threshold cryptosystems : a) Distributed Symmetric Encryption (DiSE) and b) Boneh, Lynn and Shacham Distributed (BLS) Signatures
 
-Groundhog works by restarting the nodes strategically by ensuring threshold number of nodes are available at anytime to perform the operations.
 
 ## Execution Instructions
 Simply run `docker-compose up` to start a swarm of containers.

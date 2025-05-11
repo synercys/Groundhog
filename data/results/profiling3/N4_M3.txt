@@ -1,0 +1,1057 @@
+
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1 ... done
+Removing groundhog_server_2 ... 
+Removing groundhog_server_3 ... 
+Removing groundhog_server_1 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_server_2 ... done
+Removing groundhog_client_1 ... done
+Removing groundhog_uptime_1 ... done
+Removing groundhog_server_1 ... done
+Removing groundhog_server_3 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  31.05MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 275810352985
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> a835baf3d624
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 94888501f72f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 5e2a6e3e0e43
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> e36aef838acf
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 364e0b9640f0
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 179a8fe4fa0c
+Successfully built 179a8fe4fa0c
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_2 ... done
+Creating groundhog_server_3 ... done
+Creating groundhog_server_1 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_2, groundhog_server_3, groundhog_server_1
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[33mserver_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[33mserver_1  |[0m My IP is 10.0.0.5, my idx is 3
+[32mserver_2  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_1  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m My IP is 10.0.0.3, my idx is 1
+[32mserver_2  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[35mserver_3  |[0m My IP is 10.0.0.4, my idx is 2
+[35mserver_3  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m Net            n:4  m:3   t:100000     enc/s:7670.48   ms/enc:0.13037 	  Mbps:3.68183 Aborts = 0 Time (ms) = 13037
+[36mclient_1  |[0m ---- OPRF-Preparation-Times	Mean:7.33308	Std Deviation:3.51937
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:1.26401e-05	Std Deviation:1.98275e-05
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:1.26026e-06	Std Deviation:2.12379e-06
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:2.23895e-07	Std Deviation:1.30548e-06
+[32mgroundhog_server_2 exited with code 0
+[0m[36mgroundhog_client_1 exited with code 0
+[0m[33mgroundhog_server_1 exited with code 0
+[0m[35mgroundhog_server_3 exited with code 0
+[0mStopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1 ... done
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing groundhog_server_3 ... 
+Removing groundhog_server_1 ... 
+Removing groundhog_server_2 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_server_3 ... done
+Removing groundhog_server_2 ... done
+Removing groundhog_client_1 ... done
+Removing groundhog_server_1 ... done
+Removing groundhog_uptime_1 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  31.05MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 275810352985
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> a835baf3d624
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 94888501f72f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 5e2a6e3e0e43
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> e36aef838acf
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 364e0b9640f0
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 179a8fe4fa0c
+Successfully built 179a8fe4fa0c
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_1 ... done
+Creating groundhog_server_3 ... done
+Creating groundhog_server_2 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_1, groundhog_server_3, groundhog_server_2
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[33mserver_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_3  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_3  |[0m My IP is 10.0.0.4, my idx is 2
+[33mserver_1  |[0m My IP is 10.0.0.3, my idx is 1
+[33mserver_1  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32mserver_2  |[0m My IP is 10.0.0.5, my idx is 3
+[32mserver_2  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m Net            n:4  m:3   t:100000     enc/s:6820.35   ms/enc:0.14662 	  Mbps:3.27377 Aborts = 0 Time (ms) = 14662
+[36mclient_1  |[0m ---- OPRF-Preparation-Times	Mean:8.54074	Std Deviation:3.99002
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:1.46201e-05	Std Deviation:2.08182e-05
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:1.46955e-06	Std Deviation:4.35975e-06
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:2.60946e-07	Std Deviation:1.22775e-06
+[33mgroundhog_server_1 exited with code 0
+[0m[32mgroundhog_server_2 exited with code 0
+[0m[35mgroundhog_server_3 exited with code 0
+[0m[36mgroundhog_client_1 exited with code 0
+[0mStopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1 ... done
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing groundhog_server_2 ... 
+Removing groundhog_server_3 ... 
+Removing groundhog_server_1 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_server_1 ... done
+Removing groundhog_client_1 ... done
+Removing groundhog_server_3 ... done
+Removing groundhog_server_2 ... done
+Removing groundhog_uptime_1 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  31.06MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 275810352985
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> a835baf3d624
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 94888501f72f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 5e2a6e3e0e43
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> e36aef838acf
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 364e0b9640f0
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 179a8fe4fa0c
+Successfully built 179a8fe4fa0c
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_2 ... done
+Creating groundhog_server_1 ... done
+Creating groundhog_server_3 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_2, groundhog_server_1, groundhog_server_3
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[33mserver_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_1  |[0m My IP is 10.0.0.3, my idx is 1
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[33mserver_1  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[32mserver_2  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32mserver_2  |[0m My IP is 10.0.0.4, my idx is 2
+[32mserver_2  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_3  |[0m My IP is 10.0.0.5, my idx is 3
+[35mserver_3  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m Net            n:4  m:3   t:100000     enc/s:7092.2   ms/enc:0.141 	  Mbps:3.40426 Aborts = 0 Time (ms) = 14100
+[36mclient_1  |[0m ---- OPRF-Preparation-Times	Mean:8.40081	Std Deviation:3.72008
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:1.34441e-05	Std Deviation:2.44225e-05
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:1.35973e-06	Std Deviation:3.6337e-06
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:2.39628e-07	Std Deviation:1.45421e-06
+[33mgroundhog_server_1 exited with code 0
+[0m[35mgroundhog_server_3 exited with code 0
+[0m[32mgroundhog_server_2 exited with code 0
+[0m[36mgroundhog_client_1 exited with code 0
+[0mStopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping groundhog_uptime_1 ... done
+Removing groundhog_server_2 ... 
+Removing groundhog_server_3 ... 
+Removing groundhog_server_1 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_server_1 ... done
+Removing groundhog_server_2 ... done
+Removing groundhog_client_1 ... done
+Removing groundhog_uptime_1 ... done
+Removing groundhog_server_3 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  31.06MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 275810352985
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> a835baf3d624
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 94888501f72f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 5e2a6e3e0e43
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> e36aef838acf
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 364e0b9640f0
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 179a8fe4fa0c
+Successfully built 179a8fe4fa0c
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_3 ... done
+Creating groundhog_server_2 ... done
+Creating groundhog_server_1 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_3, groundhog_server_2, groundhog_server_1
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[33mserver_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_1  |[0m My IP is 10.0.0.5, my idx is 3
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[32mserver_2  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_1  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[32mserver_2  |[0m My IP is 10.0.0.4, my idx is 2
+[35mserver_3  |[0m My IP is 10.0.0.3, my idx is 1
+[35mserver_3  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m Net            n:4  m:3   t:100000     enc/s:7464.36   ms/enc:0.13397 	  Mbps:3.58289 Aborts = 0 Time (ms) = 13397
+[36mclient_1  |[0m ---- OPRF-Preparation-Times	Mean:7.92201	Std Deviation:3.54672
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:1.39554e-05	Std Deviation:1.16419e-05
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:1.35334e-06	Std Deviation:7.03283e-06
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:2.35678e-07	Std Deviation:1.44683e-06
+Stopping groundhog_client_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_client_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_client_1 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_client_1 ... done
+Stopping groundhog_uptime_1 ... done
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing groundhog_server_2 ... 
+Removing groundhog_server_3 ... 
+Removing groundhog_server_1 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_uptime_1 ... done
+Removing groundhog_server_3 ... done
+Removing groundhog_server_1 ... done
+Removing groundhog_server_2 ... done
+Removing groundhog_client_1 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  31.07MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 275810352985
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> a835baf3d624
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 94888501f72f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 5e2a6e3e0e43
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> e36aef838acf
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 364e0b9640f0
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 179a8fe4fa0c
+Successfully built 179a8fe4fa0c
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_2 ... done
+Creating groundhog_server_3 ... done
+Creating groundhog_server_1 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_2, groundhog_server_3, groundhog_server_1
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[33mserver_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_1  |[0m My IP is 10.0.0.5, my idx is 3
+[32mserver_2  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32mserver_2  |[0m My IP is 10.0.0.3, my idx is 1
+[32mserver_2  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_3  |[0m My IP is 10.0.0.4, my idx is 2
+[35mserver_3  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m Net            n:4  m:3   t:100000     enc/s:7870.92   ms/enc:0.12705 	  Mbps:3.77804 Aborts = 0 Time (ms) = 12705
+[36mclient_1  |[0m ---- OPRF-Preparation-Times	Mean:7.10581	Std Deviation:3.4252
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:1.23547e-05	Std Deviation:3.29106e-05
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:1.22344e-06	Std Deviation:2.45356e-06
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:2.20383e-07	Std Deviation:9.26842e-07
+[36mgroundhog_client_1 exited with code 0
+[0m[32mgroundhog_server_2 exited with code 0
+[0m[35mgroundhog_server_3 exited with code 0
+[0m[33mgroundhog_server_1 exited with code 0
+[0mStopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1 ... done
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing groundhog_server_3 ... 
+Removing groundhog_server_2 ... 
+Removing groundhog_server_1 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_server_2 ... done
+Removing groundhog_server_1 ... done
+Removing groundhog_uptime_1 ... done
+Removing groundhog_server_3 ... done
+Removing groundhog_client_1 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  31.07MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 275810352985
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> a835baf3d624
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 94888501f72f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 5e2a6e3e0e43
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> e36aef838acf
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 364e0b9640f0
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 179a8fe4fa0c
+Successfully built 179a8fe4fa0c
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_2 ... done
+Creating groundhog_server_3 ... done
+Creating groundhog_server_1 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_2, groundhog_server_3, groundhog_server_1
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[33mserver_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32mserver_2  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_3  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32mserver_2  |[0m My IP is 10.0.0.3, my idx is 1
+[35mserver_3  |[0m My IP is 10.0.0.4, my idx is 2
+[32mserver_2  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m My IP is 10.0.0.5, my idx is 3
+[33mserver_1  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m Net            n:4  m:3   t:100000     enc/s:7875.88   ms/enc:0.12697 	  Mbps:3.78042 Aborts = 0 Time (ms) = 12697
+[36mclient_1  |[0m ---- OPRF-Preparation-Times	Mean:7.61887	Std Deviation:3.34258
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:1.29214e-05	Std Deviation:2.87119e-05
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:1.26953e-06	Std Deviation:2.3167e-06
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:2.07743e-07	Std Deviation:6.82465e-07
+[35mgroundhog_server_3 exited with code 0
+[0m[33mgroundhog_server_1 exited with code 0
+[0m[32mgroundhog_server_2 exited with code 0
+[0m[36mgroundhog_client_1 exited with code 0
+[0mStopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping groundhog_uptime_1 ... done
+Removing groundhog_server_2 ... 
+Removing groundhog_server_3 ... 
+Removing groundhog_server_1 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_uptime_1 ... done
+Removing groundhog_client_1 ... done
+Removing groundhog_server_3 ... done
+Removing groundhog_server_1 ... done
+Removing groundhog_server_2 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  31.08MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 275810352985
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> a835baf3d624
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 94888501f72f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 5e2a6e3e0e43
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> e36aef838acf
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 364e0b9640f0
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 179a8fe4fa0c
+Successfully built 179a8fe4fa0c
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_3 ... done
+Creating groundhog_server_1 ... done
+Creating groundhog_server_2 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_3, groundhog_server_1, groundhog_server_2
+[33mserver_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[35mserver_3  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32mserver_2  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[33mserver_1  |[0m My IP is 10.0.0.4, my idx is 2
+[33mserver_1  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m My IP is 10.0.0.5, my idx is 3
+[35mserver_3  |[0m My IP is 10.0.0.3, my idx is 1
+[32mserver_2  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[35mserver_3  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_client_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_client_1 ... done
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_uptime_1 ... done
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing groundhog_server_3 ... 
+Removing groundhog_server_1 ... 
+Removing groundhog_server_2 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_server_1 ... done
+Removing groundhog_client_1 ... done
+Removing groundhog_uptime_1 ... done
+Removing groundhog_server_2 ... done
+Removing groundhog_server_3 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  31.09MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 275810352985
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> a835baf3d624
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 94888501f72f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 5e2a6e3e0e43
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> e36aef838acf
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 364e0b9640f0
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 179a8fe4fa0c
+Successfully built 179a8fe4fa0c
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_1 ... done
+Creating groundhog_server_3 ... done
+Creating groundhog_server_2 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_1, groundhog_server_3, groundhog_server_2
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[33mserver_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32mserver_2  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_1  |[0m My IP is 10.0.0.3, my idx is 1
+[33mserver_1  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[32mserver_2  |[0m My IP is 10.0.0.5, my idx is 3
+[33mserver_1  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[32mserver_2  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_3  |[0m My IP is 10.0.0.4, my idx is 2
+[35mserver_3  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_client_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_client_1 ... done
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_client_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_client_1 ... done
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping groundhog_uptime_1 ... done
+Removing groundhog_server_2 ... 
+Removing groundhog_server_3 ... 
+Removing groundhog_server_1 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_server_3 ... done
+Removing groundhog_uptime_1 ... done
+Removing groundhog_server_2 ... done
+Removing groundhog_server_1 ... done
+Removing groundhog_client_1 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  31.09MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 275810352985
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> a835baf3d624
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 94888501f72f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 5e2a6e3e0e43
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> e36aef838acf
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 364e0b9640f0
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 179a8fe4fa0c
+Successfully built 179a8fe4fa0c
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_2 ... done
+Creating groundhog_server_3 ... done
+Creating groundhog_server_1 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_2, groundhog_server_3, groundhog_server_1
+[33mserver_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_1  |[0m My IP is 10.0.0.5, my idx is 3
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_1  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[33mserver_1  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[33mserver_1  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32mserver_2  |[0m My IP is 10.0.0.3, my idx is 1
+[32mserver_2  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_3  |[0m My IP is 10.0.0.4, my idx is 2
+[35mserver_3  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m Net            n:4  m:3   t:100000     enc/s:7548.31   ms/enc:0.13248 	  Mbps:3.62319 Aborts = 0 Time (ms) = 13248
+[36mclient_1  |[0m ---- OPRF-Preparation-Times	Mean:7.50619	Std Deviation:3.5844
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:1.23575e-05	Std Deviation:3.53048e-05
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:1.29573e-06	Std Deviation:3.93572e-06
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:2.41879e-07	Std Deviation:3.24379e-06
+[32mgroundhog_server_2 exited with code 0
+[0m[36mgroundhog_client_1 exited with code 0
+[0m[33mgroundhog_server_1 exited with code 0
+[0m[35mgroundhog_server_3 exited with code 0
+[0mStopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping groundhog_uptime_1 ... done
+Removing groundhog_server_3 ... 
+Removing groundhog_server_2 ... 
+Removing groundhog_server_1 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_client_1 ... done
+Removing groundhog_server_3 ... done
+Removing groundhog_server_1 ... done
+Removing groundhog_server_2 ... done
+Removing groundhog_uptime_1 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon   31.1MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 275810352985
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> a835baf3d624
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 94888501f72f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 5e2a6e3e0e43
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> e36aef838acf
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 364e0b9640f0
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 179a8fe4fa0c
+Successfully built 179a8fe4fa0c
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_1 ... done
+Creating groundhog_server_2 ... done
+Creating groundhog_server_3 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_1, groundhog_server_2, groundhog_server_3
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[33mserver_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_1  |[0m My IP is 10.0.0.3, my idx is 1
+[33mserver_1  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32mserver_2  |[0m My IP is 10.0.0.4, my idx is 2
+[32mserver_2  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_2  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_3  |[0m My IP is 10.0.0.5, my idx is 3
+[35mserver_3  |[0m ---- OPRF-Preparation-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_3  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m Net            n:4  m:3   t:100000     enc/s:7792.41   ms/enc:0.12833 	  Mbps:3.74036 Aborts = 0 Time (ms) = 12833
+[36mclient_1  |[0m ---- OPRF-Preparation-Times	Mean:7.74707	Std Deviation:3.43836
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:1.31089e-05	Std Deviation:1.16301e-05
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:1.30812e-06	Std Deviation:3.07957e-06
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:2.25783e-07	Std Deviation:1.12622e-06
+[35mgroundhog_server_3 exited with code 0
+[0m[33mgroundhog_server_1 exited with code 0
+[0m[32mgroundhog_server_2 exited with code 0
+[0m[36mgroundhog_client_1 exited with code 0
+[0mStopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)

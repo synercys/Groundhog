@@ -219,6 +219,7 @@ namespace dEnc {
         //start time tracking
         std::chrono::time_point<std::chrono::high_resolution_clock> start_time;
 
+        std::vector<long double> oprf_preparation_times;
         std::vector<long double> oprf_send_times;
         std::vector<long double> oprf_receive_times;
         std::vector<long double> oprf_combine_times;

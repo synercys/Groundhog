@@ -1,0 +1,743 @@
+
+Removing network groundhog_dise-net
+Network groundhog_dise-net not found.
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  30.96MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 275810352985
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> a835baf3d624
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 94888501f72f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 5e2a6e3e0e43
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> e36aef838acf
+Step 12/13 : COPY default.json /usr/local
+ ---> 364e0b9640f0
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Running in 19cc882ad229
+Removing intermediate container 19cc882ad229
+ ---> 179a8fe4fa0c
+Successfully built 179a8fe4fa0c
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Gracefully stopping... (press Ctrl+C again to force)
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  30.96MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 275810352985
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> a835baf3d624
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 94888501f72f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 5e2a6e3e0e43
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> e36aef838acf
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 364e0b9640f0
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 179a8fe4fa0c
+Successfully built 179a8fe4fa0c
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_1 ... done
+Creating groundhog_server_2 ... done
+Creating groundhog_server_3 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_1, groundhog_server_2, groundhog_server_3
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_client_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_client_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_client_1 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_client_1 ... done
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping groundhog_uptime_1 ... done
+Removing groundhog_server_2 ... 
+Removing groundhog_server_3 ... 
+Removing groundhog_server_1 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_client_1 ... done
+Removing groundhog_server_1 ... done
+Removing groundhog_uptime_1 ... done
+Removing groundhog_server_2 ... done
+Removing groundhog_server_3 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  30.97MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 275810352985
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> a835baf3d624
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 94888501f72f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 5e2a6e3e0e43
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> e36aef838acf
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 364e0b9640f0
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 179a8fe4fa0c
+Successfully built 179a8fe4fa0c
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_1 ... done
+Creating groundhog_server_3 ... done
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_client_1 ... 
+Stopping groundhog_uptime_1 ... 
+Creating groundhog_server_2 ... done
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_client_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_client_1 ... done
+Stopping groundhog_client_1 ... done
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping groundhog_uptime_1 ... done
+Removing groundhog_server_2 ... 
+Removing groundhog_server_3 ... 
+Removing groundhog_server_1 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_uptime_1 ... done
+Removing groundhog_client_1 ... done
+Removing groundhog_server_2 ... done
+Removing groundhog_server_1 ... done
+Removing groundhog_server_3 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  30.97MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 275810352985
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> a835baf3d624
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 94888501f72f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 5e2a6e3e0e43
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> e36aef838acf
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 364e0b9640f0
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 179a8fe4fa0c
+Successfully built 179a8fe4fa0c
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Gracefully stopping... (press Ctrl+C again to force)
+Removing groundhog_uptime_1 ... 
+Removing groundhog_uptime_1 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  30.97MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 275810352985
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> a835baf3d624
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 94888501f72f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 5e2a6e3e0e43
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> e36aef838acf
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 364e0b9640f0
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 179a8fe4fa0c
+Successfully built 179a8fe4fa0c
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_1 ... done
+Creating groundhog_server_3 ... done
+Creating groundhog_server_2 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_1, groundhog_server_3, groundhog_server_2
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+Stopping groundhog_server_1 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_client_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_client_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_client_1 ... done
+Stopping groundhog_client_1 ... done
+Stopping groundhog_uptime_1 ... done
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing groundhog_server_1 ... 
+Removing groundhog_server_2 ... 
+Removing groundhog_server_3 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_server_1 ... done
+Removing groundhog_uptime_1 ... done
+Removing groundhog_client_1 ... done
+Removing groundhog_server_2 ... done
+Removing groundhog_server_3 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  30.98MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 275810352985
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> a835baf3d624
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 94888501f72f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 5e2a6e3e0e43
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> e36aef838acf
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 364e0b9640f0
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 179a8fe4fa0c
+Successfully built 179a8fe4fa0c
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_3 ... done
+Creating groundhog_server_2 ... done
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_client_1 ... 
+Stopping groundhog_uptime_1 ... 
+Creating groundhog_server_1 ... done
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_client_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_client_1 ... done
+Stopping groundhog_client_1 ... done
+Stopping groundhog_uptime_1 ... done
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing groundhog_server_3 ... 
+Removing groundhog_server_1 ... 
+Removing groundhog_server_2 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_server_3 ... done
+Removing groundhog_server_2 ... done
+Removing groundhog_client_1 ... done
+Removing groundhog_uptime_1 ... done
+Removing groundhog_server_1 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  30.98MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 275810352985
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> a835baf3d624
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 94888501f72f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 5e2a6e3e0e43
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> e36aef838acf
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 364e0b9640f0
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 179a8fe4fa0c
+Successfully built 179a8fe4fa0c
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Stopping groundhog_uptime_1 ... 
+Creating groundhog_client_1 ... done
+Stopping groundhog_client_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping groundhog_client_1 ... done
+Stopping groundhog_uptime_1 ... done
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_uptime_1 ... done
+Removing groundhog_client_1 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  30.98MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 275810352985
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> a835baf3d624
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 94888501f72f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 5e2a6e3e0e43
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> e36aef838acf
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 364e0b9640f0
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 179a8fe4fa0c
+Successfully built 179a8fe4fa0c
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_1 ... done
+Creating groundhog_server_2 ... done
+Creating groundhog_server_3 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_1, groundhog_server_2, groundhog_server_3
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_client_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_client_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_client_1 ... done
+Stopping groundhog_client_1 ... done
+Stopping groundhog_uptime_1 ... done
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing groundhog_server_3 ... 
+Removing groundhog_server_2 ... 
+Removing groundhog_server_1 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_server_3 ... done
+Removing groundhog_client_1 ... done
+Removing groundhog_server_2 ... done
+Removing groundhog_uptime_1 ... done
+Removing groundhog_server_1 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  30.99MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 275810352985
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> a835baf3d624
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 94888501f72f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 5e2a6e3e0e43
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> e36aef838acf
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 364e0b9640f0
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 179a8fe4fa0c
+Successfully built 179a8fe4fa0c
+Successfully tagged groundhog:latest
+Removing network groundhog_dise-net
+Network groundhog_dise-net not found.
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  30.99MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 275810352985
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> a835baf3d624
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 94888501f72f
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> 5e2a6e3e0e43
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> e36aef838acf
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 364e0b9640f0
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 179a8fe4fa0c
+Successfully built 179a8fe4fa0c
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_1 ... done
+Creating groundhog_server_3 ... done
+Creating groundhog_server_2 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_1, groundhog_server_3, groundhog_server_2
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[36mclient_1  |[0m Net            n:4  m:3   t:100000     enc/s:7659.9   ms/enc:0.13055 	  Mbps:3.67675 Aborts = 0 Time (ms) = 13055
+[35mserver_3  |[0m Going up
+[32mserver_2  |[0m Going up
+[36mclient_1  |[0m ---- OPRF-Preparation-Times	Mean:7.33516	Std Deviation:3.55357
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:1.2296e-05	Std Deviation:3.93877e-05
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:1.32433e-06	Std Deviation:2.69045e-06
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:3.72843e-07	Std Deviation:1.91823e-06
+[33mserver_1  |[0m Going up
+[33mserver_1  |[0m timeout done
+[33mserver_1  |[0m Went down
+[33mserver_1  |[0m Going up
+[36mgroundhog_client_1 exited with code 0
+[0mStopping groundhog_server_2 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)

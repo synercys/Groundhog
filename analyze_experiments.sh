@@ -8,7 +8,7 @@
 # The mean and standard deviation are written onto *analysis file and then
 # sorted and written onto a *stats file
 ###############################################################################
-results_dir="data/results/profiling"
+results_dir="data/results/blockchain"
 #Make a summary directory and a stats directory
 mkdir -p "${results_dir}/summary"
 mkdir -p "${results_dir}/stats"

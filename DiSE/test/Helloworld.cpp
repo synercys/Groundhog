@@ -34,7 +34,7 @@ u64 numAsync, bool lat, std::string tag)
     Timer t;
     auto s = t.setTimePoint("start");
     unsigned int count_aborts = 0;
-    unsigned int ctr = 0;
+    //unsigned int ctr = 0;
 
     // we are interested in latency and therefore we 
     // will only have one encryption in flight at a time.

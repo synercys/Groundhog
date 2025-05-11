@@ -139,13 +139,13 @@ namespace dEnc {
         /* Disable this prints to see the times initialized with
         for (auto t:*times)
             std::cout<<t<<" ";
-        */
         std::cout<<"\n";
+        */
 
         if(times->empty())
-            std::cout<<"vector times is empty"<<std::endl;
+            std::cout<<"ALERT!! std::vector<float>* times is empty"<<std::endl;
         else if (states->empty())
-            std::cout<<"vector states is empty"<<std::endl;
+            std::cout<<"ALERT!! std::vector<std::string>* states is empty"<<std::endl;
 
         //std::vector<std::string> mX = states;
 
@@ -190,7 +190,7 @@ namespace dEnc {
         std::time_t start_time_conv = std::chrono::system_clock::to_time_t(start_time);
         time(&start_time_conv);
 
-        std::cout<<"Done initializing in"<<" "<<__func__<<std::endl;
+        //std::cout<<"Done initializing in"<<" "<<__func__<<std::endl;
 
         startListening();
     }
@@ -383,6 +383,9 @@ namespace dEnc {
 
 
     void Npr03SymDprf::processTimes(){
+
+        std::cout<<"---- OPRF-Preparation-Times\t";
+        printStats(oprf_preparation_times);
         
         std::cout<<"---- OPRF-Send-Times\t";
         printStats(oprf_send_times);
@@ -406,18 +409,19 @@ namespace dEnc {
         //std::cout<<"In "<<__func__<<std::endl;
         //std::cout<<"Size of time"<<times->size()<<std::endl;
 
+        long double NANOSECONDS_PER_SECOND = 1000000000;
+
         auto cur_time = std::chrono::high_resolution_clock::now();
         std::time_t cur_time_conv = std::chrono::system_clock::to_time_t(cur_time);
         time(&cur_time_conv);
 
         long double time_delta_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(cur_time - start_time).count();
-        long double NANOSECONDS_PER_SECOND = 1000000000;
+        long double time_delta_s = time_delta_ns/NANOSECONDS_PER_SECOND;
+        oprf_preparation_times.push_back(time_delta_s);
+
 
         // std::ofstream time_file_handle("thing.txt");
         // time_file_handle << time_delta_ns;
-        long double time_delta_s = time_delta_ns/NANOSECONDS_PER_SECOND;
-
-        //std::cout<<"---- In "<<__func__<<" Time delta "<<time_delta_ns<<" "<<time_delta_s<<" "<<std::endl;
 
         TODO("Add support for sending the party identity for allowing encryption to be distinguished from decryption. ");
         // mM threshold
@@ -467,10 +471,7 @@ namespace dEnc {
 
         struct State
         {
-            State(u64 m)
-            :fx(m)
-            ,async(m-1)
-            {}
+            State(u64 m):fx(m),async(m-1){}
             std::vector<block> fx;
             std::vector<std::future<void>> async;
 
@@ -493,7 +494,7 @@ namespace dEnc {
         for (u64 i = 0; i < buff.size(); ++i)
             b = b ^ buff[i];
 
-        //std::cout<<"---- Going to queue up the receive operations to receive the OPRF output shares"<<std::endl;
+        // std::cout<<"---- Going to queue up the receive operations to receive the OPRF output shares"<<std::endl;
         // queue up the receive operations to receive the OPRF output shares
         int j = 0;
         std::chrono::time_point<std::chrono::high_resolution_clock> oprf_receive_start = std::chrono::high_resolution_clock::now();
@@ -519,9 +520,8 @@ namespace dEnc {
         long double oprf_receive_duration_in_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(oprf_receive_finish - oprf_receive_start).count();
         long double oprf_receive_duration_in_s = oprf_receive_duration_in_ns/NANOSECONDS_PER_SECOND;
         oprf_receive_times.push_back(oprf_receive_duration_in_s);
-        //std::cout<<"---- In "<<"Going to queue up the receive operations to receive the OPRF output shares"<<" Time delta "<<oprf_receive_duration_in_ns<<" "<<oprf_receive_duration_in_s<<" "<<std::endl;
+        //std::cout<<"---- Done queuing up the receive operations to receive the OPRF output shares"<<" "<<"Time delta "<<oprf_receive_duration_in_ns<<" "<<oprf_receive_duration_in_s<<" "<<std::endl;
 
-        
         /*for (u64 i = mPartyIdx + 1, j = 0; j < w->async.size(); ++i, ++j)
         {
             auto c = i % mN;
@@ -538,9 +538,7 @@ namespace dEnc {
                 //e.setBadRecvErrorState(osuCrypto::BadReceiveBufferSize.str());
             }
         }*/
-
-        //std::cout<<"---- Done queuing up the receive operations to receive the OPRF output shares"<<std::endl;
-        
+      
         // This function is called when the user wants the actual 
         // OPRF output. It must combine the OPRF output shares
         std::chrono::time_point<std::chrono::high_resolution_clock> oprf_combine_start = std::chrono::high_resolution_clock::now();
@@ -574,7 +572,7 @@ namespace dEnc {
         long double oprf_combine_duration_in_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(oprf_combine_finish - oprf_combine_start).count();
         long double oprf_combine_duration_in_s = oprf_combine_duration_in_ns/NANOSECONDS_PER_SECOND;
         oprf_combine_times.push_back(oprf_combine_duration_in_s);
-        //std::cout<<"---- In "<<"combine the OPRF output shares"<<" Time delta "<<oprf_combine_duration_in_ns<<" "<<oprf_combine_duration_in_s<<" "<<std::endl;
+        //std::cout<<"---- Done combining the OPRF output shares"<<" "<<"Time delta "<<oprf_combine_duration_in_ns<<" "<<oprf_combine_duration_in_s<<" "<<std::endl;
 
         return ae;
     }

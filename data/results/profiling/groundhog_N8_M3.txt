@@ -1,0 +1,1420 @@
+
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_4 ... 
+Stopping groundhog_server_7 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_6 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_server_5 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_6 ... done
+Stopping groundhog_server_4 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_7 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_5 ... done
+Stopping groundhog_uptime_1 ... done
+Removing groundhog_server_2 ... 
+Removing groundhog_server_4 ... 
+Removing groundhog_server_7 ... 
+Removing groundhog_server_3 ... 
+Removing groundhog_server_6 ... 
+Removing groundhog_server_1 ... 
+Removing groundhog_server_5 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_server_3 ... done
+Removing groundhog_server_2 ... done
+Removing groundhog_client_1 ... done
+Removing groundhog_uptime_1 ... done
+Removing groundhog_server_6 ... done
+Removing groundhog_server_1 ... done
+Removing groundhog_server_7 ... done
+Removing groundhog_server_5 ... done
+Removing groundhog_server_4 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  27.37MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 080687610e52
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 81b50c8b6d1e
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 0b43b516ff4d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> ea2fcacebed1
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> 0166c65bed5d
+Step 12/13 : COPY default.json /usr/local
+ ---> e6571e470cda
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Running in 97f4e3301d6c
+Removing intermediate container 97f4e3301d6c
+ ---> b1003c2e8c0f
+Successfully built b1003c2e8c0f
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_4 ... 
+Creating groundhog_server_5 ... 
+Creating groundhog_server_6 ... 
+Creating groundhog_server_7 ... 
+Creating groundhog_server_3 ... done
+Creating groundhog_server_4 ... done
+Creating groundhog_server_2 ... done
+Creating groundhog_server_6 ... done
+Creating groundhog_server_7 ... done
+Creating groundhog_server_5 ... done
+Creating groundhog_server_1 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_3, groundhog_server_4, groundhog_server_2, groundhog_server_6, groundhog_server_7, groundhog_server_5, groundhog_server_1
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[36mclient_1  |[0m network send error: Connection reset by peer
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mclient_1  |[0m network receive error.listen ): End of file
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:819
+[36mclient_1  |[0m network send error: Broken pipe
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mclient_1  |[0m Net            n:8  m:3   t:100000     enc/s:5283.18   ms/enc:0.18928 	  Mbps:2.53593 Aborts = 0 Time (ms) = 18928
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:1.93553e-05	Std Deviation:2.6707e-05
+[33;1mserver_6  |[0m Going up
+[34mserver_4  |[0m Going up
+[33mserver_1  |[0m Going up
+[32;1mserver_7  |[0m Going up
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:2.27146e-06	Std Deviation:1.69076e-05
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:3.89806e-07	Std Deviation:3.74966e-06
+[35mserver_3  |[0m Going up
+[35mserver_3  |[0m timeout done
+[35mserver_3  |[0m Went down
+[35mserver_3  |[0m Going up
+[36mgroundhog_client_1 exited with code 0
+[0mStopping groundhog_server_2 ... 
+Stopping groundhog_server_6 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_server_5 ... 
+Stopping groundhog_server_7 ... 
+Stopping groundhog_server_4 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_6 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_server_5 ... 
+Stopping groundhog_server_7 ... 
+Stopping groundhog_server_4 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_6 ... done
+Stopping groundhog_server_6 ... done
+Stopping groundhog_server_7 ... done
+Stopping groundhog_server_7 ... done
+Stopping groundhog_server_4 ... done
+Stopping groundhog_server_5 ... done
+Stopping groundhog_server_4 ... done
+Stopping groundhog_server_5 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_uptime_1 ... done
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing groundhog_server_2 ... 
+Removing groundhog_server_6 ... 
+Removing groundhog_server_3 ... 
+Removing groundhog_server_1 ... 
+Removing groundhog_server_5 ... 
+Removing groundhog_server_7 ... 
+Removing groundhog_server_4 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_server_3 ... done
+Removing groundhog_server_5 ... done
+Removing groundhog_server_7 ... done
+Removing groundhog_server_6 ... done
+Removing groundhog_server_2 ... done
+Removing groundhog_client_1 ... done
+Removing groundhog_server_1 ... done
+Removing groundhog_server_4 ... done
+Removing groundhog_uptime_1 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  27.38MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 080687610e52
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 81b50c8b6d1e
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 0b43b516ff4d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> ea2fcacebed1
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 0166c65bed5d
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> e6571e470cda
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> b1003c2e8c0f
+Successfully built b1003c2e8c0f
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_4 ... 
+Creating groundhog_server_5 ... 
+Creating groundhog_server_6 ... 
+Creating groundhog_server_7 ... 
+Creating groundhog_server_7 ... done
+Creating groundhog_server_3 ... done
+Creating groundhog_server_6 ... done
+Creating groundhog_server_5 ... done
+Creating groundhog_server_2 ... done
+Creating groundhog_server_4 ... done
+Creating groundhog_server_1 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_7, groundhog_server_3, groundhog_server_6, groundhog_server_5, groundhog_server_2, groundhog_server_4, groundhog_server_1
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[36mclient_1  |[0m network send error: Connection reset by peer
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mclient_1  |[0m network send error: Connection reset by peer
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mclient_1  |[0m network receive error.listen ): End of file
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:819
+[36mclient_1  |[0m Net            n:8  m:3   t:100000     enc/s:5707.11   ms/enc:0.17522 	  Mbps:2.73941 Aborts = 0 Time (ms) = 17522
+[35mserver_3  |[0m Going up
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:1.67541e-05	Std Deviation:4.52635e-05
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:1.87671e-06	Std Deviation:9.79383e-06
+[36;1mserver_5  |[0m Going up
+[32mserver_2  |[0m Going up
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:3.28619e-07	Std Deviation:2.75399e-06
+[34mserver_4  |[0m Going up
+[32;1mserver_7  |[0m Going up
+[32;1mserver_7  |[0m timeout done
+[32;1mserver_7  |[0m Went down
+[32;1mserver_7  |[0m Going up
+[36mgroundhog_client_1 exited with code 0
+[0mStopping groundhog_server_4 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_6 ... 
+Stopping groundhog_server_7 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_server_5 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_4 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_6 ... 
+Stopping groundhog_server_7 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_server_5 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_7 ... done
+Stopping groundhog_server_7 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_6 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_4 ... done
+Stopping groundhog_server_5 ... done
+Stopping groundhog_server_6 ... done
+Stopping groundhog_server_4 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_5 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping groundhog_uptime_1 ... done
+Removing groundhog_server_4 ... 
+Removing groundhog_server_3 ... 
+Removing groundhog_server_2 ... 
+Removing groundhog_server_6 ... 
+Removing groundhog_server_7 ... 
+Removing groundhog_server_1 ... 
+Removing groundhog_server_5 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_uptime_1 ... done
+Removing groundhog_server_5 ... done
+Removing groundhog_server_4 ... done
+Removing groundhog_server_7 ... done
+Removing groundhog_server_3 ... done
+Removing groundhog_server_2 ... done
+Removing groundhog_server_6 ... done
+Removing groundhog_client_1 ... done
+Removing groundhog_server_1 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  27.39MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 080687610e52
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 81b50c8b6d1e
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 0b43b516ff4d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> ea2fcacebed1
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 0166c65bed5d
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> e6571e470cda
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> b1003c2e8c0f
+Successfully built b1003c2e8c0f
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_4 ... 
+Creating groundhog_server_5 ... 
+Creating groundhog_server_6 ... 
+Creating groundhog_server_7 ... 
+Creating groundhog_server_6 ... done
+Creating groundhog_server_1 ... done
+Creating groundhog_server_4 ... done
+Creating groundhog_server_2 ... done
+Creating groundhog_server_7 ... done
+Creating groundhog_server_3 ... done
+Creating groundhog_server_5 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_6, groundhog_server_1, groundhog_server_4, groundhog_server_2, groundhog_server_7, groundhog_server_3, groundhog_server_5
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[36mclient_1  |[0m network send error: Connection reset by peer
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mclient_1  |[0m network send error: Connection reset by peer
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mclient_1  |[0m network receive error.listen ): End of file
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:819
+[36mclient_1  |[0m Net            n:8  m:3   t:100000     enc/s:5331.06   ms/enc:0.18758 	  Mbps:2.55891 Aborts = 0 Time (ms) = 18758
+[36;1mserver_5  |[0m Going up
+[33mserver_1  |[0m Going up
+[34mserver_4  |[0m Going up
+[32;1mserver_7  |[0m Going up
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:1.96392e-05	Std Deviation:6.01734e-05
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:2.32504e-06	Std Deviation:1.07526e-05
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:4.22371e-07	Std Deviation:4.2175e-06
+[33;1mserver_6  |[0m Going up
+[33;1mserver_6  |[0m timeout done
+[33;1mserver_6  |[0m Went down
+[33;1mserver_6  |[0m Going up
+[36mgroundhog_client_1 exited with code 0
+[0mStopping groundhog_server_3 ... 
+Stopping groundhog_server_4 ... 
+Stopping groundhog_server_5 ... 
+Stopping groundhog_server_7 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_6 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_4 ... 
+Stopping groundhog_server_5 ... 
+Stopping groundhog_server_7 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_6 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_6 ... done
+Stopping groundhog_server_6 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_7 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_4 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_7 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_4 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_5 ... done
+Stopping groundhog_server_5 ... done
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping groundhog_uptime_1 ... done
+Removing groundhog_server_3 ... 
+Removing groundhog_server_4 ... 
+Removing groundhog_server_5 ... 
+Removing groundhog_server_7 ... 
+Removing groundhog_server_2 ... 
+Removing groundhog_server_6 ... 
+Removing groundhog_server_1 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_server_3 ... done
+Removing groundhog_server_6 ... done
+Removing groundhog_server_4 ... done
+Removing groundhog_server_2 ... done
+Removing groundhog_uptime_1 ... done
+Removing groundhog_server_1 ... done
+Removing groundhog_server_7 ... done
+Removing groundhog_server_5 ... done
+Removing groundhog_client_1 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  27.39MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 080687610e52
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 81b50c8b6d1e
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 0b43b516ff4d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> ea2fcacebed1
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 0166c65bed5d
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> e6571e470cda
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> b1003c2e8c0f
+Successfully built b1003c2e8c0f
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_4 ... 
+Creating groundhog_server_5 ... 
+Creating groundhog_server_6 ... 
+Creating groundhog_server_7 ... 
+Creating groundhog_server_4 ... done
+Creating groundhog_server_3 ... done
+Creating groundhog_server_5 ... done
+Creating groundhog_server_1 ... done
+Creating groundhog_server_7 ... done
+Creating groundhog_server_6 ... done
+Creating groundhog_server_2 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_4, groundhog_server_3, groundhog_server_5, groundhog_server_1, groundhog_server_7, groundhog_server_6, groundhog_server_2
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[36mclient_1  |[0m network send error: Connection reset by peer
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mclient_1  |[0m network send error: Broken pipe
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mclient_1  |[0m network receive error.listen ): End of file
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:819
+[36mclient_1  |[0m Net            n:8  m:3   t:100000     enc/s:5431.83   ms/enc:0.1841 	  Mbps:2.60728 Aborts = 0 Time (ms) = 18410
+[35mserver_3  |[0m Going up
+[33mserver_1  |[0m Going up
+[33;1mserver_6  |[0m Going up
+[32;1mserver_7  |[0m Going up
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:1.77421e-05	Std Deviation:2.04445e-05
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:1.96127e-06	Std Deviation:8.74864e-06
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:4.98865e-07	Std Deviation:3.75029e-05
+[34mserver_4  |[0m Going up
+[34mserver_4  |[0m timeout done
+[34mserver_4  |[0m Went down
+[34mserver_4  |[0m Going up
+[36mgroundhog_client_1 exited with code 0
+[0mStopping groundhog_server_3 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_7 ... 
+Stopping groundhog_server_5 ... 
+Stopping groundhog_server_6 ... 
+Stopping groundhog_server_4 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_7 ... 
+Stopping groundhog_server_5 ... 
+Stopping groundhog_server_6 ... 
+Stopping groundhog_server_4 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_4 ... done
+Stopping groundhog_server_4 ... done
+Stopping groundhog_server_6 ... done
+Stopping groundhog_server_6 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_5 ... done
+Stopping groundhog_server_5 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_7 ... done
+Stopping groundhog_server_7 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_uptime_1 ... done
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing groundhog_server_3 ... 
+Removing groundhog_server_2 ... 
+Removing groundhog_server_7 ... 
+Removing groundhog_server_5 ... 
+Removing groundhog_server_6 ... 
+Removing groundhog_server_4 ... 
+Removing groundhog_server_1 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_uptime_1 ... done
+Removing groundhog_server_6 ... done
+Removing groundhog_client_1 ... done
+Removing groundhog_server_5 ... done
+Removing groundhog_server_7 ... done
+Removing groundhog_server_2 ... done
+Removing groundhog_server_1 ... done
+Removing groundhog_server_3 ... done
+Removing groundhog_server_4 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon   27.4MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 080687610e52
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 81b50c8b6d1e
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 0b43b516ff4d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> ea2fcacebed1
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 0166c65bed5d
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> e6571e470cda
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> b1003c2e8c0f
+Successfully built b1003c2e8c0f
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_4 ... 
+Creating groundhog_server_5 ... 
+Creating groundhog_server_6 ... 
+Creating groundhog_server_7 ... 
+Creating groundhog_server_4 ... done
+Creating groundhog_server_5 ... done
+Creating groundhog_server_7 ... done
+Creating groundhog_server_2 ... done
+Creating groundhog_server_1 ... done
+Creating groundhog_server_3 ... done
+Creating groundhog_server_6 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_4, groundhog_server_5, groundhog_server_7, groundhog_server_2, groundhog_server_1, groundhog_server_3, groundhog_server_6
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[36mclient_1  |[0m network send error: Connection reset by peer
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mclient_1  |[0m network receive error.listen ): End of file
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:819
+[36mclient_1  |[0m network send error: Connection reset by peer
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mclient_1  |[0m Net            n:8  m:3   t:100000     enc/s:5253.48   ms/enc:0.19035 	  Mbps:2.52167 Aborts = 0 Time (ms) = 19035
+[35mserver_3  |[0m Going up
+[33mserver_1  |[0m Going up
+[32;1mserver_7  |[0m Going up
+[36;1mserver_5  |[0m Going up
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:1.92115e-05	Std Deviation:3.27396e-05
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:2.29774e-06	Std Deviation:1.48573e-05
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:4.09728e-07	Std Deviation:4.43567e-06
+[34mserver_4  |[0m Going up
+[34mserver_4  |[0m timeout done
+[34mserver_4  |[0m Went down
+[34mserver_4  |[0m Going up
+[36mgroundhog_client_1 exited with code 0
+[0mStopping groundhog_server_4 ... 
+Stopping groundhog_server_5 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_6 ... 
+Stopping groundhog_server_7 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_4 ... 
+Stopping groundhog_server_5 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_6 ... 
+Stopping groundhog_server_7 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_4 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_7 ... done
+Stopping groundhog_server_4 ... done
+Stopping groundhog_server_7 ... done
+Stopping groundhog_server_5 ... done
+Stopping groundhog_server_5 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_6 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_6 ... done
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping groundhog_uptime_1 ... done
+Removing groundhog_server_4 ... 
+Removing groundhog_server_5 ... 
+Removing groundhog_server_1 ... 
+Removing groundhog_server_3 ... 
+Removing groundhog_server_6 ... 
+Removing groundhog_server_7 ... 
+Removing groundhog_server_2 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_server_4 ... done
+Removing groundhog_server_6 ... done
+Removing groundhog_client_1 ... done
+Removing groundhog_uptime_1 ... done
+Removing groundhog_server_2 ... done
+Removing groundhog_server_7 ... done
+Removing groundhog_server_1 ... done
+Removing groundhog_server_3 ... done
+Removing groundhog_server_5 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  27.41MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 080687610e52
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 81b50c8b6d1e
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 0b43b516ff4d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> ea2fcacebed1
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 0166c65bed5d
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> e6571e470cda
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> b1003c2e8c0f
+Successfully built b1003c2e8c0f
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_4 ... 
+Creating groundhog_server_5 ... 
+Creating groundhog_server_6 ... 
+Creating groundhog_server_7 ... 
+Creating groundhog_server_6 ... done
+Creating groundhog_server_5 ... done
+Creating groundhog_server_7 ... done
+Creating groundhog_server_4 ... done
+Creating groundhog_server_2 ... done
+Creating groundhog_server_3 ... done
+Creating groundhog_server_1 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_6, groundhog_server_5, groundhog_server_7, groundhog_server_4, groundhog_server_2, groundhog_server_3, groundhog_server_1
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[36mclient_1  |[0m network send error: Connection reset by peer
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mclient_1  |[0m network receive error.listen ): End of file
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:819
+[36mclient_1  |[0m network send error: Connection reset by peer
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mclient_1  |[0m Net            n:8  m:3   t:100000     enc/s:5424.17   ms/enc:0.18436 	  Mbps:2.6036 Aborts = 0 Time (ms) = 18436
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:1.928e-05	Std Deviation:3.19784e-05
+[34mserver_4  |[0m Going up
+[35mserver_3  |[0m Going up
+[36;1mserver_5  |[0m Going up
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:2.24934e-06	Std Deviation:1.0041e-05
+[32mserver_2  |[0m Going up
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:4.35243e-07	Std Deviation:7.04177e-06
+[33;1mserver_6  |[0m Going up
+[33;1mserver_6  |[0m timeout done
+[33;1mserver_6  |[0m Went down
+[33;1mserver_6  |[0m Going up
+[36mgroundhog_client_1 exited with code 0
+[0mStopping groundhog_server_5 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_7 ... 
+Stopping groundhog_server_4 ... 
+Stopping groundhog_server_6 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_5 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_7 ... 
+Stopping groundhog_server_4 ... 
+Stopping groundhog_server_6 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_7 ... done
+Stopping groundhog_server_5 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_7 ... done
+Stopping groundhog_server_5 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_6 ... done
+Stopping groundhog_server_4 ... done
+Stopping groundhog_server_6 ... done
+Stopping groundhog_server_4 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_uptime_1 ... done
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing groundhog_server_5 ... 
+Removing groundhog_server_2 ... 
+Removing groundhog_server_7 ... 
+Removing groundhog_server_4 ... 
+Removing groundhog_server_6 ... 
+Removing groundhog_server_1 ... 
+Removing groundhog_server_3 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_server_3 ... done
+Removing groundhog_uptime_1 ... done
+Removing groundhog_client_1 ... done
+Removing groundhog_server_6 ... done
+Removing groundhog_server_4 ... done
+Removing groundhog_server_2 ... done
+Removing groundhog_server_5 ... done
+Removing groundhog_server_1 ... done
+Removing groundhog_server_7 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  27.41MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 080687610e52
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 81b50c8b6d1e
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 0b43b516ff4d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> ea2fcacebed1
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 0166c65bed5d
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> e6571e470cda
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> b1003c2e8c0f
+Successfully built b1003c2e8c0f
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_4 ... 
+Creating groundhog_server_5 ... 
+Creating groundhog_server_6 ... 
+Creating groundhog_server_7 ... 
+Creating groundhog_server_6 ... done
+Creating groundhog_server_7 ... done
+Creating groundhog_server_2 ... done
+Creating groundhog_server_4 ... done
+Creating groundhog_server_5 ... done
+Creating groundhog_server_1 ... done
+Creating groundhog_server_3 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_6, groundhog_server_7, groundhog_server_2, groundhog_server_4, groundhog_server_5, groundhog_server_1, groundhog_server_3
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[36mclient_1  |[0m network send error: Broken pipe
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mclient_1  |[0m network receive error.listen ): End of file
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:819
+[36mclient_1  |[0m network send error: Connection reset by peer
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mclient_1  |[0m Net            n:8  m:3   t:100000     enc/s:5201.29   ms/enc:0.19226 	  Mbps:2.49662 Aborts = 0 Time (ms) = 19226
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:1.84701e-05	Std Deviation:3.93392e-05
+[35mserver_3  |[0m Going up
+[34mserver_4  |[0m Going up
+[36;1mserver_5  |[0m Going up
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:2.26037e-06	Std Deviation:3.30135e-05
+[32;1mserver_7  |[0m Going up
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:3.64249e-07	Std Deviation:3.25167e-06
+[33;1mserver_6  |[0m Going up
+[33;1mserver_6  |[0m timeout done
+[33;1mserver_6  |[0m Went down
+[33;1mserver_6  |[0m Going up
+[36mgroundhog_client_1 exited with code 0
+[0mStopping groundhog_server_5 ... 
+Stopping groundhog_server_7 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_6 ... 
+Stopping groundhog_server_4 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_5 ... 
+Stopping groundhog_server_7 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_6 ... 
+Stopping groundhog_server_4 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_6 ... done
+Stopping groundhog_server_6 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_7 ... done
+Stopping groundhog_server_4 ... done
+Stopping groundhog_server_7 ... done
+Stopping groundhog_server_4 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_5 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_5 ... done
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping groundhog_uptime_1 ... done
+Removing groundhog_server_5 ... 
+Removing groundhog_server_7 ... 
+Removing groundhog_server_2 ... 
+Removing groundhog_server_6 ... 
+Removing groundhog_server_4 ... 
+Removing groundhog_server_3 ... 
+Removing groundhog_server_1 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_server_7 ... done
+Removing groundhog_client_1 ... done
+Removing groundhog_server_3 ... done
+Removing groundhog_server_5 ... done
+Removing groundhog_server_6 ... done
+Removing groundhog_server_2 ... done
+Removing groundhog_server_4 ... done
+Removing groundhog_server_1 ... done
+Removing groundhog_uptime_1 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  27.42MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 080687610e52
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 81b50c8b6d1e
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 0b43b516ff4d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> ea2fcacebed1
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 0166c65bed5d
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> e6571e470cda
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> b1003c2e8c0f
+Successfully built b1003c2e8c0f
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_4 ... 
+Creating groundhog_server_5 ... 
+Creating groundhog_server_6 ... 
+Creating groundhog_server_7 ... 
+Creating groundhog_server_2 ... done
+Creating groundhog_server_7 ... done
+Creating groundhog_server_6 ... done
+Creating groundhog_server_1 ... done
+Creating groundhog_server_3 ... done
+Creating groundhog_server_4 ... done
+Creating groundhog_server_5 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_2, groundhog_server_7, groundhog_server_6, groundhog_server_1, groundhog_server_3, groundhog_server_4, groundhog_server_5
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[36mclient_1  |[0m network send error: Connection reset by peer
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mclient_1  |[0m network receive error.listen ): End of file
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:819
+[36mclient_1  |[0m network send error: Connection reset by peer
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mclient_1  |[0m Net            n:8  m:3   t:100000     enc/s:5308.98   ms/enc:0.18836 	  Mbps:2.54831 Aborts = 0 Time (ms) = 18836
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:2.00823e-05	Std Deviation:3.23731e-05
+[33mserver_1  |[0m Going up
+[32;1mserver_7  |[0m Going up
+[35mserver_3  |[0m Going up
+[34mserver_4  |[0m Going up
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:2.38911e-06	Std Deviation:1.26017e-05
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:4.21371e-07	Std Deviation:4.18165e-06
+[32mserver_2  |[0m Going up
+[32mserver_2  |[0m timeout done
+[32mserver_2  |[0m Went down
+[32mserver_2  |[0m Going up
+[36mgroundhog_client_1 exited with code 0
+[0mStopping groundhog_server_4 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_server_5 ... 
+Stopping groundhog_server_6 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_7 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_4 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_server_5 ... 
+Stopping groundhog_server_6 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_7 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_5 ... done
+Stopping groundhog_server_5 ... done
+Stopping groundhog_server_6 ... done
+Stopping groundhog_server_6 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_4 ... done
+Stopping groundhog_server_7 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_4 ... done
+Stopping groundhog_server_7 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_uptime_1 ... done
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing groundhog_server_4 ... 
+Removing groundhog_server_3 ... 
+Removing groundhog_server_1 ... 
+Removing groundhog_server_5 ... 
+Removing groundhog_server_6 ... 
+Removing groundhog_server_2 ... 
+Removing groundhog_server_7 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_server_7 ... done
+Removing groundhog_server_6 ... done
+Removing groundhog_client_1 ... done
+Removing groundhog_uptime_1 ... done
+Removing groundhog_server_2 ... done
+Removing groundhog_server_3 ... done
+Removing groundhog_server_1 ... done
+Removing groundhog_server_5 ... done
+Removing groundhog_server_4 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  27.42MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 080687610e52
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 81b50c8b6d1e
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 0b43b516ff4d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> ea2fcacebed1
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 0166c65bed5d
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> e6571e470cda
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> b1003c2e8c0f
+Successfully built b1003c2e8c0f
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_4 ... 
+Creating groundhog_server_5 ... 
+Creating groundhog_server_6 ... 
+Creating groundhog_server_7 ... 
+Creating groundhog_server_4 ... done
+Creating groundhog_server_3 ... done
+Creating groundhog_server_2 ... done
+Creating groundhog_server_6 ... done
+Creating groundhog_server_7 ... done
+Creating groundhog_server_1 ... done
+Creating groundhog_server_5 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_4, groundhog_server_3, groundhog_server_2, groundhog_server_6, groundhog_server_7, groundhog_server_1, groundhog_server_5
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[36mclient_1  |[0m network send error: Broken pipe
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mclient_1  |[0m network send error: Connection reset by peer
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mclient_1  |[0m network receive error.listen ): End of file
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:819
+[36mclient_1  |[0m Net            n:8  m:3   t:100000     enc/s:5346.45   ms/enc:0.18704 	  Mbps:2.5663 Aborts = 0 Time (ms) = 18704
+[35mserver_3  |[0m Going up
+[32;1mserver_7  |[0m Going up
+[33;1mserver_6  |[0m Going up
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:1.79979e-05	Std Deviation:2.28349e-05
+[33mserver_1  |[0m Going up
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:2.13809e-06	Std Deviation:2.50434e-05
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:3.8666e-07	Std Deviation:3.48546e-06
+[34mserver_4  |[0m Going up
+[34mserver_4  |[0m timeout done
+[34mserver_4  |[0m Went down
+[34mserver_4  |[0m Going up
+[36mgroundhog_client_1 exited with code 0
+[0mStopping groundhog_server_6 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_7 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_server_5 ... 
+Stopping groundhog_server_4 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_6 ... 
+Stopping groundhog_server_2 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_7 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_server_5 ... 
+Stopping groundhog_server_4 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_7 ... done
+Stopping groundhog_server_7 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_6 ... done
+Stopping groundhog_server_6 ... done
+Stopping groundhog_server_5 ... done
+Stopping groundhog_server_4 ... done
+Stopping groundhog_server_5 ... done
+Stopping groundhog_server_4 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping groundhog_uptime_1 ... done
+Removing groundhog_server_6 ... 
+Removing groundhog_server_2 ... 
+Removing groundhog_server_3 ... 
+Removing groundhog_server_7 ... 
+Removing groundhog_server_1 ... 
+Removing groundhog_server_5 ... 
+Removing groundhog_server_4 ... 
+Removing groundhog_client_1 ... 
+Removing groundhog_uptime_1 ... 
+Removing groundhog_server_3 ... done
+Removing groundhog_client_1 ... done
+Removing groundhog_server_7 ... done
+Removing groundhog_server_2 ... done
+Removing groundhog_server_4 ... done
+Removing groundhog_uptime_1 ... done
+Removing groundhog_server_5 ... done
+Removing groundhog_server_6 ... done
+Removing groundhog_server_1 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  27.43MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 080687610e52
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 81b50c8b6d1e
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 0b43b516ff4d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> ea2fcacebed1
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> 0166c65bed5d
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> e6571e470cda
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> b1003c2e8c0f
+Successfully built b1003c2e8c0f
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1 ... 
+Creating groundhog_server_2 ... 
+Creating groundhog_server_3 ... 
+Creating groundhog_server_4 ... 
+Creating groundhog_server_5 ... 
+Creating groundhog_server_6 ... 
+Creating groundhog_server_7 ... 
+Creating groundhog_server_4 ... done
+Creating groundhog_server_3 ... done
+Creating groundhog_server_6 ... done
+Creating groundhog_server_5 ... done
+Creating groundhog_server_7 ... done
+Creating groundhog_server_1 ... done
+Creating groundhog_server_2 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_4, groundhog_server_3, groundhog_server_6, groundhog_server_5, groundhog_server_7, groundhog_server_1, groundhog_server_2
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[36mclient_1  |[0m network send error: Connection reset by peer
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mclient_1  |[0m network receive error.listen ): End of file
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:819
+[36mclient_1  |[0m network send error: Broken pipe
+[36mclient_1  |[0m  at  /usr/local/src/cryptoTools/cryptoTools/Network/Channel.cpp:871
+[36mclient_1  |[0m Net            n:8  m:3   t:100000     enc/s:5180.01   ms/enc:0.19305 	  Mbps:2.4864 Aborts = 0 Time (ms) = 19305
+[33mserver_1  |[0m Going up
+[32;1mserver_7  |[0m Going up
+[36;1mserver_5  |[0m Going up
+[35mserver_3  |[0m Going up
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:1.84711e-05	Std Deviation:3.61822e-05
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:2.12469e-06	Std Deviation:9.06894e-06
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:3.79558e-07	Std Deviation:3.60007e-06
+[34mserver_4  |[0m Going up
+[34mserver_4  |[0m timeout done
+[34mserver_4  |[0m Went down
+[34mserver_4  |[0m Going up
+[36mgroundhog_client_1 exited with code 0
+[0mStopping groundhog_server_2 ... 
+Stopping groundhog_server_5 ... 
+Stopping groundhog_server_3 ... 
+Stopping groundhog_server_1 ... 
+Stopping groundhog_server_7 ... 
+Stopping groundhog_server_4 ... 
+Stopping groundhog_server_6 ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_server_4 ... done
+Stopping groundhog_server_2 ... done
+Stopping groundhog_server_7 ... done
+Stopping groundhog_server_1 ... done
+Stopping groundhog_server_5 ... done
+Stopping groundhog_server_6 ... done
+Stopping groundhog_server_3 ... done
+Stopping groundhog_uptime_1 ... done
+Gracefully stopping... (press Ctrl+C again to force)

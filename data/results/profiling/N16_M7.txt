@@ -1,0 +1,2520 @@
+
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1 ... done
+Removing groundhog_server_4  ... 
+Removing groundhog_server_13 ... 
+Removing groundhog_server_7  ... 
+Removing groundhog_server_1  ... 
+Removing groundhog_server_11 ... 
+Removing groundhog_server_14 ... 
+Removing groundhog_server_5  ... 
+Removing groundhog_server_8  ... 
+Removing groundhog_server_15 ... 
+Removing groundhog_server_2  ... 
+Removing groundhog_server_3  ... 
+Removing groundhog_server_12 ... 
+Removing groundhog_server_6  ... 
+Removing groundhog_server_9  ... 
+Removing groundhog_server_10 ... 
+Removing groundhog_client_1  ... 
+Removing groundhog_uptime_1  ... 
+Removing groundhog_server_10 ... done
+Removing groundhog_server_13 ... done
+Removing groundhog_server_14 ... done
+Removing groundhog_uptime_1  ... done
+Removing groundhog_client_1  ... done
+Removing groundhog_server_1  ... done
+Removing groundhog_server_7  ... done
+Removing groundhog_server_8  ... done
+Removing groundhog_server_6  ... done
+Removing groundhog_server_15 ... done
+Removing groundhog_server_12 ... done
+Removing groundhog_server_3  ... done
+Removing groundhog_server_2  ... done
+Removing groundhog_server_5  ... done
+Removing groundhog_server_4  ... done
+Removing groundhog_server_11 ... done
+Removing groundhog_server_9  ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  29.66MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 080687610e52
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 81b50c8b6d1e
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 0b43b516ff4d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> ea2fcacebed1
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> bf347da34a36
+Step 12/13 : COPY default.json /usr/local
+ ---> 1aae8eeee564
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Running in b9faaf900a4f
+Removing intermediate container b9faaf900a4f
+ ---> 13e534b13a75
+Successfully built 13e534b13a75
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1  ... 
+Creating groundhog_server_2  ... 
+Creating groundhog_server_3  ... 
+Creating groundhog_server_4  ... 
+Creating groundhog_server_5  ... 
+Creating groundhog_server_6  ... 
+Creating groundhog_server_7  ... 
+Creating groundhog_server_8  ... 
+Creating groundhog_server_9  ... 
+Creating groundhog_server_10 ... 
+Creating groundhog_server_11 ... 
+Creating groundhog_server_12 ... 
+Creating groundhog_server_13 ... 
+Creating groundhog_server_14 ... 
+Creating groundhog_server_15 ... 
+Creating groundhog_server_11 ... done
+Creating groundhog_server_9  ... done
+Creating groundhog_server_1  ... done
+Creating groundhog_server_8  ... done
+Creating groundhog_server_2  ... done
+Creating groundhog_server_12 ... done
+Creating groundhog_server_3  ... done
+Creating groundhog_server_6  ... done
+Creating groundhog_server_7  ... done
+Creating groundhog_server_15 ... done
+Creating groundhog_server_5  ... done
+Creating groundhog_server_14 ... done
+Creating groundhog_server_13 ... done
+Creating groundhog_server_10 ... done
+Creating groundhog_server_4  ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_11, groundhog_server_9, groundhog_server_1, groundhog_server_8, groundhog_server_2, groundhog_server_12, groundhog_server_3, groundhog_server_6, groundhog_server_7, groundhog_server_15, groundhog_server_5, groundhog_server_14, groundhog_server_13, groundhog_server_10, groundhog_server_4
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[33mserver_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_1  |[0m My IP is 10.0.0.5, my idx is 3
+[33mserver_1  |[0m 
+[33mserver_1  |[0m Done initializing in init
+[33mserver_1  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_11 |[0m My IP is 10.0.0.3, my idx is 1
+[32mserver_10 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34mserver_12 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34mserver_12 |[0m My IP is 10.0.0.8, my idx is 6
+[32mserver_10 |[0m My IP is 10.0.0.16, my idx is 14
+[34mserver_12 |[0m 
+[34mserver_12 |[0m Done initializing in init
+[34mserver_12 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m 
+[32mserver_10 |[0m Done initializing in init
+[32mserver_10 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36;1mserver_13 |[0m My IP is 10.0.0.15, my idx is 13
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m Done initializing in init
+[36;1mserver_13 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m 
+[35mserver_11 |[0m Done initializing in init
+[35mserver_11 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32;1mserver_15 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32;1mserver_15 |[0m My IP is 10.0.0.12, my idx is 10
+[34;1mserver_3  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35;1mserver_2  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m Done initializing in init
+[32;1mserver_15 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m My IP is 10.0.0.9, my idx is 7
+[36mserver_4  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mserver_4  |[0m My IP is 10.0.0.17, my idx is 15
+[35;1mserver_2  |[0m My IP is 10.0.0.7, my idx is 5
+[34;1mserver_3  |[0m 
+[34;1mserver_3  |[0m Done initializing in init
+[34;1mserver_3  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_5  |[0m My IP is 10.0.0.13, my idx is 11
+[33mserver_5  |[0m 
+[33mserver_5  |[0m Done initializing in init
+[32mserver_6  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35;1mserver_2  |[0m 
+[35;1mserver_2  |[0m Done initializing in init
+[33mserver_5  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m My IP is 10.0.0.11, my idx is 9
+[32mserver_6  |[0m 
+[32mserver_6  |[0m Done initializing in init
+[36mserver_4  |[0m 
+[36mserver_4  |[0m Done initializing in init
+[36mserver_4  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_7  |[0m My IP is 10.0.0.10, my idx is 8
+[35mserver_7  |[0m 
+[35mserver_7  |[0m Done initializing in init
+[35mserver_7  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m My IP is 10.0.0.14, my idx is 12
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m Done initializing in init
+[33;1mserver_14 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36;1mserver_9  |[0m My IP is 10.0.0.6, my idx is 4
+[36;1mserver_9  |[0m 
+[36;1mserver_9  |[0m Done initializing in init
+[36;1mserver_9  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34mserver_8  |[0m My IP is 10.0.0.4, my idx is 2
+[34mserver_8  |[0m 
+[34mserver_8  |[0m Done initializing in init
+[34mserver_8  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m Net            n:16  m:7   t:100000     enc/s:1991.4   ms/enc:0.50216 	  Mbps:2.90744 Aborts = 0 Time (ms) = 50216
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:6.48214e-05	Std Deviation:0.000152311
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:1.86815e-05	Std Deviation:4.1264e-05
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:6.69396e-07	Std Deviation:7.39024e-06
+[34;1mgroundhog_server_3 exited with code 0
+[0m[36mgroundhog_server_4 exited with code 0
+[0m[32mgroundhog_server_6 exited with code 0
+[0m[35mgroundhog_server_7 exited with code 0
+[0m[34mgroundhog_server_12 exited with code 0
+[0m[33mgroundhog_server_5 exited with code 0
+[0m[34mgroundhog_server_8 exited with code 0
+[0m[36;1mgroundhog_server_9 exited with code 0
+[0m[33;1mgroundhog_server_14 exited with code 0
+[0m[33mgroundhog_server_1 exited with code 0
+[0m[36;1mgroundhog_server_13 exited with code 0
+[0m[32mgroundhog_server_10 exited with code 0
+[0m[35mgroundhog_server_11 exited with code 0
+[0m[35;1mgroundhog_server_2 exited with code 0
+[0m[32;1mgroundhog_server_15 exited with code 0
+[0m[36mgroundhog_client_1 exited with code 0
+[0mStopping groundhog_uptime_1  ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping groundhog_uptime_1 ... done
+Removing groundhog_server_5  ... 
+Removing groundhog_server_14 ... 
+Removing groundhog_server_8  ... 
+Removing groundhog_server_1  ... 
+Removing groundhog_server_11 ... 
+Removing groundhog_server_12 ... 
+Removing groundhog_server_15 ... 
+Removing groundhog_server_9  ... 
+Removing groundhog_server_3  ... 
+Removing groundhog_server_2  ... 
+Removing groundhog_server_10 ... 
+Removing groundhog_server_7  ... 
+Removing groundhog_server_13 ... 
+Removing groundhog_server_6  ... 
+Removing groundhog_server_4  ... 
+Removing groundhog_client_1  ... 
+Removing groundhog_uptime_1  ... 
+Removing groundhog_server_9  ... done
+Removing groundhog_server_1  ... done
+Removing groundhog_server_6  ... done
+Removing groundhog_server_4  ... done
+Removing groundhog_client_1  ... done
+Removing groundhog_server_11 ... done
+Removing groundhog_uptime_1  ... done
+Removing groundhog_server_2  ... done
+Removing groundhog_server_10 ... done
+Removing groundhog_server_14 ... done
+Removing groundhog_server_13 ... done
+Removing groundhog_server_3  ... done
+Removing groundhog_server_12 ... done
+Removing groundhog_server_7  ... done
+Removing groundhog_server_8  ... done
+Removing groundhog_server_5  ... done
+Removing groundhog_server_15 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  29.67MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 080687610e52
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 81b50c8b6d1e
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 0b43b516ff4d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> ea2fcacebed1
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> bf347da34a36
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 1aae8eeee564
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 13e534b13a75
+Successfully built 13e534b13a75
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1  ... 
+Creating groundhog_server_2  ... 
+Creating groundhog_server_3  ... 
+Creating groundhog_server_4  ... 
+Creating groundhog_server_5  ... 
+Creating groundhog_server_6  ... 
+Creating groundhog_server_7  ... 
+Creating groundhog_server_8  ... 
+Creating groundhog_server_9  ... 
+Creating groundhog_server_10 ... 
+Creating groundhog_server_11 ... 
+Creating groundhog_server_12 ... 
+Creating groundhog_server_13 ... 
+Creating groundhog_server_14 ... 
+Creating groundhog_server_15 ... 
+Creating groundhog_server_11 ... done
+Creating groundhog_server_14 ... done
+Creating groundhog_server_9  ... done
+Creating groundhog_server_4  ... done
+Creating groundhog_server_8  ... done
+Creating groundhog_server_6  ... done
+Creating groundhog_server_15 ... done
+Creating groundhog_server_13 ... done
+Creating groundhog_server_3  ... done
+Creating groundhog_server_12 ... done
+Creating groundhog_server_10 ... done
+Creating groundhog_server_1  ... done
+Creating groundhog_server_7  ... done
+Creating groundhog_server_5  ... done
+Creating groundhog_server_2  ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_11, groundhog_server_14, groundhog_server_9, groundhog_server_4, groundhog_server_8, groundhog_server_6, groundhog_server_15, groundhog_server_13, groundhog_server_3, groundhog_server_12, groundhog_server_10, groundhog_server_1, groundhog_server_7, groundhog_server_5, groundhog_server_2
+[33mserver_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_1  |[0m My IP is 10.0.0.13, my idx is 11
+[33mserver_1  |[0m 
+[33mserver_1  |[0m Done initializing in init
+[33mserver_1  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[32mserver_10 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_11 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32mserver_10 |[0m My IP is 10.0.0.14, my idx is 12
+[34mserver_12 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34mserver_12 |[0m My IP is 10.0.0.12, my idx is 10
+[32mserver_10 |[0m 
+[32mserver_10 |[0m Done initializing in init
+[32mserver_10 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m My IP is 10.0.0.3, my idx is 1
+[35mserver_11 |[0m 
+[35mserver_11 |[0m Done initializing in init
+[35mserver_11 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34mserver_12 |[0m 
+[34mserver_12 |[0m Done initializing in init
+[34mserver_12 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m My IP is 10.0.0.4, my idx is 2
+[36;1mserver_13 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m Done initializing in init
+[33;1mserver_14 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32;1mserver_15 |[0m My IP is 10.0.0.9, my idx is 7
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m Done initializing in init
+[32;1mserver_15 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36;1mserver_13 |[0m My IP is 10.0.0.10, my idx is 8
+[35;1mserver_2  |[0m My IP is 10.0.0.17, my idx is 15
+[35;1mserver_2  |[0m 
+[35;1mserver_2  |[0m Done initializing in init
+[35;1mserver_2  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m Done initializing in init
+[36;1mserver_13 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_5  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mserver_4  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34;1mserver_3  |[0m My IP is 10.0.0.11, my idx is 9
+[33mserver_5  |[0m My IP is 10.0.0.16, my idx is 14
+[34;1mserver_3  |[0m 
+[34;1mserver_3  |[0m Done initializing in init
+[34;1mserver_3  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m 
+[33mserver_5  |[0m Done initializing in init
+[33mserver_5  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32mserver_6  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34mserver_8  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_7  |[0m My IP is 10.0.0.15, my idx is 13
+[32mserver_6  |[0m My IP is 10.0.0.8, my idx is 6
+[32mserver_6  |[0m 
+[32mserver_6  |[0m Done initializing in init
+[32mserver_6  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m My IP is 10.0.0.5, my idx is 3
+[36;1mserver_9  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34mserver_8  |[0m My IP is 10.0.0.7, my idx is 5
+[36;1mserver_9  |[0m My IP is 10.0.0.6, my idx is 4
+[35mserver_7  |[0m 
+[35mserver_7  |[0m Done initializing in init
+[34mserver_8  |[0m 
+[34mserver_8  |[0m Done initializing in init
+[34mserver_8  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m 
+[36mserver_4  |[0m Done initializing in init
+[36mserver_4  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m 
+[36;1mserver_9  |[0m Done initializing in init
+[36;1mserver_9  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m Net            n:16  m:7   t:100000     enc/s:1985.07   ms/enc:0.50376 	  Mbps:2.89821 Aborts = 0 Time (ms) = 50376
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:5.63122e-05	Std Deviation:0.000151222
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:1.82969e-05	Std Deviation:6.56702e-05
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:7.13267e-07	Std Deviation:8.33021e-06
+[32mgroundhog_server_6 exited with code 0
+[0m[36mgroundhog_server_4 exited with code 0
+[0m[33;1mgroundhog_server_14 exited with code 0
+[0m[34mgroundhog_server_8 exited with code 0
+[0m[35mgroundhog_server_11 exited with code 0
+[0m[33mgroundhog_server_1 exited with code 0
+[0m[33mgroundhog_server_5 exited with code 0
+[0m[36;1mgroundhog_server_13 exited with code 0
+[0m[34mgroundhog_server_12 exited with code 0
+[0m[36mgroundhog_client_1 exited with code 0
+[0m[34;1mgroundhog_server_3 exited with code 0
+[0m[32;1mgroundhog_server_15 exited with code 0
+[0m[35mgroundhog_server_7 exited with code 0
+[0m[35;1mgroundhog_server_2 exited with code 0
+[0m[36;1mgroundhog_server_9 exited with code 0
+[0m[32mgroundhog_server_10 exited with code 0
+[0mStopping groundhog_uptime_1  ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping groundhog_uptime_1 ... done
+Removing groundhog_server_3  ... 
+Removing groundhog_server_4  ... 
+Removing groundhog_server_13 ... 
+Removing groundhog_server_10 ... 
+Removing groundhog_server_1  ... 
+Removing groundhog_server_7  ... 
+Removing groundhog_server_14 ... 
+Removing groundhog_server_5  ... 
+Removing groundhog_server_8  ... 
+Removing groundhog_server_11 ... 
+Removing groundhog_server_2  ... 
+Removing groundhog_server_12 ... 
+Removing groundhog_server_15 ... 
+Removing groundhog_server_6  ... 
+Removing groundhog_server_9  ... 
+Removing groundhog_client_1  ... 
+Removing groundhog_uptime_1  ... 
+Removing groundhog_server_1  ... done
+Removing groundhog_server_15 ... done
+Removing groundhog_uptime_1  ... done
+Removing groundhog_server_5  ... done
+Removing groundhog_server_6  ... done
+Removing groundhog_server_14 ... done
+Removing groundhog_server_2  ... done
+Removing groundhog_server_7  ... done
+Removing groundhog_server_12 ... done
+Removing groundhog_client_1  ... done
+Removing groundhog_server_4  ... done
+Removing groundhog_server_3  ... done
+Removing groundhog_server_10 ... done
+Removing groundhog_server_13 ... done
+Removing groundhog_server_11 ... done
+Removing groundhog_server_8  ... done
+Removing groundhog_server_9  ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  29.68MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 080687610e52
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 81b50c8b6d1e
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 0b43b516ff4d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> ea2fcacebed1
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> bf347da34a36
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 1aae8eeee564
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 13e534b13a75
+Successfully built 13e534b13a75
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1  ... 
+Creating groundhog_server_2  ... 
+Creating groundhog_server_3  ... 
+Creating groundhog_server_4  ... 
+Creating groundhog_server_5  ... 
+Creating groundhog_server_6  ... 
+Creating groundhog_server_7  ... 
+Creating groundhog_server_8  ... 
+Creating groundhog_server_9  ... 
+Creating groundhog_server_10 ... 
+Creating groundhog_server_11 ... 
+Creating groundhog_server_12 ... 
+Creating groundhog_server_13 ... 
+Creating groundhog_server_14 ... 
+Creating groundhog_server_15 ... 
+Creating groundhog_server_9  ... done
+Creating groundhog_server_1  ... done
+Creating groundhog_server_2  ... done
+Creating groundhog_server_8  ... done
+Creating groundhog_server_10 ... done
+Creating groundhog_server_14 ... done
+Creating groundhog_server_3  ... done
+Creating groundhog_server_12 ... done
+Creating groundhog_server_13 ... done
+Creating groundhog_server_7  ... done
+Creating groundhog_server_11 ... done
+Creating groundhog_server_6  ... done
+Creating groundhog_server_5  ... done
+Creating groundhog_server_4  ... done
+Creating groundhog_server_15 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_9, groundhog_server_1, groundhog_server_2, groundhog_server_8, groundhog_server_10, groundhog_server_14, groundhog_server_3, groundhog_server_12, groundhog_server_13, groundhog_server_7, groundhog_server_11, groundhog_server_6, groundhog_server_5, groundhog_server_4, groundhog_server_15
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[32mserver_10 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_11 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32mserver_10 |[0m My IP is 10.0.0.7, my idx is 5
+[34mserver_12 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[35mserver_11 |[0m My IP is 10.0.0.13, my idx is 11
+[34mserver_12 |[0m My IP is 10.0.0.10, my idx is 8
+[32mserver_10 |[0m 
+[32mserver_10 |[0m Done initializing in init
+[32mserver_10 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m 
+[34mserver_12 |[0m Done initializing in init
+[34mserver_12 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36;1mserver_13 |[0m My IP is 10.0.0.11, my idx is 9
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m Done initializing in init
+[36;1mserver_13 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_11 |[0m 
+[35mserver_11 |[0m Done initializing in init
+[35mserver_11 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m My IP is 10.0.0.8, my idx is 6
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m Done initializing in init
+[33;1mserver_14 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35;1mserver_2  |[0m My IP is 10.0.0.5, my idx is 3
+[32;1mserver_15 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34;1mserver_3  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35;1mserver_2  |[0m 
+[35;1mserver_2  |[0m Done initializing in init
+[35;1mserver_2  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m My IP is 10.0.0.9, my idx is 7
+[34;1mserver_3  |[0m 
+[34;1mserver_3  |[0m Done initializing in init
+[34;1mserver_3  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m My IP is 10.0.0.17, my idx is 15
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m Done initializing in init
+[32;1mserver_15 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m My IP is 10.0.0.4, my idx is 2
+[34;1mserver_3  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mserver_4  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mserver_4  |[0m My IP is 10.0.0.16, my idx is 14
+[33mserver_5  |[0m My IP is 10.0.0.15, my idx is 13
+[36mserver_4  |[0m 
+[36mserver_4  |[0m Done initializing in init
+[36mserver_4  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m 
+[33mserver_5  |[0m Done initializing in init
+[33mserver_5  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m 
+[33mserver_1  |[0m Done initializing in init
+[33mserver_1  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32mserver_6  |[0m My IP is 10.0.0.14, my idx is 12
+[32mserver_6  |[0m 
+[32mserver_6  |[0m Done initializing in init
+[32mserver_6  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34mserver_8  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36;1mserver_9  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36;1mserver_9  |[0m My IP is 10.0.0.3, my idx is 1
+[34mserver_8  |[0m My IP is 10.0.0.6, my idx is 4
+[34mserver_8  |[0m 
+[34mserver_8  |[0m Done initializing in init
+[34mserver_8  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m My IP is 10.0.0.12, my idx is 10
+[35mserver_7  |[0m 
+[35mserver_7  |[0m Done initializing in init
+[35mserver_7  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m 
+[36;1mserver_9  |[0m Done initializing in init
+[36;1mserver_9  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m Net            n:16  m:7   t:100000     enc/s:2015.89   ms/enc:0.49606 	  Mbps:2.94319 Aborts = 0 Time (ms) = 49606
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:6.533e-05	Std Deviation:0.000178804
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:1.85117e-05	Std Deviation:4.39041e-05
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:6.12222e-07	Std Deviation:6.39977e-06
+[34;1mgroundhog_server_3 exited with code 0
+[0m[35;1mgroundhog_server_2 exited with code 0
+[0m[33;1mgroundhog_server_14 exited with code 0
+[0m[35mgroundhog_server_11 exited with code 0
+[0m[32;1mgroundhog_server_15 exited with code 0
+[0m[35mgroundhog_server_7 exited with code 0
+[0m[36;1mgroundhog_server_9 exited with code 0
+[0m[36;1mgroundhog_server_13 exited with code 0
+[0m[34mgroundhog_server_8 exited with code 0
+[0m[36mgroundhog_server_4 exited with code 0
+[0m[32mgroundhog_server_10 exited with code 0
+[0m[34mgroundhog_server_12 exited with code 0
+[0m[36mgroundhog_client_1 exited with code 0
+[0m[33mgroundhog_server_1 exited with code 0
+[0m[32mgroundhog_server_6 exited with code 0
+[0m[33mgroundhog_server_5 exited with code 0
+[0mStopping groundhog_uptime_1  ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1 ... done
+Stopping groundhog_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing groundhog_server_10 ... 
+Removing groundhog_server_1  ... 
+Removing groundhog_server_14 ... 
+Removing groundhog_server_4  ... 
+Removing groundhog_server_11 ... 
+Removing groundhog_server_15 ... 
+Removing groundhog_server_8  ... 
+Removing groundhog_server_5  ... 
+Removing groundhog_server_2  ... 
+Removing groundhog_server_9  ... 
+Removing groundhog_server_3  ... 
+Removing groundhog_server_6  ... 
+Removing groundhog_server_13 ... 
+Removing groundhog_server_12 ... 
+Removing groundhog_server_7  ... 
+Removing groundhog_client_1  ... 
+Removing groundhog_uptime_1  ... 
+Removing groundhog_server_14 ... done
+Removing groundhog_server_2  ... done
+Removing groundhog_server_13 ... done
+Removing groundhog_client_1  ... done
+Removing groundhog_server_15 ... done
+Removing groundhog_server_6  ... done
+Removing groundhog_server_1  ... done
+Removing groundhog_server_3  ... done
+Removing groundhog_server_12 ... done
+Removing groundhog_server_5  ... done
+Removing groundhog_server_9  ... done
+Removing groundhog_server_11 ... done
+Removing groundhog_server_8  ... done
+Removing groundhog_server_4  ... done
+Removing groundhog_uptime_1  ... done
+Removing groundhog_server_7  ... done
+Removing groundhog_server_10 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  29.69MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 080687610e52
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 81b50c8b6d1e
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 0b43b516ff4d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> ea2fcacebed1
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> bf347da34a36
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 1aae8eeee564
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 13e534b13a75
+Successfully built 13e534b13a75
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1  ... 
+Creating groundhog_server_2  ... 
+Creating groundhog_server_3  ... 
+Creating groundhog_server_4  ... 
+Creating groundhog_server_5  ... 
+Creating groundhog_server_6  ... 
+Creating groundhog_server_7  ... 
+Creating groundhog_server_8  ... 
+Creating groundhog_server_9  ... 
+Creating groundhog_server_10 ... 
+Creating groundhog_server_11 ... 
+Creating groundhog_server_12 ... 
+Creating groundhog_server_13 ... 
+Creating groundhog_server_14 ... 
+Creating groundhog_server_15 ... 
+Creating groundhog_server_11 ... done
+Creating groundhog_server_13 ... done
+Creating groundhog_server_1  ... done
+Creating groundhog_server_12 ... done
+Creating groundhog_server_10 ... done
+Creating groundhog_server_9  ... done
+Creating groundhog_server_5  ... done
+Creating groundhog_server_14 ... done
+Creating groundhog_server_3  ... done
+Creating groundhog_server_6  ... done
+Creating groundhog_server_8  ... done
+Creating groundhog_server_4  ... done
+Creating groundhog_server_15 ... done
+Creating groundhog_server_2  ... done
+Creating groundhog_server_7  ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_11, groundhog_server_13, groundhog_server_1, groundhog_server_12, groundhog_server_10, groundhog_server_9, groundhog_server_5, groundhog_server_14, groundhog_server_3, groundhog_server_6, groundhog_server_8, groundhog_server_4, groundhog_server_15, groundhog_server_2, groundhog_server_7
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[33mserver_1  |[0m My IP is 10.0.0.5, my idx is 3
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[33mserver_1  |[0m 
+[33mserver_1  |[0m Done initializing in init
+[33mserver_1  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[32mserver_10 |[0m My IP is 10.0.0.7, my idx is 5
+[32mserver_10 |[0m 
+[32mserver_10 |[0m Done initializing in init
+[32mserver_10 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34mserver_12 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_11 |[0m My IP is 10.0.0.3, my idx is 1
+[35mserver_11 |[0m 
+[35mserver_11 |[0m Done initializing in init
+[35mserver_11 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m My IP is 10.0.0.6, my idx is 4
+[34mserver_12 |[0m 
+[34mserver_12 |[0m Done initializing in init
+[34mserver_12 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36;1mserver_13 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33;1mserver_14 |[0m My IP is 10.0.0.10, my idx is 8
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m Done initializing in init
+[33;1mserver_14 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32;1mserver_15 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36;1mserver_13 |[0m My IP is 10.0.0.4, my idx is 2
+[32;1mserver_15 |[0m My IP is 10.0.0.15, my idx is 13
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m Done initializing in init
+[32;1mserver_15 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m Done initializing in init
+[36;1mserver_13 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m My IP is 10.0.0.16, my idx is 14
+[36mserver_4  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34;1mserver_3  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mserver_4  |[0m My IP is 10.0.0.14, my idx is 12
+[35;1mserver_2  |[0m 
+[35;1mserver_2  |[0m Done initializing in init
+[35;1mserver_2  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m My IP is 10.0.0.11, my idx is 9
+[36mserver_4  |[0m 
+[36mserver_4  |[0m Done initializing in init
+[36mserver_4  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m 
+[34;1mserver_3  |[0m Done initializing in init
+[34;1mserver_3  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34mserver_8  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32mserver_6  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_7  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34mserver_8  |[0m My IP is 10.0.0.13, my idx is 11
+[33mserver_5  |[0m My IP is 10.0.0.9, my idx is 7
+[33mserver_5  |[0m 
+[33mserver_5  |[0m Done initializing in init
+[33mserver_5  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m My IP is 10.0.0.17, my idx is 15
+[34mserver_8  |[0m 
+[34mserver_8  |[0m Done initializing in init
+[35mserver_7  |[0m 
+[35mserver_7  |[0m Done initializing in init
+[35mserver_7  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m My IP is 10.0.0.12, my idx is 10
+[34mserver_8  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m 
+[32mserver_6  |[0m Done initializing in init
+[32mserver_6  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36;1mserver_9  |[0m My IP is 10.0.0.8, my idx is 6
+[36;1mserver_9  |[0m 
+[36;1mserver_9  |[0m Done initializing in init
+[36;1mserver_9  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m Net            n:16  m:7   t:100000     enc/s:1993.62   ms/enc:0.5016 	  Mbps:2.91069 Aborts = 0 Time (ms) = 50160
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:6.02165e-05	Std Deviation:0.000141031
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:1.92676e-05	Std Deviation:4.62229e-05
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:7.14575e-07	Std Deviation:7.88251e-06
+[35;1mgroundhog_server_2 exited with code 0
+[0m[35mgroundhog_server_11 exited with code 0
+[0m[32mgroundhog_server_10 exited with code 0
+[0m[32;1mgroundhog_server_15 exited with code 0
+[0m[33mgroundhog_server_5 exited with code 0
+[0m[33mgroundhog_server_1 exited with code 0
+[0m[34;1mgroundhog_server_3 exited with code 0
+[0m[36;1mgroundhog_server_9 exited with code 0
+[0m[36;1mgroundhog_server_13 exited with code 0
+[0m[35mgroundhog_server_7 exited with code 0
+[0m[36mgroundhog_server_4 exited with code 0
+[0m[34mgroundhog_server_8 exited with code 0
+[0m[32mgroundhog_server_6 exited with code 0
+[0m[33;1mgroundhog_server_14 exited with code 0
+[0m[34mgroundhog_server_12 exited with code 0
+[0m[36mgroundhog_client_1 exited with code 0
+[0mStopping groundhog_uptime_1  ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1 ... done
+Stopping groundhog_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing groundhog_server_9  ... 
+Removing groundhog_server_8  ... 
+Removing groundhog_server_12 ... 
+Removing groundhog_server_15 ... 
+Removing groundhog_server_2  ... 
+Removing groundhog_server_10 ... 
+Removing groundhog_server_6  ... 
+Removing groundhog_server_3  ... 
+Removing groundhog_server_13 ... 
+Removing groundhog_server_4  ... 
+Removing groundhog_server_7  ... 
+Removing groundhog_server_14 ... 
+Removing groundhog_server_11 ... 
+Removing groundhog_server_1  ... 
+Removing groundhog_server_5  ... 
+Removing groundhog_client_1  ... 
+Removing groundhog_uptime_1  ... 
+Removing groundhog_server_9  ... done
+Removing groundhog_server_1  ... done
+Removing groundhog_server_11 ... done
+Removing groundhog_server_15 ... done
+Removing groundhog_server_10 ... done
+Removing groundhog_server_2  ... done
+Removing groundhog_uptime_1  ... done
+Removing groundhog_server_8  ... done
+Removing groundhog_server_12 ... done
+Removing groundhog_server_6  ... done
+Removing groundhog_server_4  ... done
+Removing groundhog_server_5  ... done
+Removing groundhog_server_7  ... done
+Removing groundhog_server_13 ... done
+Removing groundhog_client_1  ... done
+Removing groundhog_server_14 ... done
+Removing groundhog_server_3  ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  29.71MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 080687610e52
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 81b50c8b6d1e
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 0b43b516ff4d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> ea2fcacebed1
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> bf347da34a36
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 1aae8eeee564
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 13e534b13a75
+Successfully built 13e534b13a75
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1  ... 
+Creating groundhog_server_2  ... 
+Creating groundhog_server_3  ... 
+Creating groundhog_server_4  ... 
+Creating groundhog_server_5  ... 
+Creating groundhog_server_6  ... 
+Creating groundhog_server_7  ... 
+Creating groundhog_server_8  ... 
+Creating groundhog_server_9  ... 
+Creating groundhog_server_10 ... 
+Creating groundhog_server_11 ... 
+Creating groundhog_server_12 ... 
+Creating groundhog_server_13 ... 
+Creating groundhog_server_14 ... 
+Creating groundhog_server_15 ... 
+Creating groundhog_server_9  ... done
+Creating groundhog_server_10 ... done
+Creating groundhog_server_8  ... done
+Creating groundhog_server_15 ... done
+Creating groundhog_server_7  ... done
+Creating groundhog_server_2  ... done
+Creating groundhog_server_11 ... done
+Creating groundhog_server_14 ... done
+Creating groundhog_server_3  ... done
+Creating groundhog_server_5  ... done
+Creating groundhog_server_13 ... done
+Creating groundhog_server_4  ... done
+Creating groundhog_server_12 ... done
+Creating groundhog_server_1  ... done
+Creating groundhog_server_6  ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_9, groundhog_server_10, groundhog_server_8, groundhog_server_15, groundhog_server_7, groundhog_server_2, groundhog_server_11, groundhog_server_14, groundhog_server_3, groundhog_server_5, groundhog_server_13, groundhog_server_4, groundhog_server_12, groundhog_server_1, groundhog_server_6
+[33mserver_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_11 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[32mserver_10 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_1  |[0m My IP is 10.0.0.16, my idx is 14
+[35mserver_11 |[0m My IP is 10.0.0.9, my idx is 7
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[32mserver_10 |[0m My IP is 10.0.0.4, my idx is 2
+[33mserver_1  |[0m 
+[33mserver_1  |[0m Done initializing in init
+[33mserver_1  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m 
+[32mserver_10 |[0m Done initializing in init
+[32mserver_10 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m 
+[35mserver_11 |[0m Done initializing in init
+[35mserver_11 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[34mserver_12 |[0m My IP is 10.0.0.15, my idx is 13
+[33;1mserver_14 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33;1mserver_14 |[0m My IP is 10.0.0.11, my idx is 9
+[36;1mserver_13 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34mserver_12 |[0m 
+[34mserver_12 |[0m Done initializing in init
+[34mserver_12 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32;1mserver_15 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36;1mserver_13 |[0m My IP is 10.0.0.13, my idx is 11
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m Done initializing in init
+[36;1mserver_13 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m My IP is 10.0.0.6, my idx is 4
+[34;1mserver_3  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35;1mserver_2  |[0m My IP is 10.0.0.8, my idx is 6
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m Done initializing in init
+[33;1mserver_14 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m 
+[35;1mserver_2  |[0m Done initializing in init
+[35;1mserver_2  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m Done initializing in init
+[32;1mserver_15 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_5  |[0m My IP is 10.0.0.12, my idx is 10
+[33mserver_5  |[0m 
+[33mserver_5  |[0m Done initializing in init
+[33mserver_5  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m My IP is 10.0.0.10, my idx is 8
+[32mserver_6  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mserver_4  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_7  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32mserver_6  |[0m My IP is 10.0.0.17, my idx is 15
+[36mserver_4  |[0m My IP is 10.0.0.14, my idx is 12
+[32mserver_6  |[0m 
+[32mserver_6  |[0m Done initializing in init
+[32mserver_6  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m My IP is 10.0.0.7, my idx is 5
+[34;1mserver_3  |[0m 
+[34;1mserver_3  |[0m Done initializing in init
+[34;1mserver_3  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m 
+[36mserver_4  |[0m Done initializing in init
+[36mserver_4  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_7  |[0m 
+[35mserver_7  |[0m Done initializing in init
+[35mserver_7  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34mserver_8  |[0m My IP is 10.0.0.5, my idx is 3
+[34mserver_8  |[0m 
+[34mserver_8  |[0m Done initializing in init
+[34mserver_8  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m My IP is 10.0.0.3, my idx is 1
+[36;1mserver_9  |[0m 
+[36;1mserver_9  |[0m Done initializing in init
+[36;1mserver_9  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m Net            n:16  m:7   t:100000     enc/s:1989.38   ms/enc:0.50267 	  Mbps:2.90449 Aborts = 0 Time (ms) = 50267
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:6.25435e-05	Std Deviation:0.000165804
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:1.95449e-05	Std Deviation:8.96434e-05
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:6.61854e-07	Std Deviation:7.21248e-06
+[36;1mgroundhog_server_9 exited with code 0
+[0m[33mgroundhog_server_1 exited with code 0
+[0m[32mgroundhog_server_6 exited with code 0
+[0m[34;1mgroundhog_server_3 exited with code 0
+[0m[34mgroundhog_server_8 exited with code 0
+[0m[33;1mgroundhog_server_14 exited with code 0
+[0m[32;1mgroundhog_server_15 exited with code 0
+[0m[35mgroundhog_server_11 exited with code 0
+[0m[36mgroundhog_client_1 exited with code 0
+[0m[32mgroundhog_server_10 exited with code 0
+[0m[35;1mgroundhog_server_2 exited with code 0
+[0m[34mgroundhog_server_12 exited with code 0
+[0m[33mgroundhog_server_5 exited with code 0
+[0m[35mgroundhog_server_7 exited with code 0
+[0m[36;1mgroundhog_server_13 exited with code 0
+[0m[36mgroundhog_server_4 exited with code 0
+[0mStopping groundhog_uptime_1  ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1 ... done
+Stopping groundhog_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing groundhog_server_9  ... 
+Removing groundhog_server_12 ... 
+Removing groundhog_server_3  ... 
+Removing groundhog_server_6  ... 
+Removing groundhog_server_7  ... 
+Removing groundhog_server_10 ... 
+Removing groundhog_server_13 ... 
+Removing groundhog_server_4  ... 
+Removing groundhog_server_1  ... 
+Removing groundhog_server_11 ... 
+Removing groundhog_server_8  ... 
+Removing groundhog_server_14 ... 
+Removing groundhog_server_2  ... 
+Removing groundhog_server_5  ... 
+Removing groundhog_server_15 ... 
+Removing groundhog_client_1  ... 
+Removing groundhog_uptime_1  ... 
+Removing groundhog_server_10 ... done
+Removing groundhog_client_1  ... done
+Removing groundhog_server_12 ... done
+Removing groundhog_server_6  ... done
+Removing groundhog_server_13 ... done
+Removing groundhog_server_3  ... done
+Removing groundhog_server_8  ... done
+Removing groundhog_server_7  ... done
+Removing groundhog_server_5  ... done
+Removing groundhog_server_9  ... done
+Removing groundhog_server_4  ... done
+Removing groundhog_server_15 ... done
+Removing groundhog_server_2  ... done
+Removing groundhog_server_1  ... done
+Removing groundhog_server_11 ... done
+Removing groundhog_uptime_1  ... done
+Removing groundhog_server_14 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  29.72MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 080687610e52
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 81b50c8b6d1e
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 0b43b516ff4d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> ea2fcacebed1
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> bf347da34a36
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 1aae8eeee564
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 13e534b13a75
+Successfully built 13e534b13a75
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1  ... 
+Creating groundhog_server_2  ... 
+Creating groundhog_server_3  ... 
+Creating groundhog_server_4  ... 
+Creating groundhog_server_5  ... 
+Creating groundhog_server_6  ... 
+Creating groundhog_server_7  ... 
+Creating groundhog_server_8  ... 
+Creating groundhog_server_9  ... 
+Creating groundhog_server_10 ... 
+Creating groundhog_server_11 ... 
+Creating groundhog_server_12 ... 
+Creating groundhog_server_13 ... 
+Creating groundhog_server_14 ... 
+Creating groundhog_server_15 ... 
+Creating groundhog_server_8  ... done
+Creating groundhog_server_9  ... done
+Creating groundhog_server_14 ... done
+Creating groundhog_server_15 ... done
+Creating groundhog_server_12 ... done
+Creating groundhog_server_11 ... done
+Creating groundhog_server_7  ... done
+Creating groundhog_server_4  ... done
+Creating groundhog_server_10 ... done
+Creating groundhog_server_5  ... done
+Creating groundhog_server_3  ... done
+Creating groundhog_server_6  ... done
+Creating groundhog_server_1  ... done
+Creating groundhog_server_2  ... done
+Creating groundhog_server_13 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_8, groundhog_server_9, groundhog_server_14, groundhog_server_15, groundhog_server_12, groundhog_server_11, groundhog_server_7, groundhog_server_4, groundhog_server_10, groundhog_server_5, groundhog_server_3, groundhog_server_6, groundhog_server_1, groundhog_server_2, groundhog_server_13
+[33mserver_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_1  |[0m My IP is 10.0.0.16, my idx is 14
+[32mserver_10 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32mserver_10 |[0m My IP is 10.0.0.11, my idx is 9
+[32mserver_10 |[0m 
+[32mserver_10 |[0m Done initializing in init
+[32mserver_10 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[35mserver_11 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_11 |[0m My IP is 10.0.0.8, my idx is 6
+[35mserver_11 |[0m 
+[35mserver_11 |[0m Done initializing in init
+[35mserver_11 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m 
+[33mserver_1  |[0m Done initializing in init
+[33mserver_1  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36;1mserver_13 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36;1mserver_13 |[0m My IP is 10.0.0.17, my idx is 15
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m Done initializing in init
+[36;1mserver_13 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32;1mserver_15 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32;1mserver_15 |[0m My IP is 10.0.0.6, my idx is 4
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m Done initializing in init
+[32;1mserver_15 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33;1mserver_14 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34;1mserver_3  |[0m My IP is 10.0.0.13, my idx is 11
+[35;1mserver_2  |[0m My IP is 10.0.0.15, my idx is 13
+[35;1mserver_2  |[0m 
+[35;1mserver_2  |[0m Done initializing in init
+[35;1mserver_2  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34;1mserver_3  |[0m 
+[34;1mserver_3  |[0m Done initializing in init
+[34;1mserver_3  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m My IP is 10.0.0.4, my idx is 2
+[36mserver_4  |[0m My IP is 10.0.0.9, my idx is 7
+[36mserver_4  |[0m 
+[36mserver_4  |[0m Done initializing in init
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m Done initializing in init
+[34;1mserver_3  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m My IP is 10.0.0.7, my idx is 5
+[32mserver_6  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_5  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33;1mserver_14 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m My IP is 10.0.0.12, my idx is 10
+[32mserver_6  |[0m My IP is 10.0.0.14, my idx is 12
+[33mserver_5  |[0m 
+[33mserver_5  |[0m Done initializing in init
+[33mserver_5  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_7  |[0m My IP is 10.0.0.10, my idx is 8
+[32mserver_6  |[0m 
+[32mserver_6  |[0m Done initializing in init
+[32mserver_6  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m 
+[35mserver_7  |[0m Done initializing in init
+[35mserver_7  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36;1mserver_9  |[0m My IP is 10.0.0.5, my idx is 3
+[35mserver_7  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34mserver_8  |[0m My IP is 10.0.0.3, my idx is 1
+[36;1mserver_9  |[0m 
+[36;1mserver_9  |[0m Done initializing in init
+[36;1mserver_9  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m 
+[34mserver_8  |[0m Done initializing in init
+[34mserver_12 |[0m 
+[34mserver_12 |[0m Done initializing in init
+[34mserver_12 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m Net            n:16  m:7   t:100000     enc/s:2111.22   ms/enc:0.47366 	  Mbps:3.08238 Aborts = 0 Time (ms) = 47366
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:5.99834e-05	Std Deviation:0.000158772
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:1.84035e-05	Std Deviation:4.26568e-05
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:6.54231e-07	Std Deviation:6.92821e-06
+[33mgroundhog_server_1 exited with code 0
+[0m[36;1mgroundhog_server_9 exited with code 0
+[0m[33mgroundhog_server_5 exited with code 0
+[0m[32;1mgroundhog_server_15 exited with code 0
+[0m[35;1mgroundhog_server_2 exited with code 0
+[0m[32mgroundhog_server_6 exited with code 0
+[0m[34mgroundhog_server_12 exited with code 0
+[0m[36mgroundhog_client_1 exited with code 0
+[0m[34;1mgroundhog_server_3 exited with code 0
+[0m[35mgroundhog_server_7 exited with code 0
+[0m[36;1mgroundhog_server_13 exited with code 0
+[0m[36mgroundhog_server_4 exited with code 0
+[0m[33;1mgroundhog_server_14 exited with code 0
+[0m[34mgroundhog_server_8 exited with code 0
+[0m[32mgroundhog_server_10 exited with code 0
+[0m[35mgroundhog_server_11 exited with code 0
+[0mStopping groundhog_uptime_1  ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1 ... done
+Stopping groundhog_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing groundhog_server_11 ... 
+Removing groundhog_server_2  ... 
+Removing groundhog_server_5  ... 
+Removing groundhog_server_15 ... 
+Removing groundhog_server_12 ... 
+Removing groundhog_server_9  ... 
+Removing groundhog_server_3  ... 
+Removing groundhog_server_1  ... 
+Removing groundhog_server_6  ... 
+Removing groundhog_server_10 ... 
+Removing groundhog_server_13 ... 
+Removing groundhog_server_14 ... 
+Removing groundhog_server_7  ... 
+Removing groundhog_server_4  ... 
+Removing groundhog_server_8  ... 
+Removing groundhog_client_1  ... 
+Removing groundhog_uptime_1  ... 
+Removing groundhog_server_2  ... done
+Removing groundhog_server_11 ... done
+Removing groundhog_server_14 ... done
+Removing groundhog_server_1  ... done
+Removing groundhog_server_12 ... done
+Removing groundhog_server_6  ... done
+Removing groundhog_client_1  ... done
+Removing groundhog_server_7  ... done
+Removing groundhog_server_8  ... done
+Removing groundhog_server_10 ... done
+Removing groundhog_server_9  ... done
+Removing groundhog_server_3  ... done
+Removing groundhog_server_4  ... done
+Removing groundhog_server_5  ... done
+Removing groundhog_server_15 ... done
+Removing groundhog_server_13 ... done
+Removing groundhog_uptime_1  ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  29.73MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 080687610e52
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 81b50c8b6d1e
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 0b43b516ff4d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> ea2fcacebed1
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> bf347da34a36
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 1aae8eeee564
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 13e534b13a75
+Successfully built 13e534b13a75
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1  ... 
+Creating groundhog_server_2  ... 
+Creating groundhog_server_3  ... 
+Creating groundhog_server_4  ... 
+Creating groundhog_server_5  ... 
+Creating groundhog_server_6  ... 
+Creating groundhog_server_7  ... 
+Creating groundhog_server_8  ... 
+Creating groundhog_server_9  ... 
+Creating groundhog_server_10 ... 
+Creating groundhog_server_11 ... 
+Creating groundhog_server_12 ... 
+Creating groundhog_server_13 ... 
+Creating groundhog_server_14 ... 
+Creating groundhog_server_15 ... 
+Creating groundhog_server_3  ... done
+Creating groundhog_server_9  ... done
+Creating groundhog_server_2  ... done
+Creating groundhog_server_13 ... done
+Creating groundhog_server_6  ... done
+Creating groundhog_server_10 ... done
+Creating groundhog_server_12 ... done
+Creating groundhog_server_4  ... done
+Creating groundhog_server_5  ... done
+Creating groundhog_server_14 ... done
+Creating groundhog_server_8  ... done
+Creating groundhog_server_1  ... done
+Creating groundhog_server_11 ... done
+Creating groundhog_server_7  ... done
+Creating groundhog_server_15 ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_3, groundhog_server_9, groundhog_server_2, groundhog_server_13, groundhog_server_6, groundhog_server_10, groundhog_server_12, groundhog_server_4, groundhog_server_5, groundhog_server_14, groundhog_server_8, groundhog_server_1, groundhog_server_11, groundhog_server_7, groundhog_server_15
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[33mserver_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_1  |[0m My IP is 10.0.0.14, my idx is 12
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[35mserver_11 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_11 |[0m My IP is 10.0.0.16, my idx is 14
+[35mserver_11 |[0m 
+[35mserver_11 |[0m Done initializing in init
+[33mserver_1  |[0m 
+[33mserver_1  |[0m Done initializing in init
+[33mserver_1  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32mserver_10 |[0m My IP is 10.0.0.8, my idx is 6
+[35mserver_11 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m 
+[32mserver_10 |[0m Done initializing in init
+[32mserver_10 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34mserver_12 |[0m My IP is 10.0.0.10, my idx is 8
+[34mserver_12 |[0m 
+[34mserver_12 |[0m Done initializing in init
+[34mserver_12 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36;1mserver_13 |[0m My IP is 10.0.0.6, my idx is 4
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m Done initializing in init
+[36;1mserver_13 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33;1mserver_14 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33;1mserver_14 |[0m My IP is 10.0.0.12, my idx is 10
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m Done initializing in init
+[33;1mserver_14 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35;1mserver_2  |[0m My IP is 10.0.0.5, my idx is 3
+[35;1mserver_2  |[0m 
+[35;1mserver_2  |[0m Done initializing in init
+[35;1mserver_2  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34;1mserver_3  |[0m My IP is 10.0.0.3, my idx is 1
+[36mserver_4  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mserver_4  |[0m My IP is 10.0.0.9, my idx is 7
+[32;1mserver_15 |[0m My IP is 10.0.0.17, my idx is 15
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m Done initializing in init
+[32;1mserver_15 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m 
+[34;1mserver_3  |[0m Done initializing in init
+[34;1mserver_3  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m 
+[36mserver_4  |[0m Done initializing in init
+[36mserver_4  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_5  |[0m My IP is 10.0.0.11, my idx is 9
+[33mserver_5  |[0m 
+[33mserver_5  |[0m Done initializing in init
+[33mserver_5  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34mserver_8  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34mserver_8  |[0m My IP is 10.0.0.13, my idx is 11
+[34mserver_8  |[0m 
+[34mserver_8  |[0m Done initializing in init
+[34mserver_8  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_7  |[0m My IP is 10.0.0.15, my idx is 13
+[35mserver_7  |[0m 
+[35mserver_7  |[0m Done initializing in init
+[35mserver_7  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32mserver_6  |[0m My IP is 10.0.0.7, my idx is 5
+[32mserver_6  |[0m 
+[32mserver_6  |[0m Done initializing in init
+[32mserver_6  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m My IP is 10.0.0.4, my idx is 2
+[36;1mserver_9  |[0m 
+[36;1mserver_9  |[0m Done initializing in init
+[36;1mserver_9  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m Net            n:16  m:7   t:100000     enc/s:2019.18   ms/enc:0.49525 	  Mbps:2.94801 Aborts = 0 Time (ms) = 49525
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:6.64398e-05	Std Deviation:0.000165077
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:1.91748e-05	Std Deviation:4.53033e-05
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:6.63008e-07	Std Deviation:7.06185e-06
+[35mgroundhog_server_7 exited with code 0
+[0m[33;1mgroundhog_server_14 exited with code 0
+[0m[36;1mgroundhog_server_9 exited with code 0
+[0m[34mgroundhog_server_12 exited with code 0
+[0m[34;1mgroundhog_server_3 exited with code 0
+[0m[36mgroundhog_client_1 exited with code 0
+[0m[33mgroundhog_server_1 exited with code 0
+[0m[32mgroundhog_server_6 exited with code 0
+[0m[35mgroundhog_server_11 exited with code 0
+[0m[35;1mgroundhog_server_2 exited with code 0
+[0m[36;1mgroundhog_server_13 exited with code 0
+[0m[34mgroundhog_server_8 exited with code 0
+[0m[32;1mgroundhog_server_15 exited with code 0
+[0m[32mgroundhog_server_10 exited with code 0
+[0m[36mgroundhog_server_4 exited with code 0
+[0m[33mgroundhog_server_5 exited with code 0
+[0mStopping groundhog_uptime_1  ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1 ... done
+Stopping groundhog_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing groundhog_server_7  ... 
+Removing groundhog_server_10 ... 
+Removing groundhog_server_4  ... 
+Removing groundhog_server_14 ... 
+Removing groundhog_server_1  ... 
+Removing groundhog_server_11 ... 
+Removing groundhog_server_8  ... 
+Removing groundhog_server_5  ... 
+Removing groundhog_server_15 ... 
+Removing groundhog_server_12 ... 
+Removing groundhog_server_2  ... 
+Removing groundhog_server_9  ... 
+Removing groundhog_server_13 ... 
+Removing groundhog_server_3  ... 
+Removing groundhog_server_6  ... 
+Removing groundhog_client_1  ... 
+Removing groundhog_uptime_1  ... 
+Removing groundhog_uptime_1  ... done
+Removing groundhog_server_15 ... done
+Removing groundhog_server_5  ... done
+Removing groundhog_server_3  ... done
+Removing groundhog_server_8  ... done
+Removing groundhog_server_7  ... done
+Removing groundhog_server_2  ... done
+Removing groundhog_server_13 ... done
+Removing groundhog_server_10 ... done
+Removing groundhog_server_1  ... done
+Removing groundhog_server_14 ... done
+Removing groundhog_server_11 ... done
+Removing groundhog_server_9  ... done
+Removing groundhog_server_12 ... done
+Removing groundhog_client_1  ... done
+Removing groundhog_server_4  ... done
+Removing groundhog_server_6  ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  29.75MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 080687610e52
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 81b50c8b6d1e
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 0b43b516ff4d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> ea2fcacebed1
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> bf347da34a36
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 1aae8eeee564
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 13e534b13a75
+Successfully built 13e534b13a75
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1  ... 
+Creating groundhog_server_2  ... 
+Creating groundhog_server_3  ... 
+Creating groundhog_server_4  ... 
+Creating groundhog_server_5  ... 
+Creating groundhog_server_6  ... 
+Creating groundhog_server_7  ... 
+Creating groundhog_server_8  ... 
+Creating groundhog_server_9  ... 
+Creating groundhog_server_10 ... 
+Creating groundhog_server_11 ... 
+Creating groundhog_server_12 ... 
+Creating groundhog_server_13 ... 
+Creating groundhog_server_14 ... 
+Creating groundhog_server_15 ... 
+Creating groundhog_server_12 ... done
+Creating groundhog_server_5  ... done
+Creating groundhog_server_3  ... done
+Creating groundhog_server_11 ... done
+Creating groundhog_server_9  ... done
+Creating groundhog_server_1  ... done
+Creating groundhog_server_13 ... done
+Creating groundhog_server_7  ... done
+Creating groundhog_server_4  ... done
+Creating groundhog_server_6  ... done
+Creating groundhog_server_15 ... done
+Creating groundhog_server_10 ... done
+Creating groundhog_server_2  ... done
+Creating groundhog_server_14 ... done
+Creating groundhog_server_8  ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_12, groundhog_server_5, groundhog_server_3, groundhog_server_11, groundhog_server_9, groundhog_server_1, groundhog_server_13, groundhog_server_7, groundhog_server_4, groundhog_server_6, groundhog_server_15, groundhog_server_10, groundhog_server_2, groundhog_server_14, groundhog_server_8
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32mserver_10 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32mserver_10 |[0m My IP is 10.0.0.14, my idx is 12
+[32mserver_10 |[0m 
+[32mserver_10 |[0m Done initializing in init
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[35mserver_11 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[32mserver_10 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34mserver_12 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36;1mserver_13 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34mserver_12 |[0m My IP is 10.0.0.3, my idx is 1
+[34mserver_12 |[0m 
+[34mserver_12 |[0m Done initializing in init
+[34mserver_12 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m My IP is 10.0.0.8, my idx is 6
+[35mserver_11 |[0m My IP is 10.0.0.6, my idx is 4
+[32;1mserver_15 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33;1mserver_14 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_11 |[0m 
+[35mserver_11 |[0m Done initializing in init
+[35mserver_11 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m My IP is 10.0.0.16, my idx is 14
+[34;1mserver_3  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mserver_4  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_1  |[0m My IP is 10.0.0.9, my idx is 7
+[33mserver_1  |[0m 
+[33mserver_1  |[0m Done initializing in init
+[33mserver_1  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m Done initializing in init
+[36;1mserver_13 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32;1mserver_15 |[0m My IP is 10.0.0.13, my idx is 11
+[36mserver_4  |[0m My IP is 10.0.0.11, my idx is 9
+[33mserver_5  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35;1mserver_2  |[0m My IP is 10.0.0.15, my idx is 13
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m Done initializing in init
+[32;1mserver_15 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m My IP is 10.0.0.5, my idx is 3
+[34;1mserver_3  |[0m My IP is 10.0.0.4, my idx is 2
+[34;1mserver_3  |[0m 
+[34;1mserver_3  |[0m Done initializing in init
+[34;1mserver_3  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m 
+[35;1mserver_2  |[0m Done initializing in init
+[35;1mserver_2  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m 
+[36mserver_4  |[0m Done initializing in init
+[36mserver_4  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m Done initializing in init
+[33;1mserver_14 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m My IP is 10.0.0.12, my idx is 10
+[32mserver_6  |[0m 
+[32mserver_6  |[0m Done initializing in init
+[32mserver_6  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_7  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_7  |[0m My IP is 10.0.0.10, my idx is 8
+[35mserver_7  |[0m 
+[35mserver_7  |[0m Done initializing in init
+[35mserver_7  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m 
+[33mserver_5  |[0m Done initializing in init
+[33mserver_5  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m My IP is 10.0.0.17, my idx is 15
+[34mserver_8  |[0m 
+[34mserver_8  |[0m Done initializing in init
+[34mserver_8  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36;1mserver_9  |[0m My IP is 10.0.0.7, my idx is 5
+[36;1mserver_9  |[0m 
+[36;1mserver_9  |[0m Done initializing in init
+[36;1mserver_9  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m Net            n:16  m:7   t:100000     enc/s:1992.55   ms/enc:0.50187 	  Mbps:2.90912 Aborts = 0 Time (ms) = 50187
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:6.00142e-05	Std Deviation:0.000148146
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:1.82273e-05	Std Deviation:4.95502e-05
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:7.06416e-07	Std Deviation:7.61622e-06
+[34mgroundhog_server_8 exited with code 0
+[0m[32mgroundhog_server_10 exited with code 0
+[0m[33mgroundhog_server_5 exited with code 0
+[0m[35mgroundhog_server_7 exited with code 0
+[0m[34;1mgroundhog_server_3 exited with code 0
+[0m[34mgroundhog_server_12 exited with code 0
+[0m[35;1mgroundhog_server_2 exited with code 0
+[0m[36;1mgroundhog_server_9 exited with code 0
+[0m[33;1mgroundhog_server_14 exited with code 0
+[0m[32mgroundhog_server_6 exited with code 0
+[0m[36mgroundhog_client_1 exited with code 0
+[0m[36mgroundhog_server_4 exited with code 0
+[0m[36;1mgroundhog_server_13 exited with code 0
+[0m[33mgroundhog_server_1 exited with code 0
+[0m[32;1mgroundhog_server_15 exited with code 0
+[0m[35mgroundhog_server_11 exited with code 0
+[0mStopping groundhog_uptime_1  ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1 ... done
+Stopping groundhog_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing groundhog_server_3  ... 
+Removing groundhog_server_15 ... 
+Removing groundhog_server_12 ... 
+Removing groundhog_server_13 ... 
+Removing groundhog_server_6  ... 
+Removing groundhog_server_9  ... 
+Removing groundhog_server_10 ... 
+Removing groundhog_server_7  ... 
+Removing groundhog_server_4  ... 
+Removing groundhog_server_14 ... 
+Removing groundhog_server_1  ... 
+Removing groundhog_server_8  ... 
+Removing groundhog_server_5  ... 
+Removing groundhog_server_11 ... 
+Removing groundhog_server_2  ... 
+Removing groundhog_client_1  ... 
+Removing groundhog_uptime_1  ... 
+Removing groundhog_uptime_1  ... done
+Removing groundhog_server_15 ... done
+Removing groundhog_server_3  ... done
+Removing groundhog_server_4  ... done
+Removing groundhog_server_1  ... done
+Removing groundhog_server_2  ... done
+Removing groundhog_server_11 ... done
+Removing groundhog_server_13 ... done
+Removing groundhog_server_9  ... done
+Removing groundhog_server_14 ... done
+Removing groundhog_server_8  ... done
+Removing groundhog_server_10 ... done
+Removing groundhog_server_5  ... done
+Removing groundhog_server_7  ... done
+Removing groundhog_client_1  ... done
+Removing groundhog_server_6  ... done
+Removing groundhog_server_12 ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  29.76MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 080687610e52
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 81b50c8b6d1e
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 0b43b516ff4d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> ea2fcacebed1
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> bf347da34a36
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 1aae8eeee564
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 13e534b13a75
+Successfully built 13e534b13a75
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1  ... 
+Creating groundhog_server_2  ... 
+Creating groundhog_server_3  ... 
+Creating groundhog_server_4  ... 
+Creating groundhog_server_5  ... 
+Creating groundhog_server_6  ... 
+Creating groundhog_server_7  ... 
+Creating groundhog_server_8  ... 
+Creating groundhog_server_9  ... 
+Creating groundhog_server_10 ... 
+Creating groundhog_server_11 ... 
+Creating groundhog_server_12 ... 
+Creating groundhog_server_13 ... 
+Creating groundhog_server_14 ... 
+Creating groundhog_server_15 ... 
+Creating groundhog_server_8  ... done
+Creating groundhog_server_12 ... done
+Creating groundhog_server_10 ... done
+Creating groundhog_server_7  ... done
+Creating groundhog_server_5  ... done
+Creating groundhog_server_14 ... done
+Creating groundhog_server_4  ... done
+Creating groundhog_server_11 ... done
+Creating groundhog_server_6  ... done
+Creating groundhog_server_3  ... done
+Creating groundhog_server_13 ... done
+Creating groundhog_server_2  ... done
+Creating groundhog_server_15 ... done
+Creating groundhog_server_1  ... done
+Creating groundhog_server_9  ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_8, groundhog_server_12, groundhog_server_10, groundhog_server_7, groundhog_server_5, groundhog_server_14, groundhog_server_4, groundhog_server_11, groundhog_server_6, groundhog_server_3, groundhog_server_13, groundhog_server_2, groundhog_server_15, groundhog_server_1, groundhog_server_9
+[33mserver_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_1  |[0m My IP is 10.0.0.16, my idx is 14
+[33mserver_1  |[0m 
+[33mserver_1  |[0m Done initializing in init
+[33mserver_1  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32mserver_10 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_11 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_11 |[0m My IP is 10.0.0.10, my idx is 8
+[32mserver_10 |[0m My IP is 10.0.0.5, my idx is 3
+[35mserver_11 |[0m 
+[35mserver_11 |[0m Done initializing in init
+[35mserver_11 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[36;1mserver_13 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[32mserver_10 |[0m 
+[32mserver_10 |[0m Done initializing in init
+[32mserver_10 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m My IP is 10.0.0.13, my idx is 11
+[34mserver_12 |[0m My IP is 10.0.0.4, my idx is 2
+[34mserver_12 |[0m 
+[34mserver_12 |[0m Done initializing in init
+[33;1mserver_14 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32;1mserver_15 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32;1mserver_15 |[0m My IP is 10.0.0.15, my idx is 13
+[34mserver_12 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m Done initializing in init
+[32;1mserver_15 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m My IP is 10.0.0.7, my idx is 5
+[35;1mserver_2  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m Done initializing in init
+[36;1mserver_13 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m My IP is 10.0.0.14, my idx is 12
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m Done initializing in init
+[33;1mserver_14 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m 
+[35;1mserver_2  |[0m Done initializing in init
+[35;1mserver_2  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mserver_4  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_5  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mserver_4  |[0m My IP is 10.0.0.9, my idx is 7
+[34;1mserver_3  |[0m My IP is 10.0.0.11, my idx is 9
+[36mserver_4  |[0m 
+[36mserver_4  |[0m Done initializing in init
+[36mserver_4  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m 
+[34;1mserver_3  |[0m Done initializing in init
+[34;1mserver_3  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34mserver_8  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32mserver_6  |[0m My IP is 10.0.0.12, my idx is 10
+[33mserver_5  |[0m My IP is 10.0.0.8, my idx is 6
+[35mserver_7  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_7  |[0m My IP is 10.0.0.6, my idx is 4
+[35mserver_7  |[0m 
+[35mserver_7  |[0m Done initializing in init
+[35mserver_7  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_5  |[0m 
+[33mserver_5  |[0m Done initializing in init
+[33mserver_5  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m My IP is 10.0.0.17, my idx is 15
+[36;1mserver_9  |[0m 
+[36;1mserver_9  |[0m Done initializing in init
+[36;1mserver_9  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m My IP is 10.0.0.3, my idx is 1
+[34mserver_8  |[0m 
+[34mserver_8  |[0m Done initializing in init
+[34mserver_8  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m 
+[32mserver_6  |[0m Done initializing in init
+[32mserver_6  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m Net            n:16  m:7   t:100000     enc/s:1962.05   ms/enc:0.50967 	  Mbps:2.8646 Aborts = 0 Time (ms) = 50967
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:6.35229e-05	Std Deviation:0.000146822
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:1.86928e-05	Std Deviation:5.08752e-05
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:6.66205e-07	Std Deviation:7.11111e-06
+[32mgroundhog_server_6 exited with code 0
+[0m[34;1mgroundhog_server_3 exited with code 0
+[0m[36mgroundhog_server_4 exited with code 0
+[0m[33mgroundhog_server_5 exited with code 0
+[0m[34mgroundhog_server_12 exited with code 0
+[0m[36;1mgroundhog_server_9 exited with code 0
+[0m[35;1mgroundhog_server_2 exited with code 0
+[0m[35mgroundhog_server_7 exited with code 0
+[0m[34mgroundhog_server_8 exited with code 0
+[0m[33mgroundhog_server_1 exited with code 0
+[0m[35mgroundhog_server_11 exited with code 0
+[0m[32;1mgroundhog_server_15 exited with code 0
+[0m[33;1mgroundhog_server_14 exited with code 0
+[0m[36;1mgroundhog_server_13 exited with code 0
+[0m[36mgroundhog_client_1 exited with code 0
+[0m[32mgroundhog_server_10 exited with code 0
+[0mStopping groundhog_uptime_1  ... 
+Stopping groundhog_uptime_1 ... 
+Stopping groundhog_uptime_1 ... done
+Stopping groundhog_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
+Removing groundhog_server_6  ... 
+Removing groundhog_server_10 ... 
+Removing groundhog_server_9  ... 
+Removing groundhog_server_3  ... 
+Removing groundhog_server_13 ... 
+Removing groundhog_server_7  ... 
+Removing groundhog_server_8  ... 
+Removing groundhog_server_1  ... 
+Removing groundhog_server_4  ... 
+Removing groundhog_server_14 ... 
+Removing groundhog_server_11 ... 
+Removing groundhog_server_5  ... 
+Removing groundhog_server_2  ... 
+Removing groundhog_server_12 ... 
+Removing groundhog_server_15 ... 
+Removing groundhog_client_1  ... 
+Removing groundhog_uptime_1  ... 
+Removing groundhog_server_8  ... done
+Removing groundhog_server_10 ... done
+Removing groundhog_server_11 ... done
+Removing groundhog_server_7  ... done
+Removing groundhog_client_1  ... done
+Removing groundhog_server_6  ... done
+Removing groundhog_server_5  ... done
+Removing groundhog_server_2  ... done
+Removing groundhog_server_14 ... done
+Removing groundhog_server_15 ... done
+Removing groundhog_uptime_1  ... done
+Removing groundhog_server_3  ... done
+Removing groundhog_server_12 ... done
+Removing groundhog_server_1  ... done
+Removing groundhog_server_4  ... done
+Removing groundhog_server_13 ... done
+Removing groundhog_server_9  ... done
+Removing network groundhog_dise-net
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  29.77MB
+Step 1/13 : FROM alpine:3.15
+ ---> 32b91e3161c8
+Step 2/13 : WORKDIR /usr/local/src
+ ---> Using cache
+ ---> 5d60584c7077
+Step 3/13 : COPY ./cryptoTools ./cryptoTools
+ ---> Using cache
+ ---> 097cf5c44dee
+Step 4/13 : RUN apk add git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev  && cd cryptoTools  && rm -f cryptoTools/Common/config.h  && python3 build.py --setup --relic -DFETCH_BOOST=OFF  && python3 build.py -DENABLE_RELIC=ON  && python3 build.py --install  && cd ..  && rm -rf cryptoTools  && apk del git gcc g++ make cmake bash openssl-dev boost1.77-static boost1.77-dev
+ ---> Using cache
+ ---> f449807f8e39
+Step 5/13 : RUN apk add git gcc g++ make cmake libstdc++ openssl-dev boost1.77-static boost1.77-dev python3 linux-tools
+ ---> Using cache
+ ---> 26fdf03df6ef
+Step 6/13 : RUN echo initial git build  && git clone "https://github.com/synercys/htdise" repo  && mv repo/DiSE .  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc` || echo "GitHub build failed! Continuing..."
+ ---> Using cache
+ ---> de135c817573
+Step 7/13 : COPY ./DiSE ./DiSE
+ ---> Using cache
+ ---> 080687610e52
+Step 8/13 : RUN echo incremental build  && cd DiSE  && cmake . -Wno-dev  && make -j `nproc`  && cp -r bin /usr/local
+ ---> Using cache
+ ---> 81b50c8b6d1e
+Step 9/13 : WORKDIR /usr/local
+ ---> Using cache
+ ---> 0b43b516ff4d
+Step 10/13 : COPY restart.py uptime_server.py /usr/local/bin/
+ ---> Using cache
+ ---> ea2fcacebed1
+Step 11/13 : COPY data/state.txt /usr/local
+ ---> Using cache
+ ---> bf347da34a36
+Step 12/13 : COPY default.json /usr/local
+ ---> Using cache
+ ---> 1aae8eeee564
+Step 13/13 : CMD ["/usr/local/bin/dEncFrontend", "-u"]
+ ---> Using cache
+ ---> 13e534b13a75
+Successfully built 13e534b13a75
+Successfully tagged groundhog:latest
+Creating network "groundhog_dise-net" with driver "bridge"
+Creating groundhog_uptime_1 ... 
+Creating groundhog_uptime_1 ... done
+Creating groundhog_client_1 ... 
+Creating groundhog_client_1 ... done
+Creating groundhog_server_1  ... 
+Creating groundhog_server_2  ... 
+Creating groundhog_server_3  ... 
+Creating groundhog_server_4  ... 
+Creating groundhog_server_5  ... 
+Creating groundhog_server_6  ... 
+Creating groundhog_server_7  ... 
+Creating groundhog_server_8  ... 
+Creating groundhog_server_9  ... 
+Creating groundhog_server_10 ... 
+Creating groundhog_server_11 ... 
+Creating groundhog_server_12 ... 
+Creating groundhog_server_13 ... 
+Creating groundhog_server_14 ... 
+Creating groundhog_server_15 ... 
+Creating groundhog_server_7  ... done
+Creating groundhog_server_2  ... done
+Creating groundhog_server_3  ... done
+Creating groundhog_server_13 ... done
+Creating groundhog_server_6  ... done
+Creating groundhog_server_1  ... done
+Creating groundhog_server_11 ... done
+Creating groundhog_server_8  ... done
+Creating groundhog_server_5  ... done
+Creating groundhog_server_12 ... done
+Creating groundhog_server_9  ... done
+Creating groundhog_server_15 ... done
+Creating groundhog_server_14 ... done
+Creating groundhog_server_10 ... done
+Creating groundhog_server_4  ... done
+Attaching to groundhog_uptime_1, groundhog_client_1, groundhog_server_7, groundhog_server_2, groundhog_server_3, groundhog_server_13, groundhog_server_6, groundhog_server_1, groundhog_server_11, groundhog_server_8, groundhog_server_5, groundhog_server_12, groundhog_server_9, groundhog_server_15, groundhog_server_14, groundhog_server_10, groundhog_server_4
+[36mclient_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m My IP is 10.0.0.2, my idx is 0
+[33mserver_1  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_11 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mclient_1  |[0m 
+[36mclient_1  |[0m Done initializing in init
+[33mserver_1  |[0m My IP is 10.0.0.9, my idx is 7
+[34mserver_12 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_11 |[0m My IP is 10.0.0.8, my idx is 6
+[34mserver_12 |[0m My IP is 10.0.0.12, my idx is 10
+[34mserver_12 |[0m 
+[34mserver_12 |[0m Done initializing in init
+[34mserver_12 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_12 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33mserver_1  |[0m 
+[33mserver_1  |[0m Done initializing in init
+[33mserver_1  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_1  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m My IP is 10.0.0.16, my idx is 14
+[36mclient_1  |[0m Key exchange done. Starting  benchmark.
+[36mclient_1  |[0m ---- Size of Plain Text = 24 Number of Trials = 100000
+[32mserver_10 |[0m 
+[32mserver_10 |[0m Done initializing in init
+[32mserver_10 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_10 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_11 |[0m 
+[35mserver_11 |[0m Done initializing in init
+[35mserver_11 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_11 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m My IP is 10.0.0.6, my idx is 4
+[33;1mserver_14 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[33;1mserver_14 |[0m My IP is 10.0.0.15, my idx is 13
+[36;1mserver_13 |[0m 
+[36;1mserver_13 |[0m Done initializing in init
+[36;1mserver_13 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_13 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m 
+[33;1mserver_14 |[0m Done initializing in init
+[33;1mserver_14 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33;1mserver_14 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34;1mserver_3  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32;1mserver_15 |[0m My IP is 10.0.0.14, my idx is 12
+[32;1mserver_15 |[0m 
+[32;1mserver_15 |[0m Done initializing in init
+[32;1mserver_15 |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32;1mserver_15 |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34;1mserver_3  |[0m My IP is 10.0.0.5, my idx is 3
+[35;1mserver_2  |[0m My IP is 10.0.0.4, my idx is 2
+[36mserver_4  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34;1mserver_3  |[0m 
+[34;1mserver_3  |[0m Done initializing in init
+[34;1mserver_3  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34;1mserver_3  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m 
+[35;1mserver_2  |[0m Done initializing in init
+[35;1mserver_2  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35;1mserver_2  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36mserver_4  |[0m My IP is 10.0.0.17, my idx is 15
+[33mserver_5  |[0m My IP is 10.0.0.11, my idx is 9
+[36mserver_4  |[0m 
+[36mserver_4  |[0m Done initializing in init
+[36mserver_4  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36mserver_4  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m 
+[33mserver_5  |[0m Done initializing in init
+[33mserver_5  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[33mserver_5  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[32mserver_6  |[0m My IP is 10.0.0.7, my idx is 5
+[32mserver_6  |[0m 
+[32mserver_6  |[0m Done initializing in init
+[32mserver_6  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[32mserver_6  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[35mserver_7  |[0m My IP is 10.0.0.3, my idx is 1
+[35mserver_7  |[0m 
+[35mserver_7  |[0m Done initializing in init
+[35mserver_7  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[35mserver_7  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[34mserver_8  |[0m My IP is 10.0.0.10, my idx is 8
+[34mserver_8  |[0m 
+[34mserver_8  |[0m Done initializing in init
+[34mserver_8  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[34mserver_8  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m Application Start /usr/local/src/DiSE/test/Helloworld.cpp 185
+[36;1mserver_9  |[0m My IP is 10.0.0.13, my idx is 11
+[36;1mserver_9  |[0m 
+[36;1mserver_9  |[0m Done initializing in init
+[36;1mserver_9  |[0m ---- OPRF-Send-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m ---- OPRF-Receive-Times	Mean:-nan	Std Deviation:-nan
+[36;1mserver_9  |[0m ---- OPRF-Combine-Times	Mean:-nan	Std Deviation:-nan
+[36mclient_1  |[0m Net            n:16  m:7   t:100000     enc/s:2001.56   ms/enc:0.49961 	  Mbps:2.92228 Aborts = 0 Time (ms) = 49961
+[36mclient_1  |[0m ---- OPRF-Send-Times	Mean:6.22217e-05	Std Deviation:0.000172316
+[36mclient_1  |[0m ---- OPRF-Receive-Times	Mean:1.8745e-05	Std Deviation:4.82683e-05
+[36mclient_1  |[0m ---- OPRF-Combine-Times	Mean:6.32462e-07	Std Deviation:7.06981e-06
+[35;1mgroundhog_server_2 exited with code 0
+[0m[35mgroundhog_server_11 exited with code 0
+[0m[36;1mgroundhog_server_13 exited with code 0
+[0m[33mgroundhog_server_5 exited with code 0
+[0m[36;1mgroundhog_server_9 exited with code 0
+[0m[34;1mgroundhog_server_3 exited with code 0
+[0m[34mgroundhog_server_12 exited with code 0
+[0m[36mgroundhog_server_4 exited with code 0
+[0m[34mgroundhog_server_8 exited with code 0
+[0m[33mgroundhog_server_1 exited with code 0
+[0m[36mgroundhog_client_1 exited with code 0
+[0m[32mgroundhog_server_6 exited with code 0
+[0m[35mgroundhog_server_7 exited with code 0
+[0m[32mgroundhog_server_10 exited with code 0
+[0m[33;1mgroundhog_server_14 exited with code 0
+[0m[32;1mgroundhog_server_15 exited with code 0
+[0mStopping groundhog_uptime_1  ... 
+Stopping groundhog_uptime_1  ... done
+Gracefully stopping... (press Ctrl+C again to force)
