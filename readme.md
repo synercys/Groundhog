@@ -5,20 +5,6 @@ We demonstrate Groundhog on 2 protocols used in threshold cryptosystems : a) Dis
 
 Groundhog works by restarting the nodes strategically by ensuring threshold number of nodes are available at anytime to perform the operations.
 
-## Execution Instructions
-Simply run `docker-compose up` to start a swarm of containers.
-We can run this setup with a minimum of 3 nodes.
-
-[`docker-compose.yml`](docker-compose.yml) defines the setup.
-The `scale` option on line 9 must match the `-n` option on line 8.
-This is the number of nodes.
-
-`-mc` lets you choose the threshold as an absolute count and `-t` determines the number of trials to run for statistics.
-
-## Build Instructions
-
-### Docker
-
 Requirements:
 - `git` (or download and unzip this repo)
 - `docker`
