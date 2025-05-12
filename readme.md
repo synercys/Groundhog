@@ -9,8 +9,6 @@ Groundhog works by restarting the nodes strategically by ensuring threshold numb
 Simply run `docker-compose up` to start a swarm of containers.
 We can run this setup with a minimum of 3 nodes.
 
-If you do not have the container locally (and don't want to build it), you must run `docker pull gabrielkulp/htdise` first to download a pre-built version.
-
 [`docker-compose.yml`](docker-compose.yml) defines the setup.
 The `scale` option on line 9 must match the `-n` option on line 8.
 This is the number of nodes.
