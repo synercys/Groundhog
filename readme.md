@@ -27,4 +27,5 @@ git checkout 76c2aff1b7c8001a701c5c045204252c34df7f8c
 cd ../
 git add .gitmodules cryptoTools
 ```
-Tested with Ubuntu 20.04 LTS and Debian 11. If building for another distro, you might need to change the first few `apt` commands. If the distro has `cmake` version 3.18 or newer available in the package repository, you can just install that package and delete the CMake part of the script.
+Tested with Ubuntu 20.04 LTS and Debian 11.
+If the distro has `cmake` version 3.18 or newer available in the package repository, you can just install that package and delete the CMake part of the script.
