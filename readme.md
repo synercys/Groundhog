@@ -26,20 +26,20 @@ Requirements:
 - `docker`
 - `docker-compose`
 
-Everything should be platform-agnostic on the host (though I've only tested on Linux and a Linux VM).
+git clone https://github.com/synercys/Groundhog.git
+cd Groundhog
+# Remove the tracked directory
 
-Either directly run `docker run gabrielkulp/htdise`, or clone/download this repository and build the image yourself with `docker build . -t htdise:latest`.
-This will build cryptoTools and our modified DiSE in a container.
+git rm -r cryptoTools
+rm -rf cryptoTools  # Just in case
 
-### VM or Baremetal
+# From your repo
+git submodule add https://github.com/ladnir/cryptoTools.git cryptoTools
+cd cryptoTools
+git checkout 76c2aff1b7c8001a701c5c045204252c34df7f8c
 
-*This method is more complicated and not maintained or recommended.*
-
-Download and run [setup.sh](Setup.sh):
-
-```sh
-wget https://raw.githubusercontent.com/disha-agarwal/dise/master/Setup.sh
-sh Setup.sh
-```
+# Go back to root and commit the submodule pointer
+cd ../
+git add .gitmodules cryptoTools
 
 Tested with Ubuntu 20.04 LTS and Debian 11. If building for another distro, you might need to change the first few `apt` commands. If the distro has `cmake` version 3.18 or newer available in the package repository, you can just install that package and delete the CMake part of the script.
