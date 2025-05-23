@@ -30,7 +30,7 @@ def findNextPrime(n):
 			break
 	return prime
 
-
+# TODO: Code needs to be cleaned up
 def isPrime(n):
 	if (n <= 1):
 		return False 
